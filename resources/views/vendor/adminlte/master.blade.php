@@ -73,7 +73,16 @@
         <meta name="msapplication-TileImage" content="{{ asset('favicon/ms-icon-144x144.png') }}">
     @endif
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite([
+        'resources/css/app.css',
+        'resources/css/sweetalert2.min.css',
+        'resources/css/toastr.min.css', 
+        'resources/js/app.js',
+        'resources/js/bootstrap.js',
+        'resources/js/jquery.min.js',
+        'resources/js/sweetalert2.all.min.js',
+        'resources/js/toastr.min.js'
+        ])
 </head>
 
 <body class="@yield('classes_body')" @yield('body_data')>

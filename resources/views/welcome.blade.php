@@ -6,6 +6,39 @@
 @section('adminlte_css')
     @stack('css')
     @yield('css')
+    <style>
+        body {
+            overflow: hidden;
+        }
+
+        .back {
+            background-image: url('./img/recursoshumanos-bg.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            /* Aplicar desenfoque */
+            filter: blur(2px);
+            width: 100%;
+            height: 100vh;
+            position: fixed;
+            z-index: -1;
+
+            /* Aplicar sombra */
+            -webkit-box-shadow: inset 0px 0px 300px -45px rgba(0, 0, 0, 0.75);
+            -moz-box-shadow: inset 0px 0px 300px -45px rgba(0, 0, 0, 0.75);
+            box-shadow: inset 0px 0px 300px -45px rgba(0, 0, 0, 0.75); 
+        }
+
+        .titulo {
+            color: #FFFFFF;
+            text-shadow: 2px 2px 0px #333333, 5px 4px 0px rgba(0, 0, 0, 0.15);
+        }
+
+        .subtitulo {
+            color: #FFFFFF;
+            text-shadow: -1px -1px 1px rgba(255,255,255,.1), 1px 1px 1px rgba(0,0,0,1);
+        }
+    </style>
 @stop
 
 @section('classes_body', $layoutHelper->makeBodyClasses())
@@ -13,9 +46,10 @@
 @section('body_data', $layoutHelper->makeBodyData())
 
 @section('body')
+    <div class="back"></div>
     <div class="wrapper">
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary p-3">
-            <a class="navbar-brand" href="/home">Sistema de RRHH</a>
+            <a class="navbar-brand" href="/home">SISTEMA RRHH</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03"
                 aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -66,8 +100,9 @@
         <div class="container mt-5">
             <div class="row">
                 <div class="col-md-12">
-                    <h1 class="text-center mb-4">Bienvenido al Sistema de Gestión de Recursos Humanos</h1>
-                    <p class="lead text-center">Aquí podrás gestionar toda la información relacionada con el personal de
+                    <h1 class="text-center mb-4 titulo">Bienvenido al Sistema de Gestión de Recursos Humanos</h1>
+                    <p class="lead text-center subtitulo">Aquí podrás gestionar toda la información relacionada con el
+                        personal de
                         la
                         empresa.</p>
                 </div>
@@ -75,9 +110,9 @@
 
             <div class="row mt-5">
                 <div class="col-md-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">Gestión de Empleados</h5>
+                    <div class="card h-100 ">
+                        <div class="card-body bg-primary">
+                            <h5 class="card-title"><strong>Gestión de Empleados</strong></h5>
                             <p class="card-text">Administra la información de los empleados, incluyendo datos personales
                                 y
                                 laborales.</p>
@@ -86,8 +121,8 @@
                 </div>
                 <div class="col-md-4">
                     <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">Nómina</h5>
+                        <div class="card-body bg-primary">
+                            <h5 class="card-title"><strong>Nómina</strong></h5>
                             <p class="card-text">Gestiona los salarios, bonificaciones y deducciones de los empleados.
                             </p>
                         </div>
@@ -95,8 +130,8 @@
                 </div>
                 <div class="col-md-4">
                     <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">Gestión de Asistencias</h5>
+                        <div class="card-body bg-primary">
+                            <h5 class="card-title"><strong>Gestión de Asistencias</strong></h5>
                             <p class="card-text">Administra las asistencias de los empleados.
                             </p>
                         </div>
@@ -120,7 +155,7 @@
             © Sistema de Gestión de RRHH - 2024
         </div>
     </div>
-@stop 
+@stop
 
 @section('adminlte_js')
     @stack('js')

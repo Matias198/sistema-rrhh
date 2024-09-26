@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
+        $user = User::create([
             'name' => 'Matias',
             'password' => Hash::make('12345678'),
             'email' => 'matias@mail.com',
@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
         $permission1 = Permission::create(['name' => 'gestionar_empleados']);
         $permission2 = Permission::create(['name' => 'gestionar_nominas']);
         $permission3 = Permission::create(['name' => 'gestionar_asistencias']);
+        $permission4 = Permission::create(['name' => 'gestionar_licencias']);
         // $permission4 = Permission::create(['name' => 'gestionar_historial']);
         // $permission5 = Permission::create(['name' => 'gestionar_reportes']);
         // $permission6 = Permission::create(['name' => 'gestionar_parametros']);
@@ -41,8 +42,11 @@ class DatabaseSeeder extends Seeder
         // $permission8 = Permission::create(['name' => 'gestionar_logistica_ventas']);
         // $permission7 = Permission::create(['name' => 'generar_reportes']);
 
-        $role1->givePermissionTo([$permission1, $permission2, $permission3]);
+        $role1->givePermissionTo([$permission1, $permission2, $permission3, $permission4]);
         // $role2->givePermissionTo([$permission1, $permission2, $permission3, $permission4, $permission5, $permission6]);
         // $role3->givePermissionTo([$permission7]);
+
+        $user->assignRole($role1);
+        $user->save();
     }
 }

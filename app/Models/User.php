@@ -47,6 +47,6 @@ class User extends Authenticatable
     }
 
     public function adminlte_image(){
-        return "./img/profile.jpg";
+        return asset("./img/profile.jpg");
     }
 }
