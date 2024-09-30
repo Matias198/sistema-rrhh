@@ -49,4 +49,8 @@ class User extends Authenticatable
     public function adminlte_image(){
         return asset("./img/profile.jpg");
     }
+
+    public function obtenerPersona(){
+        return $this->hasOne(Persona::class);
+    }
 }

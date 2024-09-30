@@ -64,7 +64,7 @@ return [
     */
 
     'logo' => '<b>RRHH</b> System',
-    'logo_img' => asset('./img/icon.png'),
+    'logo_img' => './img/icon.png',
     'logo_img_class' => 'brand-image img-circle elevation-3 bg-white',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
@@ -113,7 +113,7 @@ return [
         'enabled' => true,
         'mode' => 'fullscreen',
         'img' => [
-            'path' => asset('./img/icon.png'),
+            'path' => './img/icon.png',
             'alt' => 'RRHH System Preloader Image',
             'effect' => 'animation__shake',
             'width' => 60,

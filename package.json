@@ -22,10 +22,13 @@
         "@fullcalendar/list": "^6.1.15",
         "@fullcalendar/timegrid": "^6.1.15",
         "@popperjs/core": "^2.11.8",
+        "alpinejs": "^3.14.1",
         "bootstrap-icons": "^1.11.3",
+        "flatpickr": "^4.6.13",
         "fontawesome": "^5.6.3",
         "jquery": "^3.7.1",
         "overlayscrollbars": "^2.10.0",
+        "select2": "^4.1.0-rc.0",
         "sweetalert2": "^11.14.1",
         "toastr": "^2.1.4"
     }

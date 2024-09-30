@@ -7,10 +7,7 @@
 @stop
 
 @section('content')
-<div>
-    RENDER DE EMPLEADOS
-    @livewire('GestionEmpleados')
-</div>
+@livewire('GestionEmpleados')
 @stop
 
 @section('footer')

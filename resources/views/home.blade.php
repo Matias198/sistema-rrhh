@@ -7,6 +7,7 @@
 @stop
 
 @section('content')
+    <!--
     <div class="row">
         <div class="col-lg-3 col-6">
 
@@ -65,6 +66,7 @@
         </div>
 
     </div>
+    -->
     <div class="card card-primary">
         <div class="card-header">
             <h4 class="card-title">Calendario de eventos</h4>
