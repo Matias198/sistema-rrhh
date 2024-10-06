@@ -4,43 +4,35 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Persona extends Model
+class Persona extends Model implements Auditable
 {
-    use HasFactory;
+    use HasFactory;    
+    use SoftDeletes;
+    use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
-        's_nombre',
+        'nombre',
         'apellido',
-        'cuil',
-        'legajo',
         'dni',
-        'fehca_nac',
-        'fecha_ingreso',
+        'cuil',
+        'fecha_nacimiento', 
     ];
 
-    public function puestoTrabajo(){
-        return $this->belongsTo(PuestoTrabajo::class);
-    }
-
-    public function contactoEmergencia(){
-        return $this->hasMany(ContactoEmergencia::class);
-    }
-
-    public function user(){
-        return $this->belongsTo(User::class);
-    }
-
-    public function datosPersonales(){
-        return $this->hasOne(DatosPersonales::class);
-    }
-
-    public function cuentasBancarias()
+    public function municipio()
     {
-        return $this->hasMany(CuentaBanco::class, 'id_tipo');
+        return $this->belongsTo(Municipio::class, 'id_municipio');
     }
 
-    public function nomina(){
-        return $this->hasMany(Nomina::class);
+    public function sexo()
+    {
+        return $this->belongsTo(Sexo::class, 'id_sexo');
+    }
+
+    public function estadoCivil()
+    {
+        return $this->belongsTo(EstadoCivil::class, 'id_estado_civil');
     }
 }

@@ -11,9 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('dpto_trabajos', function (Blueprint $table) {
+        Schema::create('provincias', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre')->unique();
+            $table->string('codigo')->unique();
+            $table->string('nombre');
+            $table->unsignedBigInteger('id_pais');
+            $table->foreign('id_pais')->references('id')->on('pais');
+            //$table->softDeletes();
             $table->timestamps();
         });
     }
@@ -23,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('dpto_trabajos');
+        Schema::dropIfExists('provincias');
     }
 };

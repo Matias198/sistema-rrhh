@@ -91,6 +91,7 @@
             placeholder: 'Seleccione una opción',
             width: 'resolve',
         }).on('change', function() {
+            // Modificar
             @this.set('sexo', $('#sexo').val());
         });
         $('.select2.select2-container.select2-container--default').css('width', '100%')
@@ -100,7 +101,8 @@
             "minDate": new Date(new Date().setFullYear(new Date().getFullYear() - 120)),
             "maxDate": new Date(new Date().setFullYear(new Date().getFullYear() - 16)),
             "onChange": function() {
-                @this.setAttribute('fecha_nacimiento', $('#fecha_nacimiento').val());
+                // Modificar
+                @this.set('fecha_nacimiento', $('#fecha_nacimiento').val());
                 //@this.getAttribute('fecha_nacimiento').then((result)=>console.log(result))
             },
         });

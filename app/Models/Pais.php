@@ -5,16 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TipoBanco extends Model
+class Pais extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'nombre', 
+        'codigo',
+        'nombre',
     ];
 
-    public function cuentasBancarias()
+    public function provincias()
     {
-        return $this->hasMany(CuentaBanco::class);
+        return $this->hasMany(Provincia::class, 'id_pais');
     }
 }

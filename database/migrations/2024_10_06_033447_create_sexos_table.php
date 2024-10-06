@@ -11,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contacto_emergencias', function (Blueprint $table) {
+        Schema::create('sexos', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->string('telefono');
-            $table->string('email');
-            $table->unsignedBigInteger('id_persona');
-            $table->foreign('id_persona')->references('id')->on('personas');
             $table->timestamps();
         });
     }
@@ -27,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('contacto_emergencias');
+        Schema::dropIfExists('sexos');
     }
 };
