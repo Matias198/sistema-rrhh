@@ -18,7 +18,6 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
         'email',
         'password',
     ];
@@ -50,7 +49,7 @@ class User extends Authenticatable
         return asset("./img/profile.jpg");
     }
 
-    public function obtenerPersona(){
-        return $this->hasOne(Persona::class);
+    public function persona(){
+        return $this->hasOne(Persona::class, 'id_usuario');
     }
 }

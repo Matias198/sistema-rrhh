@@ -15,10 +15,13 @@ class Persona extends Model implements Auditable
 
     protected $fillable = [
         'nombre',
+        'segundo_nombre',
         'apellido',
         'dni',
         'cuil',
-        'fecha_nacimiento', 
+        'calle',
+        'altura',
+        'fecha_nacimiento',
     ];
 
     public function municipio()
@@ -34,5 +37,10 @@ class Persona extends Model implements Auditable
     public function estadoCivil()
     {
         return $this->belongsTo(EstadoCivil::class, 'id_estado_civil');
+    }
+
+    public function usuario()
+    {
+        return $this->belongsTo(User::class, 'id_usuario');
     }
 }

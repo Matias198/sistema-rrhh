@@ -6,12 +6,14 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "doctrine/dbal": "^4.1",
         "jeroennoten/laravel-adminlte": "^3.13",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "laravel/ui": "^4.5",
         "livewire/livewire": "^3.5",
         "owen-it/laravel-auditing": "^13.6",
+        "power-components/livewire-powergrid": "^6.0",
         "spatie/laravel-permission": "^6.9"
     },
     "require-dev": {

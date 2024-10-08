@@ -83,7 +83,7 @@ class ProfileWidget extends Component
         $headerClass = null, $footerClass = null, $layoutType = 'modern',
         $icon = 'fas fa-user'
     ) {
-        $this->name = UtilsHelper::applyHtmlEntityDecoder($name);
+        $this->name = UtilsHelper::applyHtmlEntityDecoder($name); 
         $this->desc = UtilsHelper::applyHtmlEntityDecoder($desc);
         $this->img = $img;
         $this->icon = $icon;

@@ -111,7 +111,7 @@ return [
 
     'preloader' => [
         'enabled' => true,
-        'mode' => 'fullscreen',
+        'mode' => 'cwrapper',
         'img' => [
             'path' => './img/icon.png',
             'alt' => 'RRHH System Preloader Image',
@@ -297,7 +297,7 @@ return [
         // Navbar items:
         [
             'type' => 'fullscreen-widget',
-            'topnav_right' => true,
+            'topnav_right' => false,
         ],
         [
             'type' => 'darkmode-widget',
@@ -317,28 +317,80 @@ return [
         ['header' => 'HERRAMIENTAS DE GESTIÓN'],
         [
             'text' => 'EMPLEADOS',
-            'url' => 'gestion/empleados',
             'icon' => 'fa fa-users',
-            'can' => 'gestionar_empleados'
+            'can' => 'gestionar_empleados',
+            'submenu' => [
+                [
+                    'text' => 'Listar Empleados',
+                    'url' => 'gestion/empleados/listar',
+                    'icon' => 'fa fa-list',
+                    'can' => 'gestionar_empleados'
+                ],
+                [
+                    'text' => 'Agregar Empleado',
+                    'url' => 'gestion/empleados/nuevo',
+                    'icon' => 'fa fa-plus',
+                    'can' => 'gestionar_empleados'
+                ],
+            ],
+        ],
+        ['header' => 'PARAMETROS DEL SISTEMA'],
+        [
+            'text' => 'UBICACIÓNES',
+            'icon' => 'fa fa-map-pin',
+            'can' => 'gestionar_parametros',
+            'submenu' => [
+                [
+                    'text' => 'Paises',
+                    'url' => 'gestion/ubicaciones/paises',
+                    'icon' => 'fa fa-globe',
+                    'can' => 'gestionar_parametros'
+                ],
+                [
+                    'text' => 'Provincias',
+                    'url' => 'gestion/ubicaciones/provincias',
+                    'icon' => 'fa fa-map',
+                    'can' => 'gestionar_parametros'
+                ],
+                [
+                    'text' => 'Municipios',
+                    'url' => 'gestion/ubicaciones/municipios',
+                    'icon' => 'fa fa-map-marker',
+                    'can' => 'gestionar_parametros'
+                ],
+            ]
         ],
         [
-            'text' => 'NÓMINAS',
-            'url' => 'gestion/nominas',
-            'icon' => 'fa fa-book',
-            'can' => 'gestionar_nominas'
+            'text' => 'ROLES Y PERMISOS',
+            'icon' => 'fa fa-lock',
+            'can' => 'gestionar_roles_permisos',
+            'submenu' => [
+                [
+                    'text' => 'Roles y Permisos',
+                    'url' => 'gestion/admin/roles',
+                    'icon' => 'fa fa-key', 
+                ], 
+            ]
         ],
-        [
-            'text' => 'ASISTENCIAS',
-            'url' => 'gestion/asistencias',
-            'icon' => 'fa fa-pen',
-            'can' => 'gestionar_asistencias'
-        ],
-        [
-            'text' => 'LICENCIAS',
-            'url' => 'gestion/licencias',
-            'icon' => 'fa fa-shopping-bag',
-            'can' => 'gestionar_licencias'
-        ],
+        // [
+        //     'text' => 'NÓMINAS',
+        //     'url' => 'gestion/nominas',
+        //     'icon' => 'fa fa-book',
+        //     'can' => 'gestionar_nominas'
+        // ],
+        // [
+        //     'text' => 'ASISTENCIAS',
+        //     'url' => 'gestion/asistencias',
+        //     'icon' => 'fa fa-pen',
+        //     'can' => 'gestionar_asistencias'
+        // ],
+        // [
+        //     'text' => 'LICENCIAS',
+        //     'url' => 'gestion/licencias',
+        //     'icon' => 'fa fa-shopping-bag',
+        //     'can' => 'gestionar_licencias'
+        // ],
+
         // ['header' => 'ITEMS DE AYUDA'],
         // [
         //     'text' => 'pages',

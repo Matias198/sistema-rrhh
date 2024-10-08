@@ -75,11 +75,13 @@
                     @else
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                {{ Auth::user()->name }}
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                {{ Auth::user()->persona()->first()->nombre . ' ' . Auth::user()->persona()->first()->apellido }}
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <!-- Volver al home -->
+                                <a class="dropdown-item" href="/home">Dashboard</a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
                                              document.getElementById('logout-form').submit();">
@@ -122,7 +124,7 @@
                 <div class="col-md-4">
                     <div class="card h-100">
                         <div class="card-body bg-primary">
-                            <h5 class="card-title"><strong>Nómina</strong></h5>
+                            <h5 class="card-title"><strong>Liquidación de Sueldos</strong></h5>
                             <p class="card-text">Gestiona los salarios, bonificaciones y deducciones de los empleados.
                             </p>
                         </div>
@@ -131,8 +133,8 @@
                 <div class="col-md-4">
                     <div class="card h-100">
                         <div class="card-body bg-primary">
-                            <h5 class="card-title"><strong>Gestión de Asistencias</strong></h5>
-                            <p class="card-text">Administra las asistencias de los empleados.
+                            <h5 class="card-title"><strong>Gestión de Licencias</strong></h5>
+                            <p class="card-text">Administra las licencias de los empleados.
                             </p>
                         </div>
                     </div>

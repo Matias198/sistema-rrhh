@@ -9,11 +9,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+Auth::routes(['register' => false]);
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::get('/gestion/empleados', [RenderController::class, 'render_gestion_empleados'])->name('gestion-empleados');
-Route::get('/gestion/nominas', [RenderController::class, 'render_gestion_nominas'])->name('gestion-nominas');
-Route::get('/gestion/asistencias', [RenderController::class, 'render_gestion_asistencias'])->name('gestion-asistencias');
-Route::get('/gestion/licencias', [RenderController::class, 'render_gestion_licencias'])->name('gestion-licencias');
+Route::get('/gestion/empleados/listar', [RenderController::class, 'render_gestion_empleados_listar'])->name('gestion-empleados-listar');
+Route::get('/gestion/empleados/nuevo', [RenderController::class, 'render_gestion_empleados_agregar'])->name('gestion-empleados-agregar');
+
+Route::get('/gestion/ubicaciones/paises', [RenderController::class, 'render_gestion_ubicaciones_paises'])->name('gestion-ubicaciones-paises');
+Route::get('/gestion/ubicaciones/provincias', [RenderController::class, 'render_gestion_ubicaciones_provincias'])->name('gestion-ubicaciones-provincias');
+Route::get('/gestion/ubicaciones/municipios', [RenderController::class, 'render_gestion_ubicaciones_municipios'])->name('gestion-ubicaciones-municipios');
+
+Route::get('/gestion/admin/roles', [RenderController::class, 'render_gestion_admin_roles'])->name('gestion-admin-roles');

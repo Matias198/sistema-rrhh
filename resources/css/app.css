@@ -47,11 +47,11 @@
     color: #4b4b4b;
 }
 
-.border-success{
+.border-success {
     border-color: green;
 }
 
-.border-danger{
+.border-danger {
     border-color: red;
 }
 
@@ -101,4 +101,107 @@
     100% {
         opacity: 1;
     }
+}
+
+/* Estilos generales de la scrollbar */
+.scrollable {
+    overflow: auto;
+    max-height: 300px;
+}
+
+/* Barra de desplazamiento en tema oscuro */
+.scrollable.os-theme-dark::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.scrollable.os-theme-dark::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+}
+
+.scrollable.os-theme-dark::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.44); /* color base del "dedo" */
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+
+.scrollable.os-theme-dark::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.55); /* color del "dedo" al hacer hover */
+}
+
+.scrollable.os-theme-dark::-webkit-scrollbar-thumb:active {
+    background-color: rgba(0, 0, 0, 0.66); /* color del "dedo" al hacer click */
+}
+
+/* Barra de desplazamiento en tema claro */
+.scrollable.os-theme-light::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.scrollable.os-theme-light::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+}
+
+.scrollable.os-theme-light::-webkit-scrollbar-thumb {
+    background-color: hsla(0, 0%, 100%, 0.44); /* color base del "dedo" */
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+
+.scrollable.os-theme-light::-webkit-scrollbar-thumb:hover {
+    background-color: hsla(
+        0,
+        0%,
+        100%,
+        0.55
+    ); /* color del "dedo" al hacer hover */
+}
+
+.scrollable.os-theme-light::-webkit-scrollbar-thumb:active {
+    background-color: hsla(
+        0,
+        0%,
+        100%,
+        0.66
+    ); /* color del "dedo" al hacer click */
+}
+
+/* Estilos de scrollbar para navegadores compatibles con CSS variables */
+:root {
+    --os-scrollbar-size: 10px;
+    --os-scrollbar-radius: 10px;
+    --os-handle-bg: rgba(0, 0, 0, 0.44);
+    --os-handle-bg-hover: rgba(0, 0, 0, 0.55);
+    --os-handle-bg-active: rgba(0, 0, 0, 0.66);
+}
+
+/* Barra de desplazamiento con variables CSS */
+.scrollable.os-theme-custom::-webkit-scrollbar {
+    width: var(--os-scrollbar-size);
+    height: var(--os-scrollbar-size);
+}
+
+.scrollable.os-theme-custom::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: var(--os-scrollbar-radius);
+}
+
+.scrollable.os-theme-custom::-webkit-scrollbar-thumb {
+    background-color: var(--os-handle-bg);
+    border-radius: var(--os-scrollbar-radius);
+    background-clip: padding-box;
+    border: 2px solid transparent;
+}
+
+.scrollable.os-theme-custom::-webkit-scrollbar-thumb:hover {
+    background-color: var(--os-handle-bg-hover);
+}
+
+.scrollable.os-theme-custom::-webkit-scrollbar-thumb:active {
+    background-color: var(--os-handle-bg-active);
 }

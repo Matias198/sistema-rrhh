@@ -1614,6 +1614,7 @@ S2.define('select2/selection/single',[
     var $selection = SingleSelection.__super__.render.call(this);
 
     $selection[0].classList.add('select2-selection--single');
+    $selection[0].classList.add('form-control');
 
     $selection.html(
       '<span class="select2-selection__rendered"></span>' +
@@ -1722,6 +1723,7 @@ S2.define('select2/selection/multiple',[
     var $selection = MultipleSelection.__super__.render.call(this);
 
     $selection[0].classList.add('select2-selection--multiple');
+    $selection[0].classList.add('form-control');
 
     $selection.html(
       '<ul class="select2-selection__rendered"></ul>'
@@ -2041,6 +2043,7 @@ S2.define('select2/selection/allowClear',[
 
     this.$selection.prepend($remove);
     this.$selection[0].classList.add('select2-selection--clearable');
+    this.$selection[0].classList.add('form-control');
   };
 
   return AllowClear;

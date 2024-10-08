@@ -1,17 +1,31 @@
 import "./bootstrap";
 import "../css/app.css";
 import "bootstrap";
+import "overlayscrollbars/overlayscrollbars.css";
+import {
+    OverlayScrollbars,
+    ScrollbarsHidingPlugin,
+    SizeObserverPlugin,
+    ClickScrollPlugin,
+} from "overlayscrollbars";
+
+import "./../../vendor/power-components/livewire-powergrid/dist/powergrid";
+//import './../../vendor/power-components/livewire-powergrid/dist/bootstrap5.css'
+
 
 document.addEventListener("DOMContentLoaded", function () {
+    OverlayScrollbars($('body'), {});
     function detectarCambioModoOscuro() {
+        
         const body = document.body;
         const darkModeClass = "dark-mode";
 
         // Función para ejecutar cuando se detecte un cambio
         function modoOscuroCambiado() {
+            OverlayScrollbars(document.querySelector("body"),{});
+            OverlayScrollbars(document.querySelector("table"),{});
             // Aquí puedes colocar tu código para ejecutar cuando el modo oscuro cambia
-            if (body.classList.contains(darkModeClass)) {
-                console.log("Modo oscuro activado");
+            if (body.classList.contains(darkModeClass)) { 
                 var links = $("link");
                 for (var i = 0; i < links.length; i++) {
                     if (links[i].href.indexOf("flatpickr.css") !== -1) {
@@ -20,12 +34,10 @@ document.addEventListener("DOMContentLoaded", function () {
                             "dark"
                         );
                     }
-                }
-                $('.flatpickr').css('background-color', '#343a40')
-                $(".select2-selection__rendered").css("color", "#ffff");
-                $(".select2-selection").addClass("form-control");
-            } else {
-                console.log("Modo oscuro desactivado");
+                }               
+                $("thead").addClass("dark-mode");
+                $(".flatpickr").css("background-color", "#343a40"); 
+            } else { 
                 var links = $("link");
                 for (var i = 0; i < links.length; i++) {
                     if (links[i].href.indexOf("dark.css") !== -1) {
@@ -34,11 +46,13 @@ document.addEventListener("DOMContentLoaded", function () {
                             "flatpickr"
                         );
                     }
-                }
-                $('.flatpickr').css('background-color', '#ffff')
-                $(".select2-selection__rendered").css("color", "");
+                } 
+                $("thead").removeClass("dark-mode");
+                $(".flatpickr").css("background-color", "#ffff"); 
             }
         }
+
+        modoOscuroCambiado();
 
         // Observador de mutaciones para detectar cambios en las clases del body
         const observer = new MutationObserver(modoOscuroCambiado);

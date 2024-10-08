@@ -9,8 +9,9 @@ use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Pais;
+use App\Models\Persona;
 use App\Models\Sexo;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents; 
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
@@ -21,9 +22,17 @@ class DatabaseSeeder extends Seeder
     function crearUsuarios()
     {
         User::create([
-            'name' => 'Matias',
-            'password' => Hash::make('12345678'),
             'email' => 'matias@mail.com',
+            'password' => Hash::make('12345678'),
+            'email_verified_at' => Carbon::now()->toDateTimeString(),
+            'created_at' => Carbon::now()->toDateTimeString(),
+            'updated_at' => Carbon::now()->toDateTimeString(),
+        ]);
+
+        // Juan Carlos
+        User::create([
+            'email' => 'juan@mail.com',
+            'password' => Hash::make('12345678'),
             'email_verified_at' => Carbon::now()->toDateTimeString(),
             'created_at' => Carbon::now()->toDateTimeString(),
             'updated_at' => Carbon::now()->toDateTimeString(),
@@ -33,15 +42,18 @@ class DatabaseSeeder extends Seeder
     function crearRolesPermisos()
     {
         $user = User::find(1);
-        $role1 = Role::create(['name' => 'director']); // administrador
-        $role2 = Role::create(['name' => 'supervisor']); // rrhh (realiza contrataciones)
-        $role3 = Role::create(['name' => 'operario']); // empleado
+        $role1 = Role::create(['name' => 'DIRECTOR']); // administrador
+        $role2 = Role::create(['name' => 'SUPERVISOR']); // rrhh (realiza contrataciones)
+        $role3 = Role::create(['name' => 'OPERARIO']); // empleado
         $permission1 = Permission::create(['name' => 'gestionar_empleados']);
-        $permission2 = Permission::create(['name' => 'gestionar_nominas']);
-        $permission3 = Permission::create(['name' => 'gestionar_asistencias']);
-        $permission4 = Permission::create(['name' => 'gestionar_licencias']);
+        $permission2 = Permission::create(['name' => 'gestionar_parametros']);
+        $permission3 = Permission::create(['name' => 'gestionar_roles_permisos']);
 
-        $role1->givePermissionTo([$permission1, $permission2, $permission3, $permission4]);
+        $role1->givePermissionTo([
+            $permission1, 
+            $permission2,
+            $permission3
+        ]);
 
         $user->assignRole($role1);
         $user->save();
@@ -101,6 +113,42 @@ class DatabaseSeeder extends Seeder
             }
         }
     }
+
+    function crearPersonas()
+    {
+        $persona = Persona::create([
+            'nombre' => 'Matías',
+            'segundo_nombre' => 'Daniel',
+            'apellido' => 'Fernández',
+            'dni' => '41419890',
+            'cuil' => '20414198903',
+            'fecha_nacimiento' => '12/06/1999',
+            'calle' => 'Martín Fierro',
+            'altura' => '0000',
+            'id_sexo' => 1,
+            'id_estado_civil' => 1,
+            'id_municipio' => 1365,
+            'id_usuario' => 1,
+        ]);
+        $persona->usuario()->associate(User::find(1));
+
+        $persona = Persona::create([
+            'nombre' => 'Juan',
+            'segundo_nombre' => 'Carlos',
+            'apellido' => 'Pérez',
+            'dni' => '12345678',
+            'cuil' => '99123456789',
+            'fecha_nacimiento' => '01/01/1999',
+            'calle' => 'Martín Fierro',
+            'altura' => '0000',
+            'id_sexo' => 1,
+            'id_estado_civil' => 1,
+            'id_municipio' => 1365,
+            'id_usuario' => 2,
+        ]);
+        $persona->usuario()->associate(User::find(2));
+    }
+
     /**
      * Seed the application's database.
      */
@@ -112,5 +160,6 @@ class DatabaseSeeder extends Seeder
         $this->crearSexos();
         $this->crearEstadosCiviles();
         $this->crearUbicaciones();
+        $this->crearPersonas();
     }
 }
