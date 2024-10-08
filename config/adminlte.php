@@ -316,61 +316,23 @@ return [
         ],
         ['header' => 'HERRAMIENTAS DE GESTIÓN'],
         [
-            'text' => 'EMPLEADOS',
+            'text' => 'VER CONTRATADOS',
             'icon' => 'fa fa-users',
             'can' => 'gestionar_empleados',
-            'submenu' => [
-                [
-                    'text' => 'Listar Empleados',
-                    'url' => 'gestion/empleados/listar',
-                    'icon' => 'fa fa-list',
-                    'can' => 'gestionar_empleados'
-                ],
-                [
-                    'text' => 'Agregar Empleado',
-                    'url' => 'gestion/empleados/nuevo',
-                    'icon' => 'fa fa-plus',
-                    'can' => 'gestionar_empleados'
-                ],
-            ],
+            'url' => 'gestion/empleados/listar',
+        ],
+        [
+            'text' => 'CONTRATAR EMPLEADO',
+            'icon' => 'fa fa-user-plus',
+            'can' => 'gestionar_empleados',
+            'url' => 'gestion/empleados/nuevo',
         ],
         ['header' => 'PARAMETROS DEL SISTEMA'],
         [
-            'text' => 'UBICACIÓNES',
-            'icon' => 'fa fa-map-pin',
-            'can' => 'gestionar_parametros',
-            'submenu' => [
-                [
-                    'text' => 'Paises',
-                    'url' => 'gestion/ubicaciones/paises',
-                    'icon' => 'fa fa-globe',
-                    'can' => 'gestionar_parametros'
-                ],
-                [
-                    'text' => 'Provincias',
-                    'url' => 'gestion/ubicaciones/provincias',
-                    'icon' => 'fa fa-map',
-                    'can' => 'gestionar_parametros'
-                ],
-                [
-                    'text' => 'Municipios',
-                    'url' => 'gestion/ubicaciones/municipios',
-                    'icon' => 'fa fa-map-marker',
-                    'can' => 'gestionar_parametros'
-                ],
-            ]
-        ],
-        [
             'text' => 'ROLES Y PERMISOS',
             'icon' => 'fa fa-lock',
+            'url' => 'gestion/admin/roles',
             'can' => 'gestionar_roles_permisos',
-            'submenu' => [
-                [
-                    'text' => 'Roles y Permisos',
-                    'url' => 'gestion/admin/roles',
-                    'icon' => 'fa fa-key', 
-                ], 
-            ]
         ],
         // [
         //     'text' => 'NÓMINAS',

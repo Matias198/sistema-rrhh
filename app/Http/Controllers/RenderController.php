@@ -29,37 +29,6 @@ class RenderController extends Controller
     public function render_gestion_empleados_agregar(){
         return view('renders.gestion.empleados.agregar');
     }
-
-    /**
-     * Renderiza la vista de Gestion de Paises.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function render_gestion_ubicaciones_paises()
-    {
-        return view('renders.gestion.ubicaciones.paises');
-    }
-
-    /**
-     * Renderiza la vista de Gestion de Provincias.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function render_gestion_ubicaciones_provincias()
-    {
-        return view('renders.gestion.ubicaciones.provincias');
-    }
-
-    /**
-     * Renderiza la vista de Gestion de Ciudades.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function render_gestion_ubicaciones_municipios()
-    {
-        return view('renders.gestion.ubicaciones.municipios');
-    }
-
     /**
      * Renderiza la vista de Gestion de Roles.
      *
