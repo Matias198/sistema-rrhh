@@ -4,13 +4,13 @@ namespace Database\Seeders;
 
 use App\Models\EstadoCivil;
 use App\Models\User;
+use App\Models\Pais;
+use App\Models\Persona;
+use App\Models\Sexo;
 use Carbon\Carbon;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use App\Models\Pais;
-use App\Models\Persona;
-use App\Models\Sexo;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
