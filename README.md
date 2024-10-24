@@ -8,14 +8,15 @@
 5.  Vite ^5.4.8 (<a>https://es.vitejs.dev</a>)
 
 ## Configurando el entorno
-1.  Cree una base de datos (DB) Postgres en su sistema.
-2.  Modifique la configuracion en su archivo .env en los apartados:
+1.  Cree una base de datos (DB) Postgres en su sistema
+2.  Cree un archivo ".env" con el archivo ".env.example" de base
+3.  Modifique la configuracion en su archivo .env en los apartados:
 ```
 DB_CONNECTION=pgsql (pgsql para Postgres)
 DB_HOST=127.0.0.1 (Host de la DB)
 DB_PORT=5432 (Puerto de la DB)
-DB_DATABASE= (Nombre de la DB)
-DB_USERNAME= (Nombre del usuario de la DB)
+DB_DATABASE=**** (Nombre de la DB)
+DB_USERNAME=**** (Nombre del usuario de la DB)
 DB_PASSWORD= (Contraseña de la DB)
 ```
     
@@ -42,3 +43,16 @@ Para iniciar sesión con el usuario por defecto (administrador) ingrese las sigu
 2.  Contraseña: `12345678`
 
 En este punto el sistema ya es completamente funcional. Con esta cuenta de administrador podrá cargar a los usuarios finales del sistema con los roles deseados.
+
+## Sistema de Mail
+Para poder utilizar las opciones de Mail debe configurar los siguientes parametros del archivo .env
+```
+MAIL_MAILER=smtp (Servicio de email, por defecto SMTP)
+MAIL_HOST= (Host de su proveedor de servicios email)
+MAIL_PORT=2525 (Puerto SMTP)
+MAIL_USERNAME=**** (Nombre de usuario de su proveedor de servicios email)
+MAIL_PASSWORD=**** (Contraseña de su proveedor de servicios email)
+MAIL_ENCRYPTION=null (Tipo de encriptado)
+MAIL_FROM_ADDRESS="no-reply@rrhh.com" (Mascara de dirección email)
+MAIL_FROM_NAME="${APP_NAME}" (Nombre de remitente, por defecto ${APP_NAME})
+```
