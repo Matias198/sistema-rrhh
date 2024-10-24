@@ -20,7 +20,7 @@ DB_USERNAME=**** (Nombre del usuario de la DB)
 DB_PASSWORD= (Contraseña de la DB)
 ```
     
-3.  Ejecute el comando: `php artisan migrate:fresh --seed`
+4.  Ejecute el comando: `php artisan migrate:fresh --seed`
 
 Si la operación es exitosa, su base de datos está lista.
 
