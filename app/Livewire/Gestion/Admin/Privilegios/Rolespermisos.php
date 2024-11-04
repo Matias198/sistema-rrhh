@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Gestion\Admin;
+namespace App\Livewire\Gestion\Admin\Privilegios;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
@@ -9,10 +9,12 @@ use Livewire\Component;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
-class Roles extends Component
+class Rolespermisos extends Component
 {
     public $roles;
     public $name;
+    public $vista_nombre;
+    public $vista_descripcion;
     public $permisos;
     public $permisos_seleccionados = [];
     public $rol_seleccionado;
@@ -55,16 +57,56 @@ class Roles extends Component
         'name.max' => 'El nombre del rol no puede tener más de 50 caracteres.',
         'permisos_seleccionados.required' => 'Debe seleccionar al menos un permiso.',
     ];
+ 
+    public function actualizarDatos(){
+        $this->roles = Role::all()->sortBy('name'); 
+        // uppercase de roles
+        $this->roles = $this->roles->map(function ($rol) {
+            $rol->name = strtoupper($rol->name);
+            return $rol;
+        }); 
+    }
     public function render()
     {
-        $this->roles = Role::all()->sortBy('name');
+        $this->actualizarDatos();
         $this->permisos = Permission::all()->sortBy('name');
-        return view('livewire.gestion.admin.roles');
+        // uppercase de permisos
+        $this->permisos = $this->permisos->map(function ($permiso) {
+            $permiso->name = strtoupper($permiso->name);
+            return $permiso;
+        }); 
+        return view('livewire.gestion.admin.privilegios.rolespermisos');
+    }
+    
+    public function updated($propertyName)
+    {
+        if ($propertyName != 'rol_seleccionado') {
+            $this->validateOnly($propertyName);
+            $this->validate();
+        }else{
+            if ($this->rol_seleccionado == null) {
+                $this->vista_nombre = '';
+                $this->vista_descripcion = '';
+                return;
+            }else{
+                $rol = Role::find($this->rol_seleccionado);   
+                $this->vista_nombre = strtoupper($rol->name);
+                // Buscar los permisos del rol, seleccionar los nombres y concatenarlos en uppercase
+                $permisos = $rol->permissions->pluck('name')->toArray();
+                $this->vista_descripcion = implode(', ', array_map('strtoupper', $permisos));
+            }
+        }
+    }
+
+    public function getRoles()
+    {
+        $this->actualizarDatos();
+        return $this->roles;
     }
 
     public function editar()
     {
-        $this->editando = true;
+        $this->editando = true; 
         $rol = Role::find($this->rol_seleccionado);
         $this->name = strtoupper($rol->name);
         $this->permisos_seleccionados = $rol->permissions->pluck('id')->toArray();
@@ -77,22 +119,12 @@ class Roles extends Component
         $this->name = '';
         $this->rol_seleccionado = null;
         $this->permisos_seleccionados = [];
+        $this->vista_nombre = '';
+        $this->vista_descripcion = '';
         $this->resetErrorBag();
         $this->dispatch('limpiar-formulario', [$this->permisos_seleccionados, $this->name, $this->rol_seleccionado]);
     }
-
-    // Getters Setters Custom
-    public function getAttribute($propertyName)
-    {
-        return $this->$propertyName;
-    }
-
-    public function setAttribute($propertyName, $propertyValue)
-    {
-        $this->$propertyName = $propertyValue;
-        $this->validateOnly($propertyName);
-    }
-
+    
     public function guardarRol()
     {
         $this->validate();        
@@ -105,6 +137,7 @@ class Roles extends Component
                 $permisos = Permission::whereIn('id', $this->permisos_seleccionados)->get();
                 $rol->syncPermissions($permisos);
                 DB::commit();
+                $this->actualizarDatos(); 
                 $this->dispatch('success', 'Rol editado correctamente');
             } catch (\Exception $e) {
                 DB::rollBack();
@@ -115,6 +148,7 @@ class Roles extends Component
                 $rol = Role::create(['name' => $this->name]);
                 $permisos = Permission::whereIn('id', $this->permisos_seleccionados)->get();
                 $rol->givePermissionTo($permisos);
+                $this->actualizarDatos(); 
                 $this->dispatch('success', 'Rol creado correctamente');
                 DB::commit();
             } catch (\Exception $e) {

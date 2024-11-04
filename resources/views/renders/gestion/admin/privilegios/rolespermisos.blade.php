@@ -1,13 +1,13 @@
 @extends('adminlte::page')
 
-@section('title', 'EMPLEADOS')
+@section('title', 'ROLES Y PERMISOS')
 
 @section('content_header')
-    <h1>GESTIÓN DE ROLES</h1>
+    <h1>GESTIÓN DE ROLES Y PERMISOS</h1>
 @stop
 
-@section('content')
-    @livewire('gestion.admin.roles')
+@section('content') 
+    @livewire('gestion.admin.privilegios.rolespermisos')
 @stop
 
 @section('footer')

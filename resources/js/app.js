@@ -1,29 +1,18 @@
 import "./bootstrap";
 import "../css/app.css";
-import "bootstrap";
-import "overlayscrollbars/overlayscrollbars.css";
-import {
-    OverlayScrollbars,
-    ScrollbarsHidingPlugin,
-    SizeObserverPlugin,
-    ClickScrollPlugin,
-} from "overlayscrollbars";
-
+import "bootstrap"; 
 import "./../../vendor/power-components/livewire-powergrid/dist/powergrid";
 //import './../../vendor/power-components/livewire-powergrid/dist/bootstrap5.css'
 
 
-document.addEventListener("DOMContentLoaded", function () {
-    OverlayScrollbars($('body'), {});
+document.addEventListener("DOMContentLoaded", function () { 
     function detectarCambioModoOscuro() {
         
         const body = document.body;
         const darkModeClass = "dark-mode";
 
         // Función para ejecutar cuando se detecte un cambio
-        function modoOscuroCambiado() {
-            OverlayScrollbars(document.querySelector("body"),{});
-            OverlayScrollbars(document.querySelector("table"),{});
+        function modoOscuroCambiado() { 
             // Aquí puedes colocar tu código para ejecutar cuando el modo oscuro cambia
             if (body.classList.contains(darkModeClass)) { 
                 var links = $("link");

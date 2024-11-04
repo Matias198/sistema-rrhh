@@ -48,11 +48,15 @@ class DatabaseSeeder extends Seeder
         $permission1 = Permission::create(['name' => 'gestionar_empleados']);
         $permission2 = Permission::create(['name' => 'gestionar_parametros']);
         $permission3 = Permission::create(['name' => 'gestionar_roles_permisos']);
+        $permission4 = Permission::create(['name' => 'gestionar_puesto_trabajos']);
+        $permission5 = Permission::create(['name' => 'gestionar_departamentos']);
 
         $role1->givePermissionTo([
             $permission1, 
             $permission2,
-            $permission3
+            $permission3,
+            $permission4,
+            $permission5,
         ]);
 
         $user->assignRole($role1);
