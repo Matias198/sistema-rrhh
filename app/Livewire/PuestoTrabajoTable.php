@@ -95,6 +95,13 @@ final class PuestoTrabajoTable extends PowerGridComponent
         $this->dispatch('verPuestoTrabajo', $rowId);
     }
 
+    #[\Livewire\Attributes\On('edit')]
+    public function edit($rowId): void
+    {
+        //$this->dispatch('verPuestoTrabajo', $rowId);
+        $this->js('alert("Edit ' . $rowId . '")');
+    }
+
     public function actions(PuestoTrabajo $row): array
     {
         return [
