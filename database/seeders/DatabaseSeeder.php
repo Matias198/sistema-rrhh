@@ -98,9 +98,9 @@ class DatabaseSeeder extends Seeder
             'nombre' => 'Argentina',
         ]);
 
-        // Cargar desde csv desde storage private las provincias
+        // Cargar desde csv desde storage csv las provincias
         // "id","codigo","nombre","id_pais","created_at","updated_at"
-        $csv = file_get_contents(storage_path('./app/private/provincias.csv'));
+        $csv = file_get_contents(storage_path('./app/csv/provincias.csv'));
         $csv = explode("\n", $csv);
 
         foreach ($csv as $provincia) {
@@ -115,9 +115,9 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        // Cargar desde csv desde storage private los municipios 
+        // Cargar desde csv desde storage csv los municipios 
         // "id","codigo","nombre","id_provincia","created_at","updated_at"
-        $csv = file_get_contents(storage_path('./app/private/municipios.csv'));
+        $csv = file_get_contents(storage_path('./app/csv/municipios.csv'));
         $csv = explode("\n", $csv);
 
         foreach ($csv as $municipio) {
