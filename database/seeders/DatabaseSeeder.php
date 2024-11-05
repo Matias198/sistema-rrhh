@@ -100,7 +100,7 @@ class DatabaseSeeder extends Seeder
 
         // Cargar desde csv desde storage csv las provincias
         // "id","codigo","nombre","id_pais","created_at","updated_at"
-        $csv = file_get_contents(storage_path('./app/csv/provincias.csv'));
+        $csv = file_get_contents(storage_path('./csv/provincias.csv'));
         $csv = explode("\n", $csv);
 
         foreach ($csv as $provincia) {
@@ -117,7 +117,7 @@ class DatabaseSeeder extends Seeder
 
         // Cargar desde csv desde storage csv los municipios 
         // "id","codigo","nombre","id_provincia","created_at","updated_at"
-        $csv = file_get_contents(storage_path('./app/csv/municipios.csv'));
+        $csv = file_get_contents(storage_path('./csv/municipios.csv'));
         $csv = explode("\n", $csv);
 
         foreach ($csv as $municipio) {
