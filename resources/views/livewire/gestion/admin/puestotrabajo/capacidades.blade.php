@@ -249,14 +249,18 @@
             @this.set('tipo_seleccionado', $('#tipo_seleccionado').val());
         });
 
-        Livewire.on('limpiar-formulario-capacidad', function(permisos) {
-            $('#nombre_capacidad').val(permisos[0]);
-            $('#descripcion_capacidad').val(permisos[1]);
-            $('#capacidad_seleccionada').val(permisos[2]).trigger('change');
-            $('#tipo_seleccionado').val(permisos[3]).trigger('change');
+        Livewire.on('editar-capacidad', function(params) {
+            $('#tipo_seleccionado').val(params[0]).trigger('change');
         });
 
-        Livewire.on('success-capacidad', function(message) {
+        Livewire.on('limpiar-formulario-capacidad', function(params) {
+            $('#nombre_capacidad').val(params[0]);
+            $('#descripcion_capacidad').val(params[1]);
+            $('#capacidad_seleccionada').val(params[2]).trigger('change');
+            $('#tipo_seleccionado').val(params[3]).trigger('change');
+        });
+
+        Livewire.on('success_capacidad', function(message) {
             Sweetalert2.fire({
                 title: 'Capacidad Guardada',
                 text: message[0],
@@ -315,7 +319,7 @@
                         // mensaje de error en sweetalert2
                         Sweetalert2.fire({
                             title: 'Error',
-                            text: 'Error al cargar los capacidades y permisos',
+                            text: 'Error al cargar los capacidades',
                             icon: 'error',
                             showCancelButton: false,
                             confirmButtonColor: '#3085d6',
@@ -328,7 +332,7 @@
             })
         });
 
-        Livewire.on('error-capacidad', function(message) {
+        Livewire.on('error_capacidad', function(message) {
             Sweetalert2.fire({
                 title: 'Error',
                 text: message[0],

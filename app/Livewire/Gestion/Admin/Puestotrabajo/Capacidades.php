@@ -75,6 +75,8 @@ class Capacidades extends Component
         $capacidad = CapacidadesTrabajo::find($this->capacidad_seleccionada);
         $this->nombre_capacidad = strtoupper($capacidad->nombre);
         $this->descripcion_capacidad = $capacidad->descripcion;
+        $this->tipo_seleccionado = $capacidad->id_tipo_capacidad;
+        $this->dispatch('editar-capacidad', [$this->tipo_seleccionado]);
         $this->validate();
     }
 
@@ -125,10 +127,10 @@ class Capacidades extends Component
                 $capacidad->tipoCapacidad()->associate($this->tipo_seleccionado);
                 $capacidad->save();
                 DB::commit();
-                $this->dispatch('success-capacidad', 'Capacidad editada correctamente');
+                $this->dispatch('success_capacidad', 'Capacidad editada correctamente');
             } catch (\Exception $e) {
                 DB::rollBack();
-                $this->dispatch('error-capacidad', 'No se pudo editar la capacidad, verifique los datos e intenete nuevamente');
+                $this->dispatch('error_capacidad', 'No se pudo editar la capacidad, verifique los datos e intenete nuevamente');
             }
         } else {
             try {
@@ -138,11 +140,11 @@ class Capacidades extends Component
                 $capacidad->id_tipo_capacidad = $this->tipo_seleccionado;
                 $capacidad->tipoCapacidad()->associate($this->tipo_seleccionado);
                 $capacidad->save();
-                $this->dispatch('success-capacidad', 'Capacidad creada correctamente');
+                $this->dispatch('success_capacidad', 'Capacidad creada correctamente');
                 DB::commit();
             } catch (\Exception $e) {
                 DB::rollBack();
-                $this->dispatch('error-capacidad', 'No se pudo crear la capacidad, verifique los datos e intenete nuevamente');
+                $this->dispatch('error_capacidad', 'No se pudo crear la capacidad, verifique los datos e intenete nuevamente');
             }
         }
     }

@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('puestos_trabajos_tareas', function (Blueprint $table) {
+        Schema::create('puesto_trabajo_tarea_trabajo', function (Blueprint $table) {
             $table->unsignedBigInteger('id_puesto_trabajo');
             $table->foreign('id_puesto_trabajo')->references('id')->on('puesto_trabajos');
-            $table->unsignedBigInteger('id_tarea');
-            $table->foreign('id_tarea')->references('id')->on('tarea_trabajos');
-            $table->primary(['id_puesto_trabajo', 'id_tarea']);
+            $table->unsignedBigInteger('id_tarea_trabajo');
+            $table->foreign('id_tarea_trabajo')->references('id')->on('tarea_trabajos');
+            $table->primary(['id_puesto_trabajo', 'id_tarea_trabajo']);
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('puestos_trabajos_tareas');
+        Schema::dropIfExists('puesto_trabajo_tarea_trabajo');
     }
 };

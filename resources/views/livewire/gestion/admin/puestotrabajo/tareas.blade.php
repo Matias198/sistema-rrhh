@@ -214,10 +214,10 @@
             }
         });
 
-        Livewire.on('limpiar_formulario_tarea', function(permisos) {
-            $('#nombre_tarea').val(permisos[0]);
-            $('#descripcion_tarea').val(permisos[1]);
-            $('#tarea_seleccionada').val(permisos[2]).trigger('change');
+        Livewire.on('limpiar_formulario_tarea', function(params) {
+            $('#nombre_tarea').val(params[0]);
+            $('#descripcion_tarea').val(params[1]);
+            $('#tarea_seleccionada').val(params[2]).trigger('change');
         });
 
         Livewire.on('success_tarea', function(message) {
@@ -278,7 +278,7 @@
                         // mensaje de error en sweetalert2
                         Sweetalert2.fire({
                             title: 'Error',
-                            text: 'Error al cargar los tareas y permisos',
+                            text: 'Error al cargar los tareas',
                             icon: 'error',
                             showCancelButton: false,
                             confirmButtonColor: '#3085d6',

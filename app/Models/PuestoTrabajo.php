@@ -13,6 +13,7 @@ class PuestoTrabajo extends Model
         'titulo_puesto',
         'descripcion_generica',
         'sueldo_base',
+        'id_departamento_trabajo',
     ];
 
     // Muchos a muchos con tareas de trabajo

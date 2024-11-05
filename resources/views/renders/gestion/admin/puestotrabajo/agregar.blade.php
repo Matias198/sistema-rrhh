@@ -14,6 +14,26 @@
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
+    
+    <div class="col">
+        <div class="card card-primary collapsed-card">
+            <div class="card-header" data-card-widget="collapse" style="cursor: pointer;">
+                <h3 class="card-title">HERRAMIENTAS DE TAREAS</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool"><i class="fas fa-square"></i>
+                    </button>
+                </div>
+                <!-- /.card-tools -->
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body" style="display: none;">
+                @livewire('Gestion.Admin.PuestoTrabajo.Tareas')
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
 
     <div class="col">
         <div class="card card-primary collapsed-card">
@@ -29,25 +49,6 @@
             <!-- /.card-header -->
             <div class="card-body" style="display: none;">
                 @livewire('Gestion.Admin.PuestoTrabajo.Capacidades')
-            </div>
-            <!-- /.card-body -->
-        </div>
-        <!-- /.card -->
-    </div>
-    <div class="col">
-        <div class="card card-primary collapsed-card">
-            <div class="card-header" data-card-widget="collapse" style="cursor: pointer;">
-                <h3 class="card-title">HERRAMIENTAS DE TAREAS</h3>
-
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool"><i class="fas fa-square"></i>
-                    </button>
-                </div>
-                <!-- /.card-tools -->
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body" style="display: none;">
-                @livewire('Gestion.Admin.PuestoTrabajo.Tareas')
             </div>
             <!-- /.card-body -->
         </div>

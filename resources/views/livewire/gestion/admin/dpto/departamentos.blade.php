@@ -215,10 +215,10 @@
             }
         });
 
-        Livewire.on('limpiar-formulario', function(permisos) {
-            $('#nombre').val(permisos[0]);
-            $('#descripcion').val(permisos[1]);
-            $('#departamento_seleccionado').val(permisos[2]).trigger('change');
+        Livewire.on('limpiar-formulario', function(params) {
+            $('#nombre').val(params[0]);
+            $('#descripcion').val(params[1]);
+            $('#departamento_seleccionado').val(params[2]).trigger('change');
         });
 
         Livewire.on('success', function(message) {
