@@ -9,18 +9,14 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col">
-                            <label for="vista_nombre">Nombre</label>
-                            <input type="text" name="vista_nombre" id="vista_nombre" class="form-control" disabled
-                                value="{{ $this->vista_nombre }}">
-                        </div>
+                    <div class="col mb-2">
+                        <label for="vista_nombre">Nombre</label>
+                        <input type="text" name="vista_nombre" id="vista_nombre" class="form-control" disabled
+                            value="{{ $this->vista_nombre }}">
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <label for="vista_descripcion">Descripción</label>
-                            <textarea name="vista_descripcion" id="vista_descripcion" class="form-control" disabled>{{ $this->vista_descripcion }}</textarea>
-                        </div>
+                    <div class="col mb-2">
+                        <label for="vista_descripcion">Descripción</label>
+                        <textarea name="vista_descripcion" id="vista_descripcion" class="form-control" disabled>{{ $this->vista_descripcion }}</textarea>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
@@ -37,9 +33,8 @@
                 <label for="tarea_seleccionada">Tarea</label>
                 <span class="d-tooltip parpadea" data-toggle="tooltip" data-placement="top"
                     title="Campo obligatorio">*</span>
-                <select name="tarea_seleccionada" id="tarea_seleccionada"
-                    class="form-control select2" name="state"
-                    aria-placeholder="Seleccione una opción">
+                <select name="tarea_seleccionada" id="tarea_seleccionada" class="form-control select2"
+                    name="tarea_seleccionada" aria-placeholder="Seleccione una opción">
                     <option selected value="">Seleccione una opcion</option>
                     @foreach ($tareas as $tarea)
                         <option value="{{ $tarea->id }}">{{ strtoupper($tarea->nombre) }}</option>
@@ -54,7 +49,7 @@
             <div class="mr-1">
                 <label for="edit-btn-tarea">Editar</label>
                 <span class="o-tooltip parpadea" data-toggle="tooltip" data-placement="top"
-                    title="Acción para editar el rol selecccionado">?</span>
+                    title="Acción para editar la tarea selecccionada">?</span>
                 <br>
                 <button name="edit-btn-tarea" id="edit-btn-tarea" class="btn btn-primary">
                     <i class="fas fa-edit"></i>
@@ -81,8 +76,8 @@
                     title="Campo obligatorio">*</span>
                 <input wire:model="nombre_tarea" type="text" name="nombre_tarea" id="nombre_tarea"
                     class="form-control @if (!$errors->get('') && $this->nombre_tarea != null) border-success @endif  @error('nombre_tarea') border-danger @enderror"
-                    x-on:input="$wire.set('nombre_tarea', $('#nombre_tarea').val());"
-                    placeholder="Ingrese el nombre" autocomplete="off">
+                    x-on:input="$wire.set('nombre_tarea', $('#nombre_tarea').val());" placeholder="Ingrese el nombre"
+                    autocomplete="off">
                 @error('nombre_tarea')
                     <span class="error text-danger">{{ $message }}</span>
                 @enderror
@@ -98,8 +93,8 @@
                     title="Campo obligatorio">*</span>
                 <textarea wire:model="descripcion_tarea" type="text" name="descripcion_tarea" id="descripcion_tarea"
                     class="form-control @if (!$errors->get('') && $this->descripcion_tarea != null) border-success @endif  @error('descripcion_tarea') border-danger @enderror"
-                    x-on:input="$wire.set('descripcion_tarea', $('#descripcion_tarea').val());"
-                    placeholder="Ingrese la descripcion" autocomplete="off">
+                    x-on:input="$wire.set('descripcion_tarea', $('#descripcion_tarea').val());" placeholder="Ingrese la descripcion"
+                    autocomplete="off">
                 </textarea>
                 @error('descripcion_tarea')
                     <span class="error text-danger">{{ $message }}</span>
@@ -257,10 +252,10 @@
                                 id: result_tareas[i].id,
                                 text: result_tareas[i].nombre
                             });
-                        } 
+                        }
 
                         // Ordenar por campo id dejando el id null al inicio
-                        tareas.sort((a, b) => a.id - b.id); 
+                        tareas.sort((a, b) => a.id - b.id);
 
                         $('#tarea_seleccionada').select2({
                             placeholder: 'Seleccione una opción',
@@ -292,7 +287,7 @@
                         }).then((result) => {
                             window.location.reload();
                         });
-                    }); 
+                    });
             })
         });
 

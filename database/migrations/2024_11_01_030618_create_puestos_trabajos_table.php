@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('puesto_trabajos', function (Blueprint $table) {
             $table->id();
             $table->string('titulo_puesto')->unique();
-            $table->string('descripcion_puesto');
+            $table->string('descripcion_generica');
             $table->float('sueldo_base', 2);
             $table->unsignedBigInteger('id_departamento_trabajo');
             $table->foreign('id_departamento_trabajo')->references('id')->on('departamento_trabajos');

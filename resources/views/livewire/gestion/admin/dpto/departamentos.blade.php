@@ -9,18 +9,14 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col">
-                            <label for="vista_nombre">Nombre</label>
-                            <input type="text" name="vista_nombre" id="vista_nombre" class="form-control" disabled
-                                value="{{ $this->vista_nombre }}">
-                        </div>
+                    <div class="col mb-2">
+                        <label for="vista_nombre">Nombre</label>
+                        <input type="text" name="vista_nombre" id="vista_nombre" class="form-control" disabled
+                            value="{{ $this->vista_nombre }}">
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <label for="descripcion_vista">Descripción</label>
-                            <textarea name="descripcion_vista" id="descripcion_vista" class="form-control" disabled>{{ $this->vista_descripcion }}</textarea>
-                        </div>
+                    <div class="col mb-2">
+                        <label for="descripcion_vista">Descripción</label>
+                        <textarea name="descripcion_vista" id="descripcion_vista" class="form-control" disabled>{{ $this->vista_descripcion }}</textarea>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
@@ -38,7 +34,7 @@
                 <span class="d-tooltip parpadea" data-toggle="tooltip" data-placement="top"
                     title="Campo obligatorio">*</span>
                 <select name="departamento_seleccionado" id="departamento_seleccionado"
-                    class="form-control select2 departamento-select2" name="state"
+                    class="form-control select2" name="departamento_seleccionado"
                     aria-placeholder="Seleccione una opción">
                     <option selected value="">Seleccione una opcion</option>
                     @foreach ($departamentos as $departamento)
@@ -54,7 +50,7 @@
             <div class="mr-1">
                 <label for="edit-btn">Editar</label>
                 <span class="o-tooltip parpadea" data-toggle="tooltip" data-placement="top"
-                    title="Acción para editar el rol selecccionado">?</span>
+                    title="Acción para editar el departamento selecccionado">?</span>
                 <br>
                 <button name="edit-btn" id="edit-btn" class="btn btn-primary">
                     <i class="fas fa-edit"></i>
@@ -208,7 +204,7 @@
             }
         });
 
-        $('.departamento-select2').select2({
+        $('#departamento_seleccionado').select2({
             placeholder: 'Seleccione una opción',
             width: 'resolve',
         }).on('change', function() {

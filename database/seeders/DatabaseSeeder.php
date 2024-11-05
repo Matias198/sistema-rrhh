@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\DepartamentoTrabajo;
 use App\Models\EstadoCivil;
+use App\Models\TipoCapacidad;
 use App\Models\User;
 use App\Models\Pais;
 use App\Models\Persona;
@@ -153,17 +155,51 @@ class DatabaseSeeder extends Seeder
         $persona->usuario()->associate(User::find(2));
     }
 
+    // crear tipos de capacidad
+    function crearTiposCapacidades()
+    {
+        $tipos_capacidades = ['Requisitos intelectuales', 'Requisitos físicos', ' Responsabilidades adquiridas', 'Condiciones de trabajo'];
+        foreach ($tipos_capacidades as $tipos) {
+            TipoCapacidad::create([
+                'nombre' => $tipos,
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString(),
+            ]);
+        }
+    }
+
+    // Crear departamentos
+    function crearDepartamentos()
+    {
+        $departamentos = [
+            ['nombre' => 'Administración y Finanzas', 'descripcion' => 'Departamento de administración y finanzas'],
+            ['nombre' => 'Ventas', 'descripcion' => 'Departamento de ventas'],
+            ['nombre' => 'Logística', 'descripcion' => 'Departamento de logística'],
+            ['nombre' => 'Gerencia General', 'descripcion' => 'Departamento de gerencia general'],
+        ];
+
+        foreach ($departamentos as $departamento) {
+            DepartamentoTrabajo::create([
+                'nombre' => $departamento['nombre'],
+                'descripcion' => $departamento['descripcion'],
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString(),
+            ]);
+        }
+    }
+
     /**
      * Seed the application's database.
      */
     public function run(): void
     {
-        // llamar a las funciones
         $this->crearUsuarios();
         $this->crearRolesPermisos();
         $this->crearSexos();
         $this->crearEstadosCiviles();
         $this->crearUbicaciones();
         $this->crearPersonas();
+        $this->crearTiposCapacidades();
+        $this->crearDepartamentos();
     }
 }

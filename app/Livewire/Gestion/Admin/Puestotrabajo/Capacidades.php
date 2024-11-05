@@ -3,6 +3,7 @@
 namespace App\Livewire\Gestion\Admin\Puestotrabajo;
 
 use App\Models\CapacidadesTrabajo;
+use App\Models\TipoCapacidad;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\On;
@@ -12,6 +13,9 @@ use Spatie\Permission\Models\Role;
 
 class Capacidades extends Component
 {
+    public $tipos_capacidades;
+    public $tipo_seleccionado;
+    public $tipo;
     public $capacidades;
     public $capacidad_seleccionada;
     public $nombre_capacidad;
@@ -80,10 +84,12 @@ class Capacidades extends Component
         $this->nombre_capacidad = '';
         $this->descripcion_capacidad = '';
         $this->capacidad_seleccionada = null;
+        $this->tipo_seleccionado = null;
         $this->vista_nombre = '';
         $this->vista_descripcion = '';
+        $this->tipo = '';
         $this->resetErrorBag();
-        $this->dispatch('limpiar-formulario-capacidad', [$this->nombre_capacidad, $this->descripcion_capacidad, $this->capacidad_seleccionada]);
+        $this->dispatch('limpiar-formulario-capacidad', [$this->nombre_capacidad, $this->descripcion_capacidad, $this->capacidad_seleccionada, $this->tipo_seleccionado]);
     }
 
     public function updated($propertyName)
@@ -94,12 +100,15 @@ class Capacidades extends Component
             if ($this->capacidad_seleccionada == null) {
                 $this->vista_nombre = '';
                 $this->vista_descripcion = '';
+                $this->tipo = '';
             } else {
                 $capacidad = CapacidadesTrabajo::find($this->capacidad_seleccionada);
                 $this->vista_nombre = strtoupper($capacidad->nombre);
                 $this->vista_descripcion = $capacidad->descripcion;
+                $this->tipo = $capacidad->tipoCapacidad->nombre;
             }
         }
+ 
     }
 
     public function guardar()
@@ -111,6 +120,9 @@ class Capacidades extends Component
                 $capacidad = CapacidadesTrabajo::find($this->capacidad_seleccionada);
                 $capacidad->nombre = $this->nombre_capacidad;
                 $capacidad->descripcion = $this->descripcion_capacidad;
+                $capacidad->tipoCapacidad()->dissociate();
+                $capacidad->id_tipo_capacidad = $this->tipo_seleccionado;
+                $capacidad->tipoCapacidad()->associate($this->tipo_seleccionado);
                 $capacidad->save();
                 DB::commit();
                 $this->dispatch('success-capacidad', 'Capacidad editada correctamente');
@@ -123,6 +135,8 @@ class Capacidades extends Component
                 $capacidad = new CapacidadesTrabajo();
                 $capacidad->nombre = $this->nombre_capacidad;
                 $capacidad->descripcion = $this->descripcion_capacidad;
+                $capacidad->id_tipo_capacidad = $this->tipo_seleccionado;
+                $capacidad->tipoCapacidad()->associate($this->tipo_seleccionado);
                 $capacidad->save();
                 $this->dispatch('success-capacidad', 'Capacidad creada correctamente');
                 DB::commit();
@@ -134,6 +148,7 @@ class Capacidades extends Component
     }
     public function render()
     {
+        $this->tipos_capacidades = TipoCapacidad::all()->sortBy('name');
         $this->capacidades = CapacidadesTrabajo::all()->sortBy('nombre');
         return view('livewire.gestion.admin.puestotrabajo.capacidades');
     }

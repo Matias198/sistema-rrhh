@@ -9,18 +9,18 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col">
-                            <label for="vista_nombre">Nombre</label>
-                            <input type="text" name="vista_nombre" id="vista_nombre" class="form-control" disabled
-                                value="{{ $this->vista_nombre }}">
-                        </div>
+                    <div class="col mb-2">
+                        <label for="vista_nombre">Nombre</label>
+                        <input type="text" name="vista_nombre" id="vista_nombre" class="form-control" disabled
+                            value="{{ $this->vista_nombre }}">
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <label for="vista_descripcion">Descripción</label>
-                            <textarea name="vista_descripcion" id="vista_descripcion" class="form-control" disabled>{{ $this->vista_descripcion }}</textarea>
-                        </div>
+                    <div class="col mb-2">
+                        <label for="vista_descripcion">Descripción</label>
+                        <textarea name="vista_descripcion" id="vista_descripcion" class="form-control" disabled>{{ $this->vista_descripcion }}</textarea>
+                    </div>
+                    <div class="col mb-2">
+                        <label for="vista_tipo">Tipo de capacidad o facotor de especificación</label>
+                        <input name="vista_tipo" id="vista_tipo" class="form-control" disabled value="{{ $this->tipo }}">
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
@@ -37,9 +37,8 @@
                 <label for="capacidad_seleccionada">Capacidad</label>
                 <span class="d-tooltip parpadea" data-toggle="tooltip" data-placement="top"
                     title="Campo obligatorio">*</span>
-                <select name="capacidad_seleccionada" id="capacidad_seleccionada"
-                    class="form-control select2 capacidad-select2" name="state"
-                    aria-placeholder="Seleccione una opción">
+                <select name="capacidad_seleccionada" id="capacidad_seleccionada" class="form-control select2"
+                    name="capacidad_seleccionada" aria-placeholder="Seleccione una opción">
                     <option selected value="">Seleccione una opcion</option>
                     @foreach ($capacidades as $capacidad)
                         <option value="{{ $capacidad->id }}">{{ strtoupper($capacidad->nombre) }}</option>
@@ -54,7 +53,7 @@
             <div class="mr-1">
                 <label for="edit-btn-capacidad">Editar</label>
                 <span class="o-tooltip parpadea" data-toggle="tooltip" data-placement="top"
-                    title="Acción para editar el rol selecccionado">?</span>
+                    title="Acción para editar la capacidad selecccionada">?</span>
                 <br>
                 <button name="edit-btn-capacidad" id="edit-btn-capacidad" class="btn btn-primary">
                     <i class="fas fa-edit"></i>
@@ -74,40 +73,64 @@
         </div>
     </div>
     <form wire:submit.prevent="guardar">
-        <div class="row mb-3">
-            <div class="col">
-                <label for="nombre_capacidad">Nombre</label>
-                <span class="d-tooltip parpadea" data-toggle="tooltip" data-placement="top"
-                    title="Campo obligatorio">*</span>
-                <input wire:model="nombre_capacidad" type="text" name="nombre_capacidad" id="nombre_capacidad"
-                    class="form-control @if (!$errors->get('') && $this->nombre_capacidad != null) border-success @endif  @error('nombre_capacidad') border-danger @enderror"
-                    x-on:input="$wire.set('nombre_capacidad', $('#nombre_capacidad').val());"
-                    placeholder="Ingrese el nombre" autocomplete="off">
-                @error('nombre_capacidad')
-                    <span class="error text-danger">{{ $message }}</span>
-                @enderror
-                @if (!$errors->get('nombre_capacidad') && $this->nombre_capacidad != null)
-                    <span class="flex text-success">Campo correcto</span>
-                @endif
-            </div>
+        <div class="mb-3">
+            <label for="nombre_capacidad">Nombre</label>
+            <span class="d-tooltip parpadea" data-toggle="tooltip" data-placement="top"
+                title="Campo obligatorio">*</span>
+            <input wire:model="nombre_capacidad" type="text" name="nombre_capacidad" id="nombre_capacidad"
+                class="form-control 
+                @if (!$errors->get('') && $this->nombre_capacidad != null) border-success @endif  
+                @error('nombre_capacidad') border-danger @enderror"
+                x-on:input="$wire.set('nombre_capacidad', $('#nombre_capacidad').val());"
+                placeholder="Ingrese el nombre" autocomplete="off">
+            @error('nombre_capacidad')
+                <span class="error text-danger">{{ $message }}</span>
+            @enderror
+            @if (!$errors->get('nombre_capacidad') && $this->nombre_capacidad != null)
+                <span class="flex text-success">Campo correcto</span>
+            @endif
         </div>
-        <div class="row mb-3">
-            <div class="col">
-                <label for="descripcion_capacidad">Descripción</label>
+        <div class="mb-3">
+            <label for="descripcion_capacidad">Descripción</label>
+            <span class="d-tooltip parpadea" data-toggle="tooltip" data-placement="top"
+                title="Campo obligatorio">*</span>
+            <textarea wire:model="descripcion_capacidad" type="text" name="descripcion_capacidad" id="descripcion_capacidad"
+                class="form-control 
+                @if (!$errors->get('') && $this->descripcion_capacidad != null) border-success @endif  
+                @error('descripcion_capacidad') border-danger @enderror"
+                x-on:input="$wire.set('descripcion_capacidad', $('#descripcion_capacidad').val());"
+                placeholder="Ingrese la descripcion" autocomplete="off">
+            </textarea>
+            @error('descripcion_capacidad')
+                <span class="error text-danger">{{ $message }}</span>
+            @enderror
+            @if (!$errors->get('descripcion_capacidad') && $this->descripcion_capacidad != null)
+                <span class="flex text-success">Campo correcto</span>
+            @endif
+        </div>
+        <div class="mb-3">
+            <div wire:ignore>
+                <label for="tipo_seleccionado">Tipo de capacidad</label>
                 <span class="d-tooltip parpadea" data-toggle="tooltip" data-placement="top"
                     title="Campo obligatorio">*</span>
-                <textarea wire:model="descripcion_capacidad" type="text" name="descripcion_capacidad" id="descripcion_capacidad"
-                    class="form-control @if (!$errors->get('') && $this->descripcion_capacidad != null) border-success @endif  @error('descripcion_capacidad') border-danger @enderror"
-                    x-on:input="$wire.set('descripcion_capacidad', $('#descripcion_capacidad').val());"
-                    placeholder="Ingrese la descripcion" autocomplete="off">
-                </textarea>
-                @error('descripcion_capacidad')
-                    <span class="error text-danger">{{ $message }}</span>
-                @enderror
-                @if (!$errors->get('descripcion_capacidad') && $this->descripcion_capacidad != null)
-                    <span class="flex text-success">Campo correcto</span>
-                @endif
+                <span class="o-tooltip parpadea" data-toggle="tooltip" data-placement="top"
+                    title="Factor de especificación">?</span>
+                <select name="tipo_seleccionado" id="tipo_seleccionado"
+                    class="form-control select2
+                @if ($this->tipo_seleccionado == null) border-danger @endif
+                @if ($this->tipo_seleccionado != null) border-success @endif"
+                    name="tipo_seleccionado" aria-placeholder="Seleccione una opción">
+                    <option selected value="">Seleccione una opcion</option>
+                    @foreach ($tipos_capacidades as $tipo)
+                        <option value="{{ $tipo->id }}">{{ strtoupper($tipo->nombre) }}</option>
+                    @endforeach
+                </select>
             </div>
+            @if ($this->tipo_seleccionado == null)
+                <span class="error text-danger">Debe seleccionar un tipo</span>
+            @else
+                <span class="flex text-success">Campo correcto</span>
+            @endif
         </div>
         <div class="row">
             <div class="col d-flex justify-content-end">
@@ -200,7 +223,7 @@
                 editarCapacidad();
             } else {
                 Sweetalert2.fire({
-                    title: 'Capacidad no seleccionadA',
+                    title: 'Capacidad no seleccionada',
                     text: 'Seleccione una capacidad para editar',
                     icon: 'warning',
                     confirmButtonColor: '#3085d6',
@@ -219,10 +242,18 @@
             }
         });
 
+        $('#tipo_seleccionado').select2({
+            placeholder: 'Seleccione una opción',
+            width: 'resolve',
+        }).on('change', function() {
+            @this.set('tipo_seleccionado', $('#tipo_seleccionado').val());
+        });
+
         Livewire.on('limpiar-formulario-capacidad', function(permisos) {
             $('#nombre_capacidad').val(permisos[0]);
             $('#descripcion_capacidad').val(permisos[1]);
             $('#capacidad_seleccionada').val(permisos[2]).trigger('change');
+            $('#tipo_seleccionado').val(permisos[3]).trigger('change');
         });
 
         Livewire.on('success-capacidad', function(message) {
@@ -257,10 +288,10 @@
                                 id: result_capacidades[i].id,
                                 text: result_capacidades[i].nombre
                             });
-                        } 
+                        }
 
                         // Ordenar por campo id dejando el id null al inicio
-                        capacidades.sort((a, b) => a.id - b.id); 
+                        capacidades.sort((a, b) => a.id - b.id);
 
                         $('#capacidad_seleccionada').select2({
                             placeholder: 'Seleccione una opción',
@@ -268,14 +299,15 @@
                             data: capacidades
                         });
                         $('#capacidad_seleccionada').on('change', function() {
-                            @this.set('capacidad_seleccionada', $('#capacidad_seleccionada')
+                            @this.set('capacidad_seleccionada', $(
+                                    '#capacidad_seleccionada')
                                 .val());
                             if (@this.editando == true) {
-                                cancelar();
+                                cancelarCapacidad();
                                 @this.clear();
                             }
                         });
-                        cancelar();
+                        cancelarCapacidad();
                         @this.clear();
                     },
                     function(error) {
@@ -292,7 +324,7 @@
                         }).then((result) => {
                             window.location.reload();
                         });
-                    }); 
+                    });
             })
         });
 

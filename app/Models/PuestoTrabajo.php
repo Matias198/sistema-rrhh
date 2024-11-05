@@ -11,7 +11,7 @@ class PuestoTrabajo extends Model
 
     protected $fillable = [
         'titulo_puesto',
-        'descripcion_puesto',
+        'descripcion_generica',
         'sueldo_base',
     ];
 

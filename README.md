@@ -28,6 +28,7 @@ DB_PASSWORD=**** (Contraseña de la DB)
 
 ```
 php artisan migrate:fresh --seed
+php artisan key:generate
 ```
 
 Si la operación es exitosa, su base de datos está lista, de lo contrario verifique que PostgreSQL se esté ejecutando en su sistema y la configuración esté correctamente establecida en el archivo ".env" para la base de datos creada en su sistema.

@@ -9,18 +9,14 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col">
-                            <label for="vista_nombre">Nombre</label>
-                            <input type="text" name="vista_nombre" id="vista_nombre" class="form-control" disabled
-                                value="{{ $this->vista_nombre }}">
-                        </div>
+                    <div class="col mb-2">
+                        <label for="vista_nombre">Nombre</label>
+                        <input type="text" name="vista_nombre" id="vista_nombre" class="form-control" disabled
+                            value="{{ $this->vista_nombre }}">
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <label for="descripcion_vista">Descripción</label>
-                            <textarea name="descripcion_vista" id="descripcion_vista" class="form-control" disabled>{{ $this->vista_descripcion }}</textarea>
-                        </div>
+                    <div class="col mb-2">
+                        <label for="descripcion_vista">Descripción</label>
+                        <textarea name="descripcion_vista" id="descripcion_vista" class="form-control" disabled>{{ $this->vista_descripcion }}</textarea>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
@@ -37,7 +33,7 @@
                 <label for="rol_seleccionado">Roles</label>
                 <span class="d-tooltip parpadea" data-toggle="tooltip" data-placement="top"
                     title="Campo obligatorio">*</span>
-                <select name="rol_seleccionado" id="rol_seleccionado" class="form-control select2 role-select2"
+                <select name="rol_seleccionado" id="rol_seleccionado" class="form-control select2"
                     name="state" aria-placeholder="Seleccione una opción">
                     <option value="" selected>Seleccione una opción</option>
                     @foreach ($roles as $rol)
@@ -96,7 +92,7 @@
                 <span class="d-tooltip parpadea" data-toggle="tooltip" data-placement="top"
                     title="Campo obligatorio">*</span>
                 <select name="selected_permissions" id="selected_permissions" multiple="multiple"
-                    class="form-control select2 permissions-select2" name="state"
+                    class="form-control select2" name="selected_permissions"
                     aria-placeholder="Seleccione una opción">
                     @foreach ($permisos as $permiso)
                         <option value="{{ $permiso->id }}">{{ $permiso->name }}</option>
@@ -208,19 +204,19 @@
             }
         });
 
-        $('.permissions-select2').select2({
+        $('#selected_permissions').select2({
             placeholder: 'Seleccione una opción',
             width: 'resolve'
         });
-        $('.permissions-select2').on('change', function() {
+        $('#selected_permissions').on('change', function() {
             @this.set('permisos_seleccionados', $('#selected_permissions').val());
         });
 
-        $('.role-select2').select2({
+        $('#rol_seleccionado').select2({
             placeholder: 'Seleccione una opción',
             width: 'resolve'
         });
-        $('.role-select2').on('change', function() {
+        $('#rol_seleccionado').on('change', function() {
             @this.set('rol_seleccionado', $('#rol_seleccionado').val());
             if (@this.editando == true) {
                 cancelar();
@@ -229,7 +225,7 @@
         });
 
         Livewire.on('seleccionar-permisos', function(permisos) {
-            $('.permissions-select2').val(permisos[0]).trigger('change');
+            $('#selected_permissions').val(permisos[0]).trigger('change');
         });
 
         Livewire.on('limpiar-formulario', function(permisos) {
@@ -281,7 +277,7 @@
                             width: 'resolve',
                             data: roles
                         });
-                        $('.role-select2').on('change', function() {
+                        $('#rol_seleccionado').on('change', function() {
                             @this.set('rol_seleccionado', $('#rol_seleccionado')
                                 .val());
                             if (@this.editando == true) {

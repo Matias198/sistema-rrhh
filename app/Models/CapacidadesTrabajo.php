@@ -19,4 +19,10 @@ class CapacidadesTrabajo extends Model
     {
         return $this->belongsToMany(PuestoTrabajo::class, 'puesto_trabajo_capacidades_trabajo', 'id_capacidades_trabajo', 'id_puesto_trabajo');
     }
+
+    // Muchos a uno con tipo de capacidad
+    public function tipoCapacidad()
+    {
+        return $this->belongsTo(TipoCapacidad::class, 'id_tipo_capacidad');
+    }
 }

@@ -7,7 +7,7 @@
 @stop
 
 @section('content')
-    <div class="mx-2 alert alert-info alert-dismissible fade show" role="alert">
+    <div class="mx-2 alert alert-primary alert-dismissible fade show" role="alert">
         <strong>Ayuda:</strong> Para agregar o editar las capacidades y tareas para un nuevo 
         puesto de trabajo, puedes hacerlo desde las siguientes herramientas.
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -53,7 +53,25 @@
         </div>
         <!-- /.card -->
     </div>
-    @livewire('Gestion.Admin.PuestoTrabajo.Agregar')
+    <div class="col">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">DESCRIPCION Y ANALISIS DE PUESTO DE TRABAJO</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool"><i class="fas fa-smile"></i>
+                    </button>
+                </div>
+                <!-- /.card-tools -->
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                @livewire('Gestion.Admin.PuestoTrabajo.Agregar')
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
 @stop
 
 @section('footer')
