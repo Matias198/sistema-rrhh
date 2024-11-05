@@ -49,7 +49,7 @@ final class PersonasTable extends PowerGridComponent
             ->add('cuil', fn(Persona $model) => substr($model->cuil, 0, 2) . '-' . substr($model->cuil, 2, 8) . '-' . substr($model->cuil, 10, 1))
             ->add('calle')
             ->add('altura')
-            ->add('fecha_nacimiento_formatted', fn(Persona $model) => Carbon::parse($model->fecha_nacimiento)->format('d/m/Y'));
+            ->add('fecha_nacimiento_formatted', fn(Persona $model) => Carbon::parse($model->fecha_nacimiento)->format('d/m/Y H:i:s'));
     }
 
     public function columns(): array

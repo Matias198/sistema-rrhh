@@ -63,7 +63,7 @@
                 <label for="ver-btn">Ver</label>
                 <br>
                 <button name="ver-btn" id="ver-btn" class="btn btn-secondary" data-toggle="modal"
-                    data-target="#modal-default">
+                    data-target="#modal-vista-trabajo">
                     <i class="fas fa-eye"></i>
                 </button>
             </div>

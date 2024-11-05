@@ -7,6 +7,7 @@
 @stop
 
 @section('content')
+    @livewire('gestion.admin.puestotrabajo.ver')
     @livewire('PuestoTrabajoTable')
 @stop
 
@@ -21,5 +22,5 @@
     {{-- <link rel="stylesheet" href="/css/admin_custom.css"> --}}
 @stop
 
-@section('js')
+@section('js') 
 @stop

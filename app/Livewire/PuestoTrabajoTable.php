@@ -42,15 +42,32 @@ final class PuestoTrabajoTable extends PowerGridComponent
     public function fields(): PowerGridFields
     {
         return PowerGrid::fields()
-            ->add('titulo_trabajo')
-            ->add('descripcion_trabajo')
+            ->add('titulo_puesto')
             ->add('sueldo_base')
-            ->add('id_departamento_trabajo', fn(PuestoTrabajo $model) => $model->departamentoTrabajo()->first()->nombre);
+            ->add('id_departamento_trabajo', fn(PuestoTrabajo $model) => $model->departamentoTrabajo()->first()->nombre)
+            ->add('created_at_formatted', fn(PuestoTrabajo $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
     }
 
     public function columns(): array
     {
         return [
+            Column::make('Titulo trabajo', 'titulo_puesto')
+                ->sortable()
+                ->searchable(),
+
+
+            Column::make('Sueldo base', 'sueldo_base')
+                ->sortable()
+                ->searchable(),
+
+            Column::make('Departamento', 'id_departamento_trabajo')
+                ->sortable()
+                ->searchable(),
+
+            Column::make('Fecha de creacion', 'created_at_formatted')
+                ->sortable()
+                ->searchable(),
+
             Column::action('Action')
         ];
     }
@@ -58,23 +75,41 @@ final class PuestoTrabajoTable extends PowerGridComponent
     public function filters(): array
     {
         return [
+            Filter::select('id_departamento_trabajo')
+                ->dataSource(\App\Models\DepartamentoTrabajo::all())
+                ->optionLabel('nombre')
+                ->optionValue('id'),
+
+            Filter::inputText('titulo_puesto')->operators(),
+
+            Filter::inputText('sueldo_base')->operators(),
+
+            Filter::datepicker('created_at_formatted'),
         ];
     }
 
-    #[\Livewire\Attributes\On('edit')]
-    public function edit($rowId): void
+    #[\Livewire\Attributes\On('ver')]
+    public function ver($rowId): void
     {
-        $this->js('alert('.$rowId.')');
+
+        $this->dispatch('verPuestoTrabajo', $rowId);
     }
 
     public function actions(PuestoTrabajo $row): array
     {
         return [
             Button::add('edit')
-                ->slot('Edit: '.$row->id)
-                ->id()
-                ->class('pg-btn-white dark:ring-pg-primary-600 dark:border-pg-primary-600 dark:hover:bg-pg-primary-700 dark:ring-offset-pg-primary-800 dark:text-pg-primary-300 dark:bg-pg-primary-700')
-                ->dispatch('edit', ['rowId' => $row->id])
+                ->class('w-full btn btn-primary btn-sm inline-flex items-center align-middle font-medium mr-1')
+                ->slot('<a type="button" x-on:click="$wire.edit(' . $row->id . ');" class="text-white">
+                    <i class="w-4 h-4 mr-2 fa fa-pen"></i>Editar</a>')
+                ->id('edit' . $row->id),
+            Button::add('destroy')
+                ->class('w-full btn btn-secondary btn-sm inline-flex items-center align-middle font-medium ml-1')
+                ->slot('<a type="button" x-on:click="$wire.ver(' . $row->id . ');"  class="text-white" data-toggle="modal"
+                    data-target="#modal-vista-trabajo">
+                    <i class="w-4 h-4 mr-2 fa fa-eye"></i>Ver</a>')
+                ->id('destroy' . $row->id),
+
         ];
     }
 
