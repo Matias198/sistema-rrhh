@@ -30,6 +30,15 @@ class Ver extends Component
         //dd($this->puestoTrabajo, $this->capacidades, $this->tareas);
     }
 
+    public function clear()
+    {
+        $this->puestoTrabajo = null;
+        $this->capacidades = null;
+        $this->tareas = null;
+        $this->tipos_capacidades = null;
+        $this->tipos_capacidades_puesto = null;
+    }
+
     public function render()
     {
         return view('livewire.gestion.admin.puestotrabajo.ver');
