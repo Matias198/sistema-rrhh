@@ -43,7 +43,7 @@ final class PuestoTrabajoTable extends PowerGridComponent
     {
         return PowerGrid::fields()
             ->add('titulo_puesto')
-            ->add('sueldo_base')
+            ->add('sueldo_base', fn(PuestoTrabajo $model) => '$' . number_format($model->sueldo_base, 2, '.', ''))
             ->add('id_departamento_trabajo', fn(PuestoTrabajo $model) => $model->departamentoTrabajo()->first()->nombre)
             ->add('created_at_formatted', fn(PuestoTrabajo $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
     }
@@ -98,8 +98,11 @@ final class PuestoTrabajoTable extends PowerGridComponent
     #[\Livewire\Attributes\On('edit')]
     public function edit($rowId): void
     {
-        //$this->dispatch('verPuestoTrabajo', $rowId);
-        $this->js('alert("Edit ' . $rowId . '")');
+        //$this->dispatch('editar-puesto-trabajo', $rowId);
+        //$this->js('alert("Edit ' . $rowId . '")');
+        // Guardar en una variable de session el id del puesto de trabajo
+        session(['id_puesto_trabajo' => $rowId]);
+        $this->js('window.location = "puesto/agregar"');
     }
 
     public function actions(PuestoTrabajo $row): array

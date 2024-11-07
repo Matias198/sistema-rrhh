@@ -3,18 +3,20 @@
 @section('title', 'PUESTOS DE TRABAJO')
 
 @section('content_header')
-    <h1>AGREGAR NUEVO PUESTO DE TRABAJO</h1>
+    <div id="agregar_puesto_header">
+        <h1>AGREGAR NUEVO PUESTO DE TRABAJO</h1>
+    </div>
 @stop
 
 @section('content')
     <div class="mx-2 alert alert-primary alert-dismissible fade show" role="alert">
-        <strong>Ayuda:</strong> Para agregar o editar las capacidades y tareas para un nuevo 
+        <strong>Ayuda:</strong> Para agregar o editar las capacidades y tareas para un
         puesto de trabajo, puedes hacerlo desde las siguientes herramientas.
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    
+
     <div class="col">
         <div class="card card-primary collapsed-card">
             <div class="card-header" data-card-widget="collapse" style="cursor: pointer;">
@@ -85,6 +87,10 @@
     {{-- Add here extra stylesheets --}}
     {{-- <link rel="stylesheet" href="/css/admin_custom.css"> --}}
 @stop
+
+<?php
+$id_puesto_trabajo = session('id_puesto_trabajo');
+?>
 
 @section('js')
 @stop

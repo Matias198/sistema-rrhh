@@ -293,6 +293,8 @@ return [
     |
     */
 
+    
+
     'menu' => [
         // Navbar items:
         [
@@ -347,6 +349,7 @@ return [
                     'can' => 'gestionar_puesto_trabajos'
                 ],
                 [
+                    'id' => 'btn_agregar_puesto',
                     'text' => 'AGREGAR PUESTO',
                     'url' => 'gestion/admin/puesto/agregar',
                     'icon' => 'fa fa-plus',

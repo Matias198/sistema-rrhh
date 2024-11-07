@@ -115,7 +115,7 @@ class Departamentos extends Component
                 $this->dispatch('success', 'Departamento editado correctamente');
             } catch (\Exception $e) {
                 DB::rollBack();
-                $this->dispatch('error', 'No se pudo editar el departamento, verifique los datos e intenete nuevamente');
+                $this->dispatch('error', 'No se pudo editar el departamento, verifique los datos e intenete nuevamente. ' + $e->getMessage());
             }
         } else {
             try {
@@ -127,7 +127,7 @@ class Departamentos extends Component
                 DB::commit();
             } catch (\Exception $e) {
                 DB::rollBack();
-                $this->dispatch('error', 'No se pudo crear el departamento, verifique los datos e intenete nuevamente');
+                $this->dispatch('error', 'No se pudo crear el departamento, verifique los datos e intenete nuevamente. ' + $e->getMessage());
             }
         }
     }

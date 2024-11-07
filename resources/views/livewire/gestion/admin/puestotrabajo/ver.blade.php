@@ -1,16 +1,37 @@
 <div>
+    <style>
+        /* Estilos para la tabla dentro del modal */
+        div#element2pdf {
+            background-color: white;
+            color: black;
+        }
+
+        div#element2pdf>table {
+            width: 100%;
+            border: 1px solid black;
+            /* Para que las líneas de las celdas no se dupliquen */
+        }
+
+        /* Estilos para las celdas de la tabla dentro del modal */
+        div#element2pdf>table>tbody>tr>th,
+        div#element2pdf>table>tbody>tr>td,
+        div#element2pdf>table>thead>tr>th {
+            border: 1px solid black;
+        }
+    </style>
     <div wire:ignore.self class="modal fade" id="modal-vista-trabajo" style="display: none;" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Vista previa</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" x-on:click="$wire.clear()">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                        x-on:click="$wire.clear()">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
                 <div id="element2pdf" class="modal-body">
                     @if ($puestoTrabajo != null)
-                        <table class="table table-bordered table-hover">
+                        <table class="table table-bordered">
                             <thead>
                                 <tr>
                                     <th colspan="4">Morfeo S.A</th>
@@ -37,7 +58,7 @@
                                         @endforeach
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr style="page-break-before: always;">
                                     <th scope="row" colspan="4" width="20%">Análisis del puesto:</th>
                                 </tr>
                                 @foreach ($tipos_capacidades as $tipo_capacidad)
@@ -48,7 +69,12 @@
                                                 @foreach ($capacidades as $capacidad)
                                                     @if ($capacidad->id_tipo_capacidad == $tipo_capacidad->id)
                                                         <ul>
-                                                            <li>{{ $capacidad->nombre . ': ' . $capacidad->descripcion }}
+                                                            <li>
+                                                                {{ $capacidad->nombre . ': ' . $capacidad->descripcion }}
+                                                                @if ($capacidad->pivot->excluyente)
+                                                                    <span class="badge badge-danger"
+                                                                        style="color: white; background-color: red">Excluyente</span>
+                                                                @endif
                                                             </li>
                                                         </ul>
                                                     @endif
@@ -68,8 +94,10 @@
                     @endif
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" x-on:click="$wire.clear()">Regresar</button>
-                    <button id="descargar-pdf-btn" type="button" class="btn btn-success" @if ($puestoTrabajo == null) disabled @endif>Descargar</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"
+                        x-on:click="$wire.clear()">Regresar</button>
+                    <button id="descargar-pdf-btn" type="button" class="btn btn-success"
+                        @if ($puestoTrabajo == null) disabled @endif>Descargar</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -83,7 +111,8 @@
                 // if $puestoTrabajo->titulo_puesto != null then $puestoTrabajo->titulo_puesto en nombre
 
                 var opt = {
-                    margin: 10,
+                    // margin top, left, bottom, right
+                    margin: [25, 10, 25, 10],
                     filename: 'MorfeoSA-PuestoTrabajo' + Date.now() + '.pdf',
                     image: {
                         type: 'jpeg',
@@ -104,21 +133,46 @@
                 html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
                     // Calcula la cantidad de páginas
                     const totalPages = pdf.internal.getNumberOfPages();
+                    // Agrega la fecha y hora en la parte superior derecha
+                    const fechaHora = new Date().toLocaleString();
 
-                    // Itera sobre cada página
-                    for (let i = 1; i <= totalPages; i++) {
+                    // Agrega el encabezado en la primera página
+                    pdf.setPage(1);
+                    pdf.setFontSize(15);
+                    pdf.text("Reporte de Puesto de Trabajo", pdf.internal
+                        .pageSize
+                        .getWidth() /
+                        2, 10, {
+                            align: 'center'
+                        });
+                    pdf.setFontSize(8);
+                    pdf.text("Empresa:", 10, 15);
+                    pdf.text("Morfeo S.A.", 40, 15);
+                    pdf.text("Razón Social:", 10, 20);
+                    pdf.text("Sociedad Anónima", 40, 20);
+                    pdf.text("CUIT:", 10, 25);
+                    pdf.text("30514013846", 40, 25);
+
+
+                    pdf.text("Período:", pdf.internal.pageSize.getWidth() - 70, 15);
+                    pdf.text("2005 -" + new Date().getFullYear(), pdf.internal.pageSize.getWidth() -
+                        40, 15);
+                    pdf.text("Ubicación:", pdf.internal.pageSize.getWidth() - 70, 20);
+                    pdf.text("Buenos Aires, Argentina", pdf.internal.pageSize.getWidth() - 40, 20);
+                    pdf.text("Fecha y hora:", pdf.internal.pageSize.getWidth() - 70, 25);
+                    pdf.text(`${fechaHora}`, pdf.internal.pageSize.getWidth() - 40, 25);
+                    
+                    // Agrega el pie de página centrado en la parte inferior
+                    pdf.setFontSize(10);
+                    pdf.setPage(1);
+                    pdf.text(`Página ${1} de ${totalPages}`, pdf.internal.pageSize.getWidth() /
+                        2, pdf.internal.pageSize.getHeight() - 10, {
+                            align: 'center'
+                        });
+
+                    // Itera sobre cada página para agregar el número de página
+                    for (let i = 2; i <= totalPages; i++) {
                         pdf.setPage(i);
-
-                        // Agrega la fecha y hora en la parte superior derecha
-                        const fechaHora = new Date().toLocaleString();
-                        pdf.setFontSize(10);
-                        pdf.text(`Morfeo S.A: Descripción de puesto de trabajo`, pdf.internal.pageSize.getWidth() + 10 -
-                            pdf.internal.pageSize.getWidth(), 10); 
-                        pdf.text(`Fecha y hora: ${fechaHora}`, pdf.internal.pageSize.getWidth() -
-                            60, 10);
-
-                        // Agrega el pie de página centrado en la parte inferior
-                        pdf.setFontSize(10);
                         pdf.text(`Página ${i} de ${totalPages}`, pdf.internal.pageSize.getWidth() /
                             2, pdf.internal.pageSize.getHeight() - 10, {
                                 align: 'center'

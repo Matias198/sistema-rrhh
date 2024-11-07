@@ -130,7 +130,7 @@ class Capacidades extends Component
                 $this->dispatch('success_capacidad', 'Capacidad editada correctamente');
             } catch (\Exception $e) {
                 DB::rollBack();
-                $this->dispatch('error_capacidad', 'No se pudo editar la capacidad, verifique los datos e intenete nuevamente');
+                $this->dispatch('error_capacidad', 'No se pudo editar la capacidad, verifique los datos e intenete nuevamente. ' + $e->getMessage());
             }
         } else {
             try {
@@ -144,7 +144,7 @@ class Capacidades extends Component
                 DB::commit();
             } catch (\Exception $e) {
                 DB::rollBack();
-                $this->dispatch('error_capacidad', 'No se pudo crear la capacidad, verifique los datos e intenete nuevamente');
+                $this->dispatch('error_capacidad', 'No se pudo crear la capacidad, verifique los datos e intenete nuevamente. ' + $e->getMessage());
             }
         }
     }

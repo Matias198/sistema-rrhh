@@ -115,10 +115,10 @@ class Tareas extends Component
                 $tarea->descripcion = $this->descripcion_tarea;
                 $tarea->save();
                 DB::commit();
-                $this->dispatch('success_tarea', 'tarea editada correctamente');
+                $this->dispatch('success_tarea', 'Tarea editada correctamente');
             } catch (\Exception $e) {
                 DB::rollBack();
-                $this->dispatch('error_tarea', 'No se pudo editar la tarea, verifique los datos e intenete nuevamente');
+                $this->dispatch('error_tarea', 'No se pudo editar la tarea, verifique los datos e intenete nuevamente. ' + $e->getMessage());
             }
         } else {
             try {
@@ -126,11 +126,11 @@ class Tareas extends Component
                 $tarea->nombre = $this->nombre_tarea;
                 $tarea->descripcion = $this->descripcion_tarea;
                 $tarea->save();
-                $this->dispatch('success_tarea', 'tarea creada correctamente');
+                $this->dispatch('success_tarea', 'Tarea creada correctamente');
                 DB::commit();
             } catch (\Exception $e) {
                 DB::rollBack();
-                $this->dispatch('error_tarea', 'No se pudo crear la tarea, verifique los datos e intenete nuevamente');
+                $this->dispatch('error_tarea', 'No se pudo crear la tarea, verifique los datos e intenete nuevamente. ' + $e->getMessage());
             }
         }
     }
