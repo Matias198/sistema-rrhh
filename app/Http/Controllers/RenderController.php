@@ -36,9 +36,9 @@ class RenderController extends Controller
      */
     public function render_gestion_admin_roles()
     {
-        return view('renders.gestion.admin.roles');
+        return view('renders.gestion.admin.privilegios.rolespermisos');
     }
-
+ 
     /**
      * Renderiza la vista de Gestion de Eventos.
      *
@@ -51,14 +51,33 @@ class RenderController extends Controller
 
     /**
      * Renderiza la vista de Gestion de Permisos.
+     * Renderiza la vista de Gestion de Puestos de Trabajos.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function render_gestion_admin_permisos()
+    public function render_gestion_admin_puesto_trabajos()
     {
-        return view('renders.gestion.admin.permisos');
+        return view('renders.gestion.admin.puestotrabajo.listar');
     }
 
     
 
+    /**
+     * Renderiza la vista de Agregar Puesto de Trabajo.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function render_gestion_admin_puesto_trabajos_agregar(){
+        return view('renders.gestion.admin.puestotrabajo.agregar');
+    }
+
+    /**
+     * Renderiza la vista de Gestion de Departamentos.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function render_gestion_admin_departamentos()
+    {
+        return view('renders.gestion.admin.dpto.departamentos');
+    }
 }

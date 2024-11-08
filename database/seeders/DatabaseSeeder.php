@@ -2,15 +2,17 @@
 
 namespace Database\Seeders;
 
+use App\Models\DepartamentoTrabajo;
 use App\Models\EstadoCivil;
+use App\Models\TipoCapacidad;
 use App\Models\User;
+use App\Models\Pais;
+use App\Models\Persona;
+use App\Models\Sexo;
 use Carbon\Carbon;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use App\Models\Pais;
-use App\Models\Persona;
-use App\Models\Sexo;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
@@ -52,16 +54,20 @@ class DatabaseSeeder extends Seeder
     {
         $user = User::find(1);
         $role1 = Role::create(['name' => 'DIRECTOR']); // administrador
-        $role2 = Role::create(['name' => 'SUPERVISOR']); // rrhh (realiza contrataciones)
-        $role3 = Role::create(['name' => 'OPERARIO']); // empleado
+        $role2 = Role::create(['name' => 'JEFE']); // rrhh (realiza contrataciones)
+        $role3 = Role::create(['name' => 'EMPLEADO']); // empleado
         $permission1 = Permission::create(['name' => 'gestionar_empleados']);
         $permission2 = Permission::create(['name' => 'gestionar_parametros']);
         $permission3 = Permission::create(['name' => 'gestionar_roles_permisos']);
+        $permission4 = Permission::create(['name' => 'gestionar_puesto_trabajos']);
+        $permission5 = Permission::create(['name' => 'gestionar_departamentos']);
 
         $role1->givePermissionTo([
-            $permission1, 
+            $permission1,
             $permission2,
-            $permission3
+            $permission3,
+            $permission4,
+            $permission5,
         ]);
 
         $user->assignRole($role1);
@@ -94,33 +100,75 @@ class DatabaseSeeder extends Seeder
     function crearUbicaciones()
     {
         /*   CRACION DE UBICACION   */
-        // Crear pais Argentina
 
+        // Crear pais argentina
         $pais = Pais::create([
             'codigo' => 'AR',
             'nombre' => 'Argentina',
         ]);
 
-        $guzzleClient = new \GuzzleHttp\Client(array('curl' => array(CURLOPT_SSL_VERIFYPEER => false,),));
-        $respuesta = $guzzleClient->request('GET', 'https://apis.datos.gob.ar/georef/api/provincias');
-        $provincias = json_decode($respuesta->getBody()->getContents(), true);
-        foreach ($provincias['provincias'] as $provincia) {
+        // Cargar desde csv desde storage csv las provincias
+        // "id","codigo","nombre","id_pais","created_at","updated_at"
+        $csv = file_get_contents(storage_path('./csv/provincias.csv'));
+        $csv = explode("\n", $csv);
+
+        foreach ($csv as $provincia) {
+            $provincia = explode(',', $provincia);
+            //dd($provincia);
             $pais->provincias()->create([
-                'codigo' => $provincia['id'],
-                'nombre' => $provincia['nombre'],
+                'codigo' => $provincia[1],
+                'nombre' => $provincia[2],
+                'id_pais' => intval($provincia[3]),
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString(),
             ]);
         }
 
-        foreach ($pais->provincias as $provincia) {
-            $respuesta = $guzzleClient->request('GET', 'https://apis.datos.gob.ar/georef/api/municipios?provincia=' . $provincia->codigo . "&max=5000");
-            $municipios = json_decode($respuesta->getBody()->getContents(), true);
-            foreach ($municipios['municipios'] as $municipio) {
-                $provincia->municipios()->create([
-                    'codigo' => $municipio['id'],
-                    'nombre' => $municipio['nombre'],
-                ]);
+        // Cargar desde csv desde storage csv los municipios 
+        // "id","codigo","nombre","id_provincia","created_at","updated_at"
+        $csv = file_get_contents(storage_path('./csv/municipios.csv'));
+        $csv = explode("\n", $csv);
+
+        foreach ($csv as $municipio) {
+            $municipio = explode(',', $municipio);
+            $provincias = Pais::find(1)->provincias()->get();
+            foreach ($provincias as $provincia) {
+                $municipio[3] = str_replace('"', '', $municipio[3]);
+                if ($provincia->id == intval($municipio[3])) {
+                    $provincia->municipios()->create([
+                        //"id","codigo","nombre","id_provincia","created_at","updated_at" 
+                        'codigo' => $municipio[1],
+                        'nombre' => $municipio[2],
+                        'id_provincia' => $municipio[3],
+                        'created_at' => Carbon::now()->toDateTimeString(),
+                        'updated_at' => Carbon::now()->toDateTimeString(),
+                    ]);
+                    break;
+                }
             }
         }
+
+        // Para hacerlo en formato de consulta
+        // $guzzleClient = new \GuzzleHttp\Client(array('curl' => array(CURLOPT_SSL_VERIFYPEER => false,),));
+        // $respuesta = $guzzleClient->request('GET', 'https://apis.datos.gob.ar/georef/api/provincias');
+        // $provincias = json_decode($respuesta->getBody()->getContents(), true);
+        // foreach ($provincias['provincias'] as $provincia) {
+        //     $pais->provincias()->create([
+        //         'codigo' => $provincia['id'],
+        //         'nombre' => $provincia['nombre'],
+        //     ]);
+        // }
+
+        // foreach ($pais->provincias as $provincia) {
+        //     $respuesta = $guzzleClient->request('GET', 'https://apis.datos.gob.ar/georef/api/municipios?provincia=' . $provincia->codigo . "&max=5000");
+        //     $municipios = json_decode($respuesta->getBody()->getContents(), true);
+        //     foreach ($municipios['municipios'] as $municipio) {
+        //         $provincia->municipios()->create([
+        //             'codigo' => $municipio['id'],
+        //             'nombre' => $municipio['nombre'],
+        //         ]);
+        //     }
+        // }
     }
 
     function crearPersonas()
@@ -174,17 +222,51 @@ class DatabaseSeeder extends Seeder
         $persona->usuario()->associate(User::find(3));
     }
 
+    // crear tipos de capacidad
+    function crearTiposCapacidades()
+    {
+        $tipos_capacidades = ['Requisitos intelectuales', 'Requisitos físicos', ' Responsabilidades adquiridas', 'Condiciones de trabajo'];
+        foreach ($tipos_capacidades as $tipos) {
+            TipoCapacidad::create([
+                'nombre' => $tipos,
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString(),
+            ]);
+        }
+    }
+
+    // Crear departamentos
+    function crearDepartamentos()
+    {
+        $departamentos = [
+            ['nombre' => 'Administración y Finanzas', 'descripcion' => 'Departamento de administración y finanzas'],
+            ['nombre' => 'Ventas', 'descripcion' => 'Departamento de ventas'],
+            ['nombre' => 'Logística', 'descripcion' => 'Departamento de logística'],
+            ['nombre' => 'Gerencia General', 'descripcion' => 'Departamento de gerencia general'],
+        ];
+
+        foreach ($departamentos as $departamento) {
+            DepartamentoTrabajo::create([
+                'nombre' => $departamento['nombre'],
+                'descripcion' => $departamento['descripcion'],
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString(),
+            ]);
+        }
+    }
+
     /**
      * Seed the application's database.
      */
     public function run(): void
     {
-        // llamar a las funciones
         $this->crearUsuarios();
         $this->crearRolesPermisos();
         $this->crearSexos();
         $this->crearEstadosCiviles();
         $this->crearUbicaciones();
         $this->crearPersonas();
+        $this->crearTiposCapacidades();
+        $this->crearDepartamentos();
     }
 }

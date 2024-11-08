@@ -2,8 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Models\Persona;
-use App\Models\Sexo;
+use App\Models\PuestoTrabajo;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Button;
@@ -13,9 +12,9 @@ use PowerComponents\LivewirePowerGrid\Facades\PowerGrid;
 use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 
-final class PersonasTable extends PowerGridComponent
+final class PuestoTrabajoTable extends PowerGridComponent
 {
-    public string $tableName = 'personas-table-duh97v-table';
+    public string $tableName = 'puesto-trabajo-table-9cnyb2-table';
 
     public function setUp(): array
     {
@@ -32,7 +31,7 @@ final class PersonasTable extends PowerGridComponent
 
     public function datasource(): Builder
     {
-        return Persona::query();
+        return PuestoTrabajo::query();
     }
 
     public function relationSearch(): array
@@ -43,44 +42,31 @@ final class PersonasTable extends PowerGridComponent
     public function fields(): PowerGridFields
     {
         return PowerGrid::fields()
-            ->add('nombre', fn(Persona $model) => $model->nombre . ' ' . $model->segundo_nombre . ' ' . $model->apellido)
-            ->add('dni')
-            ->add('sexo', fn(Persona $model) => $model->sexo()->first()->nombre)
-            ->add('cuil', fn(Persona $model) => substr($model->cuil, 0, 2) . '-' . substr($model->cuil, 2, 8) . '-' . substr($model->cuil, 10, 1))
-            ->add('calle')
-            ->add('altura')
-            ->add('fecha_nacimiento_formatted', fn(Persona $model) => Carbon::parse($model->fecha_nacimiento)->format('d/m/Y H:i:s'));
+            ->add('titulo_puesto')
+            ->add('sueldo_base', fn(PuestoTrabajo $model) => '$' . number_format($model->sueldo_base, 2, '.', ''))
+            ->add('id_departamento_trabajo', fn(PuestoTrabajo $model) => $model->departamentoTrabajo()->first()->nombre)
+            ->add('created_at_formatted', fn(PuestoTrabajo $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
     }
 
     public function columns(): array
     {
         return [
-            Column::make('Nombre completo', 'nombre')
+            Column::make('Titulo trabajo', 'titulo_puesto')
                 ->sortable()
                 ->searchable(),
 
-            Column::make('DNI', 'dni')
+
+            Column::make('Sueldo base', 'sueldo_base')
                 ->sortable()
                 ->searchable(),
 
-            Column::make('CUIL', 'cuil')
+            Column::make('Departamento', 'id_departamento_trabajo')
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Sexo', 'sexo')
+            Column::make('Fecha de creacion', 'created_at_formatted')
                 ->sortable()
                 ->searchable(),
-
-            Column::make('Calle', 'calle')
-                ->sortable()
-                ->searchable(),
-
-            Column::make('Altura', 'altura')
-                ->sortable()
-                ->searchable(),
-
-            Column::make('Fecha nacimiento', 'fecha_nacimiento_formatted', 'fecha_nacimiento')
-                ->sortable(),
 
             Column::action('Action')
         ];
@@ -89,40 +75,49 @@ final class PersonasTable extends PowerGridComponent
     public function filters(): array
     {
         return [
-            Filter::datepicker('fecha_nacimiento'),
-
-            Filter::select('sexo',)
-                ->dataSource(Sexo::all())
+            Filter::select('id_departamento_trabajo')
+                ->dataSource(\App\Models\DepartamentoTrabajo::all())
                 ->optionLabel('nombre')
                 ->optionValue('id'),
 
-            Filter::inputText('altura')->operators(),
-            Filter::inputText('dni')->operators(),
-            Filter::inputText('cuil')->operators(),
-            Filter::inputText('calle')->operators(),
+            Filter::inputText('titulo_puesto')->operators(),
 
+            Filter::inputText('sueldo_base')->operators(),
+
+            Filter::datepicker('created_at_formatted'),
         ];
+    }
+
+    #[\Livewire\Attributes\On('ver')]
+    public function ver($rowId): void
+    {
+
+        $this->dispatch('verPuestoTrabajo', $rowId);
     }
 
     #[\Livewire\Attributes\On('edit')]
     public function edit($rowId): void
     {
-        $this->js('alert(' . $rowId . ')');
+        //$this->dispatch('editar-puesto-trabajo', $rowId);
+        //$this->js('alert("Edit ' . $rowId . '")');
+        // Guardar en una variable de session el id del puesto de trabajo
+        session(['id_puesto_trabajo' => $rowId]);
+        $this->js('window.location = "puesto/agregar"');
     }
 
-    public function actions(Persona $row): array
+    public function actions(PuestoTrabajo $row): array
     {
-
         return [
             Button::add('edit')
                 ->class('w-full btn btn-primary btn-sm inline-flex items-center align-middle font-medium mr-1')
-                ->slot('<a href="#" wire:click.prevent="edit(' . $row->id . ')" class="text-white">
+                ->slot('<a type="button" x-on:click="$wire.edit(' . $row->id . ');" class="text-white">
                     <i class="w-4 h-4 mr-2 fa fa-pen"></i>Editar</a>')
                 ->id('edit' . $row->id),
             Button::add('destroy')
-                ->class('w-full btn btn-danger btn-sm inline-flex items-center align-middle font-medium ml-1')
-                ->slot('<a href="#" onclick="destroyDialog(' . $row->id . ', \'' . $row->nombre . '\')" class="text-white">
-                    <i class="w-4 h-4 mr-2 fa fa-trash-alt"></i>Eliminar</a>')
+                ->class('w-full btn btn-secondary btn-sm inline-flex items-center align-middle font-medium ml-1')
+                ->slot('<a type="button" x-on:click="$wire.ver(' . $row->id . ');"  class="text-white" data-toggle="modal"
+                    data-target="#modal-vista-trabajo">
+                    <i class="w-4 h-4 mr-2 fa fa-eye"></i>Ver</a>')
                 ->id('destroy' . $row->id),
 
         ];

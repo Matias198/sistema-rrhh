@@ -37,6 +37,7 @@
     cursor: pointer;
     display: block;
     min-height: 32px;
+    height: auto;
     user-select: none;
     -webkit-user-select: none;
 }

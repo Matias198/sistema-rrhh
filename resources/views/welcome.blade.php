@@ -7,8 +7,22 @@
     @stack('css')
     @yield('css')
     <style>
-        body {
-            overflow: hidden;
+        html {
+            min-height: 100%;
+            position: relative;
+        }
+
+        footer { 
+
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 55px; 
+        }
+
+        body { 
+            margin: 0;
+            margin-bottom: 50px;
         }
 
         .back {
@@ -26,7 +40,7 @@
             /* Aplicar sombra */
             -webkit-box-shadow: inset 0px 0px 300px -45px rgba(0, 0, 0, 0.75);
             -moz-box-shadow: inset 0px 0px 300px -45px rgba(0, 0, 0, 0.75);
-            box-shadow: inset 0px 0px 300px -45px rgba(0, 0, 0, 0.75); 
+            box-shadow: inset 0px 0px 300px -45px rgba(0, 0, 0, 0.75);
         }
 
         .titulo {
@@ -36,7 +50,7 @@
 
         .subtitulo {
             color: #FFFFFF;
-            text-shadow: -1px -1px 1px rgba(255,255,255,.1), 1px 1px 1px rgba(0,0,0,1);
+            text-shadow: -1px -1px 1px rgba(255, 255, 255, .1), 1px 1px 1px rgba(0, 0, 0, 1);
         }
     </style>
 @stop
@@ -152,11 +166,11 @@
             </div>
         </div>
     </div>
-    <div class="bg-light text-center text-lg-start mt-5">
+    <footer class="bg-light text-center text-lg-start mt-5">
         <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
             © Sistema de Gestión de RRHH - 2024
         </div>
-    </div>
+    </footer>
 @stop
 
 @section('adminlte_js')

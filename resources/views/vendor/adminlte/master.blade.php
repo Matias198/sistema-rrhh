@@ -74,7 +74,7 @@
         <meta name="msapplication-TileImage" content="{{ asset('favicon/ms-icon-144x144.png') }}">
     @endif
 
-    @vite(['resources/css/app.css', 'resources/css/sweetalert2.min.css', 'resources/css/toastr.min.css', 'resources/css/select2.css', 'resources/css/flatpickr.css', 'resources/js/app.js', 'resources/js/es.js', 'resources/js/bootstrap.js', 'resources/js/bootstrap.bundle.min.js', 'resources/js/jquery.js', 'resources/js/sweetalert2.all.min.js', 'resources/js/toastr.min.js', 'resources/js/select2.full.js', 'resources/js/flatpickr.js'])
+    @vite(['resources/css/app.css', 'resources/css/sweetalert2.min.css', 'resources/css/toastr.min.css', 'resources/css/select2.css', 'resources/css/flatpickr.css', 'resources/css/bootstrap-duallistbox.css', 'resources/css/icheck-bootstrap.css' , 'resources/js/app.js', 'resources/js/es.js', 'resources/js/bootstrap.js', 'resources/js/bootstrap.bundle.min.js', 'resources/js/jquery.js', 'resources/js/sweetalert2.all.min.js', 'resources/js/toastr.min.js', 'resources/js/select2.full.js', 'resources/js/flatpickr.js', 'resources/js/jquery.bootstrap-duallistbox.js', 'resources/js/html2pdf.bundle.js'])
 </head>
 
 <body class="@yield('classes_body')" @yield('body_data')>

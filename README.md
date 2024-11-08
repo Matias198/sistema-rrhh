@@ -1,66 +1,96 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# SISTEMA DE RECURSOS HUMANOS
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Lista de requerimientos
 
-## About Laravel
+1.  PHP ^8.2.5 (<a>https://www.php.net</a>)
+2.  PostgreSQL ^15.3 (<a>https://www.postgresql.org</a>)
+3.  Composer ^2.5.5 (<a>https://getcomposer.org</a>)
+4.  Node.js ^20.15.0 (<a>https://nodejs.org</a>)
+5.  Vite ^5.4.8 (<a>https://es.vitejs.dev</a>)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Configurando el entorno
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+1.  Cree una base de datos (DB) Postgres en su sistema
+2.  Establezca un nombre, el usuario "OWNER" y una contraseña para la base de datos.
+3.  Cree un archivo ".env" con el archivo ".env.example" de base
+4.  Modifique la configuracion en su archivo .env en los apartados:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+```
+DB_CONNECTION=pgsql (pgsql por defecto para Postgres)
+DB_HOST=127.0.0.1 (Host por defecto de la DB 127.0.0.1)
+DB_PORT=5432 (Puerto Postgre por defecto de la DB 5432)
+DB_DATABASE=**** (Nombre de la DB)
+DB_USERNAME=**** (Nombre del usuario "OWNER" de la DB)
+DB_PASSWORD=**** (Contraseña de la DB)
+```
+    
+5.  Abra un un terminal (CLI) con dirección dentro del proyecto y ejecute el comando: 
 
-## Learning Laravel
+```
+php artisan migrate:fresh --seed
+php artisan key:generate
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Si la operación es exitosa, su base de datos está lista, de lo contrario verifique que PostgreSQL se esté ejecutando en su sistema y la configuración esté correctamente establecida en el archivo ".env" para la base de datos creada en su sistema.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Instalando dependencias
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Para operar de forma correcta necesita instalar las dependencias del sistema. Para ello siga los pasos a continuación:
 
-## Laravel Sponsors
+1.  Se deben instalar las dependencias de Laravel, para ello debe ejecutar en el mismo terminal el comando:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```
+composer install
+```
 
-### Premium Partners
+2.  Luego de finalizar la instalación de dependencias de Laravel, se procede a instalar las dependencias de Node. Para ello debe ejecutar en el mismo terminal el comando: 
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+```
+npm install
+```
 
-## Contributing
+## Iniciando el sistema
+Para iniciar el sistema se requieren de dos terminales con direccion dentro del proyecto para ejecutar los siguientes comandos:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+1.  El primer comando a ejecutar en el primer terminal es: 
 
-## Code of Conduct
+```
+npm run dev
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+2.  El segundo comando a ejecutar en el segundo terminal es: 
+  
+```
+php artisan serve
+```
 
-## Security Vulnerabilities
+Si la operación es exitosa podrá ver en el terminal la dirección en la cual se aloja la aplicación web, por defecto es <a>http://127.0.0.1:8000</a> (localhost). Compruebe esta información en su terminal.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Iniciando Sesión
+Para iniciar sesión con el usuario por defecto (administrador) ingrese las siguientes credenciales:
+1.  Correo: 
 
-## License
+```
+matias@mail.com
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+2.  Contraseña:
+
+```
+12345678
+```
+
+En este punto el sistema ya es completamente funcional. Con esta cuenta de administrador podrá cargar a los usuarios finales del sistema con los roles deseados.
+
+## Sistema de Mail
+Para poder utilizar las opciones de Mail debe configurar los siguientes parametros del archivo .env
+```
+MAIL_MAILER=smtp (Servicio de email, por defecto SMTP)
+MAIL_HOST= (Host de su proveedor de servicios email)
+MAIL_PORT=2525 (Puerto SMTP)
+MAIL_USERNAME=**** (Nombre de usuario de su proveedor de servicios email)
+MAIL_PASSWORD=**** (Contraseña de su proveedor de servicios email)
+MAIL_ENCRYPTION=null (Tipo de encriptado)
+MAIL_FROM_ADDRESS="no-reply@rrhh.com" (Mascara de dirección email)
+MAIL_FROM_NAME="${APP_NAME}" (Nombre de remitente, por defecto ${APP_NAME})
+```
