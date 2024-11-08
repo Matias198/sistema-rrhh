@@ -7,11 +7,12 @@
     },
     "devDependencies": {
         "@popperjs/core": "^2.11.6",
+        "@vitejs/plugin-vue": "^5.1.4",
         "axios": "^1.7.4",
-        "bootstrap": "^5.3.3",
-        "laravel-vite-plugin": "^1.0",
+        "bootstrap": "^5.2.3",
+        "laravel-vite-plugin": "^1.0.5",
         "sass": "^1.56.1",
-        "vite": "^5.4.8"
+        "vite": "^5.4.9"
     },
     "dependencies": {
         "@fullcalendar/bootstrap": "^6.1.15",
@@ -26,6 +27,7 @@
         "bootstrap-icons": "^1.11.3",
         "flatpickr": "^4.6.13",
         "fontawesome": "^5.6.3",
+        "fullcalendar": "^6.1.15",
         "jquery": "^3.7.1",
         "overlayscrollbars": "^2.10.0",
         "select2": "^4.1.0-rc.0",

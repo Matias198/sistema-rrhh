@@ -2142,16 +2142,16 @@
         },
         {
             "name": "livewire/livewire",
-            "version": "v3.5.9",
+            "version": "v3.5.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/livewire/livewire.git",
-                "reference": "d04a229058afa76116d0e39209943a8ea3a7f888"
+                "reference": "3c8d1f9d7d9098aaea663093ae168f2d5d2ae73d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/livewire/livewire/zipball/d04a229058afa76116d0e39209943a8ea3a7f888",
-                "reference": "d04a229058afa76116d0e39209943a8ea3a7f888",
+                "url": "https://api.github.com/repos/livewire/livewire/zipball/3c8d1f9d7d9098aaea663093ae168f2d5d2ae73d",
+                "reference": "3c8d1f9d7d9098aaea663093ae168f2d5d2ae73d",
                 "shasum": ""
             },
             "require": {
@@ -2206,7 +2206,7 @@
             "description": "A front-end framework for Laravel.",
             "support": {
                 "issues": "https://github.com/livewire/livewire/issues",
-                "source": "https://github.com/livewire/livewire/tree/v3.5.9"
+                "source": "https://github.com/livewire/livewire/tree/v3.5.12"
             },
             "funding": [
                 {
@@ -2214,7 +2214,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-10-01T12:40:06+00:00"
+            "time": "2024-10-15T19:35:06+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -2882,21 +2882,21 @@
         },
         {
             "name": "power-components/livewire-powergrid",
-            "version": "v6.0.0",
+            "version": "v6.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Power-Components/livewire-powergrid.git",
-                "reference": "00b084b136e3d76c70a0091d516dcc2f442d7ef4"
+                "reference": "8e85ef25552f6cc945d8e995744168094dccfb02"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Power-Components/livewire-powergrid/zipball/00b084b136e3d76c70a0091d516dcc2f442d7ef4",
-                "reference": "00b084b136e3d76c70a0091d516dcc2f442d7ef4",
+                "url": "https://api.github.com/repos/Power-Components/livewire-powergrid/zipball/8e85ef25552f6cc945d8e995744168094dccfb02",
+                "reference": "8e85ef25552f6cc945d8e995744168094dccfb02",
                 "shasum": ""
             },
             "require": {
-                "laravel/prompts": "^0.1.25",
-                "livewire/livewire": "^3.5.8",
+                "laravel/prompts": "*",
+                "livewire/livewire": "^3.5.0",
                 "php": "^8.2"
             },
             "require-dev": {
@@ -2949,7 +2949,7 @@
             "homepage": "https://github.com/power-components/livewire-powergrid",
             "support": {
                 "issues": "https://github.com/Power-Components/livewire-powergrid/issues",
-                "source": "https://github.com/Power-Components/livewire-powergrid/tree/v6.0.0"
+                "source": "https://github.com/Power-Components/livewire-powergrid/tree/v6.0.6"
             },
             "funding": [
                 {
@@ -2957,7 +2957,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-10-02T20:43:55+00:00"
+            "time": "2024-10-19T19:54:08+00:00"
         },
         {
             "name": "psr/cache",
@@ -9886,5 +9886,5 @@
         "php": "^8.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }

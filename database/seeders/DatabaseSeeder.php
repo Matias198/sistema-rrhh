@@ -37,6 +37,15 @@ class DatabaseSeeder extends Seeder
             'created_at' => Carbon::now()->toDateTimeString(),
             'updated_at' => Carbon::now()->toDateTimeString(),
         ]);
+
+        // Andrea
+        User::create([
+            'email' => 'andrea@mail.com',
+            'password' => Hash::make('1234'),
+            'email_verified_at' => Carbon::now()->toDateTimeString(),
+            'created_at' => Carbon::now()->toDateTimeString(),
+            'updated_at' => Carbon::now()->toDateTimeString(),
+        ]);
     }
 
     function crearRolesPermisos()
@@ -147,6 +156,22 @@ class DatabaseSeeder extends Seeder
             'id_usuario' => 2,
         ]);
         $persona->usuario()->associate(User::find(2));
+
+        $persona = Persona::create([
+            'nombre' => 'Andrea',
+            'segundo_nombre' => 'Soledad',
+            'apellido' => 'Zakowicz',
+            'dni' => '87456321',
+            'cuil' => '27874563217',
+            'fecha_nacimiento' => '28/03/1993',
+            'calle' => 'sin numero',
+            'altura' => '0000',
+            'id_sexo' => 2,
+            'id_estado_civil' => 1,
+            'id_municipio' => 1365,
+            'id_usuario' => 3,
+        ]);
+        $persona->usuario()->associate(User::find(3));
     }
 
     /**

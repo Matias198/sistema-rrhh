@@ -40,6 +40,16 @@ class RenderController extends Controller
     }
 
     /**
+     * Renderiza la vista de Gestion de Eventos.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function render_gestion_eventos_agregar()
+    {
+        return view('renders.gestion.eventos.agregar');
+    }
+
+    /**
      * Renderiza la vista de Gestion de Permisos.
      *
      * @return \Illuminate\Contracts\Support\Renderable
@@ -48,5 +58,7 @@ class RenderController extends Controller
     {
         return view('renders.gestion.admin.permisos');
     }
+
+    
 
 }
