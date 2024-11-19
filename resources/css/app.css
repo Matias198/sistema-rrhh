@@ -67,6 +67,16 @@
     -webkit-animation-iteration-count: infinite;
 }
 
+.eliminar_item {
+    font-size: 30px;
+    filter: opacity(0.5);
+    transition: filter 0.3s;
+}
+
+.eliminar_item:hover {
+    filter: opacity(1);
+}
+
 @-moz-keyframes parpadeo {
     0% {
         opacity: 1;

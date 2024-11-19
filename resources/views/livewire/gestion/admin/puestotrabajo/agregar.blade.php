@@ -16,15 +16,15 @@
                     title="Campo obligatorio">*</span>
                 <input wire:model="titulo_puesto" type="text" name="titulo_puesto" id="titulo_puesto"
                     class="form-control 
-                    @if (!$errors->get('') && $this->titulo_puesto != null) border-success @endif  
-                    @error('titulo_puesto') border-danger @enderror"
+                    @if (!$errors->get('') && $this->titulo_puesto != null) border-success is-valid @endif  
+                    @error('titulo_puesto') border-danger is-invalid @enderror"
                     x-on:input="$wire.set('titulo_puesto', $('#titulo_puesto').val());" placeholder="Ingrese el nombre"
                     autocomplete="off">
                 @error('titulo_puesto')
-                    <span class="error text-danger">{{ $message }}</span>
+                    <span class="d-block text-danger invalid-feedback">{{ $message }}</span>
                 @enderror
                 @if (!$errors->get('titulo_puesto') && $this->titulo_puesto != null)
-                    <span class="flex text-success">Campo correcto</span>
+                    <span class="d-block text-success valid-feedback">Campo correcto</span>
                 @endif
             </div>
             <div class="col">
@@ -36,8 +36,8 @@
                         title="Ubicación del puesto en el organigrama de la empresa">?</span>
                     <select name="departamento_seleccionado" id="departamento_seleccionado"
                         class="form-control select2 
-                        @if (!$errors->get('') && $this->departamento_seleccionado != null) border-success @endif  
-                        @error('departamento_seleccionado') border-danger @enderror"
+                        @if (!$errors->get('') && $this->departamento_seleccionado != null) border-success is-valid @endif  
+                        @error('departamento_seleccionado') border-danger is-invalid @enderror"
                         name="departamento_seleccionado" aria-placeholder="Seleccione una opción">
                         <option selected value="">Seleccione una opcion</option>
                         @foreach ($departamentos as $departamento)
@@ -47,10 +47,10 @@
                     </select>
                 </div>
                 @error('departamento_seleccionado')
-                    <span class="error text-danger">{{ $message }}</span>
+                    <span class="d-block text-danger invalid-feedback">{{ $message }}</span>
                 @enderror
                 @if (!$errors->get('departamento_seleccionado') && $this->departamento_seleccionado != null)
-                    <span class="flex text-success">Campo correcto</span>
+                    <span class="d-block text-success valid-feedback">Campo correcto</span>
                 @endif
             </div>
             <div class="col">
@@ -63,17 +63,17 @@
                     </div>
                     <input wire:model="sueldo_base" type="number" name="sueldo_base" id="sueldo_base" aria-describedby="basic-addon1" step=".01"
                         class="form-control 
-                    @if (!$errors->get('') && $this->sueldo_base != null) border-success @endif  
-                    @error('sueldo_base') border-danger @enderror"
+                    @if (!$errors->get('') && $this->sueldo_base != null) border-success is-valid @endif  
+                    @error('sueldo_base') border-danger is-invalid @enderror"
                         x-on:input="$wire.set('sueldo_base', $('#sueldo_base').val());" placeholder="0.00"
                         autocomplete="off">
                 </div>
 
                 @error('sueldo_base')
-                    <span class="error text-danger">{{ $message }}</span>
+                    <span class="d-block text-danger invalid-feedback">{{ $message }}</span>
                 @enderror
                 @if (!$errors->get('sueldo_base') && $this->sueldo_base != null)
-                    <span class="flex text-success">Campo correcto</span>
+                    <span class="d-block text-success valid-feedback">Campo correcto</span>
                 @endif
             </div>
         </div>
@@ -85,15 +85,15 @@
                 <span class="o-tooltip parpadea" data-toggle="tooltip" data-placement="top"
                     title="Descripción genérica con un maximo de 255 caracteres">?</span>
                 <textarea wire:model="descripcion_puesto" type="text" name="descripcion_puesto" id="descripcion_puesto"
-                    class="form-control @if (!$errors->get('') && $this->descripcion_puesto != null) border-success @endif  @error('descripcion_puesto') border-danger @enderror"
+                    class="form-control @if (!$errors->get('') && $this->descripcion_puesto != null) border-success is-valid @endif  @error('descripcion_puesto') border-danger is-invalid @enderror"
                     x-on:input="$wire.set('descripcion_puesto', $('#descripcion_puesto').val());"
                     placeholder="Ingrese una descripción genérica" autocomplete="off">
                 </textarea>
                 @error('descripcion_puesto')
-                    <span class="error text-danger">{{ $message }}</span>
+                    <span class="d-block text-danger invalid-feedback">{{ $message }}</span>
                 @enderror
                 @if (!$errors->get('descripcion_puesto') && $this->descripcion_puesto != null)
-                    <span class="flex text-success">Campo correcto</span>
+                    <span class="d-block text-success valid-feedback">Campo correcto</span>
                 @endif
             </div>
         </div>
@@ -112,10 +112,10 @@
                     </select>
                 </div>
                 @error('tareas_seleccionadas')
-                    <span class="error text-danger">{{ $message }}</span>
+                    <span class="d-block text-danger invalid-feedback">{{ $message }}</span>
                 @enderror
                 @if (!$errors->get('tareas_seleccionadas') && $this->tareas_seleccionadas != null)
-                    <span class="flex text-success">Campo correcto</span>
+                    <span class="d-block text-success valid-feedback">Campo correcto</span>
                 @endif
             </div>
         </div>
@@ -135,10 +135,10 @@
                     </select>
                 </div>
                 @error('capacidades_seleccionadas')
-                    <span class="error text-danger">{{ $message }}</span>
+                    <span class="d-block text-danger invalid-feedback">{{ $message }}</span>
                 @enderror
                 @if (!$errors->get('capacidades_seleccionadas') && $this->capacidades_seleccionadas != null)
-                    <span class="flex text-success">Campo correcto</span>
+                    <span class="d-block text-success valid-feedback">Campo correcto</span>
                 @endif
             </div>
         </div>

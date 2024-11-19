@@ -3,6 +3,10 @@ import "../css/app.css";
 import "bootstrap"; 
 import "./../../vendor/power-components/livewire-powergrid/dist/powergrid";
 //import './../../vendor/power-components/livewire-powergrid/dist/bootstrap5.css'
+// import Dropzone from "dropzone";
+// import "dropzone/dist/dropzone.css";
+
+// window.Dropzone = Dropzone;
 
 document.addEventListener("DOMContentLoaded", function () { 
     function detectarCambioModoOscuro() {

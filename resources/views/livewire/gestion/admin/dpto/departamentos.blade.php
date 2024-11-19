@@ -76,14 +76,14 @@
                 <span class="d-tooltip parpadea" data-toggle="tooltip" data-placement="top"
                     title="Campo obligatorio">*</span>
                 <input wire:model="nombre" type="text" name="nombre" id="nombre"
-                    class="form-control @if (!$errors->get('') && $this->nombre != null) border-success @endif  @error('nombre') border-danger @enderror"
+                    class="form-control @if (!$errors->get('') && $this->nombre != null) border-success is-valid @endif  @error('nombre') border-danger is-invalid @enderror"
                     x-on:input="$wire.set('nombre', $('#nombre').val());" placeholder="Ingrese el nombre"
                     autocomplete="off">
                 @error('nombre')
-                    <span class="error text-danger">{{ $message }}</span>
+                    <span class="d-block text-danger invalid-feedback">{{ $message }}</span>
                 @enderror
                 @if (!$errors->get('nombre') && $this->nombre != null)
-                    <span class="flex text-success">Campo correcto</span>
+                    <span class="d-block text-success valid-feedback">Campo correcto</span>
                 @endif
             </div>
         </div>
@@ -93,15 +93,15 @@
                 <span class="d-tooltip parpadea" data-toggle="tooltip" data-placement="top"
                     title="Campo obligatorio">*</span>
                 <textarea wire:model="descripcion" type="text" name="descripcion" id="descripcion"
-                    class="form-control @if (!$errors->get('') && $this->descripcion != null) border-success @endif  @error('descripcion') border-danger @enderror"
+                    class="form-control @if (!$errors->get('') && $this->descripcion != null) border-success is-valid @endif  @error('descripcion') border-danger is-invalid @enderror"
                     x-on:input="$wire.set('descripcion', $('#descripcion').val());" placeholder="Ingrese la descripcion"
                     autocomplete="off">
                 </textarea>
                 @error('descripcion')
-                    <span class="error text-danger">{{ $message }}</span>
+                    <span class="d-block text-danger invalid-feedback">{{ $message }}</span>
                 @enderror
                 @if (!$errors->get('descripcion') && $this->descripcion != null)
-                    <span class="flex text-success">Campo correcto</span>
+                    <span class="d-block text-success valid-feedback">Campo correcto</span>
                 @endif
             </div>
         </div>

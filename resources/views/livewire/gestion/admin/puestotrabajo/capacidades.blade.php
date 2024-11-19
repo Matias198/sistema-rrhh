@@ -79,15 +79,15 @@
                 title="Campo obligatorio">*</span>
             <input wire:model="nombre_capacidad" type="text" name="nombre_capacidad" id="nombre_capacidad"
                 class="form-control 
-                @if (!$errors->get('') && $this->nombre_capacidad != null) border-success @endif  
-                @error('nombre_capacidad') border-danger @enderror"
+                @if (!$errors->get('') && $this->nombre_capacidad != null) border-success is-valid @endif  
+                @error('nombre_capacidad') border-danger is-invalid @enderror"
                 x-on:input="$wire.set('nombre_capacidad', $('#nombre_capacidad').val());"
                 placeholder="Ingrese el nombre" autocomplete="off">
             @error('nombre_capacidad')
-                <span class="error text-danger">{{ $message }}</span>
+                <span class="d-block text-danger invalid-feedback">{{ $message }}</span>
             @enderror
             @if (!$errors->get('nombre_capacidad') && $this->nombre_capacidad != null)
-                <span class="flex text-success">Campo correcto</span>
+                <span class="d-block text-success valid-feedback">Campo correcto</span>
             @endif
         </div>
         <div class="mb-3">
@@ -96,16 +96,16 @@
                 title="Campo obligatorio">*</span>
             <textarea wire:model="descripcion_capacidad" type="text" name="descripcion_capacidad" id="descripcion_capacidad"
                 class="form-control 
-                @if (!$errors->get('') && $this->descripcion_capacidad != null) border-success @endif  
-                @error('descripcion_capacidad') border-danger @enderror"
+                @if (!$errors->get('') && $this->descripcion_capacidad != null) border-success is-valid @endif  
+                @error('descripcion_capacidad') border-danger is-invalid @enderror"
                 x-on:input="$wire.set('descripcion_capacidad', $('#descripcion_capacidad').val());"
                 placeholder="Ingrese la descripcion" autocomplete="off">
             </textarea>
             @error('descripcion_capacidad')
-                <span class="error text-danger">{{ $message }}</span>
+                <span class="d-block text-danger invalid-feedback">{{ $message }}</span>
             @enderror
             @if (!$errors->get('descripcion_capacidad') && $this->descripcion_capacidad != null)
-                <span class="flex text-success">Campo correcto</span>
+                <span class="d-block text-success valid-feedback">Campo correcto</span>
             @endif
         </div>
         <div class="mb-3">
@@ -117,8 +117,8 @@
                     title="Factor de especificación">?</span>
                 <select name="tipo_seleccionado" id="tipo_seleccionado"
                     class="form-control select2
-                @if ($this->tipo_seleccionado == null) border-danger @endif
-                @if ($this->tipo_seleccionado != null) border-success @endif"
+                @if ($this->tipo_seleccionado == null) border-danger is-invalid @endif
+                @if ($this->tipo_seleccionado != null) border-success is-valid @endif"
                     name="tipo_seleccionado" aria-placeholder="Seleccione una opción">
                     <option selected value="">Seleccione una opcion</option>
                     @foreach ($tipos_capacidades as $tipo)
@@ -127,9 +127,9 @@
                 </select>
             </div>
             @if ($this->tipo_seleccionado == null)
-                <span class="error text-danger">Debe seleccionar un tipo</span>
+                <span class="d-block text-danger invalid-feedback">Debe seleccionar un tipo</span>
             @else
-                <span class="flex text-success">Campo correcto</span>
+                <span class="d-block text-success valid-feedback">Campo correcto</span>
             @endif
         </div>
         <div class="row">

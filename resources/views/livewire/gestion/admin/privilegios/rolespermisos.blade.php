@@ -75,14 +75,14 @@
                 <span class="d-tooltip parpadea" data-toggle="tooltip" data-placement="top"
                     title="Campo obligatorio">*</span>
                 <input wire:model="name" type="text" name="name" id="name"
-                    class="form-control @if (!$errors->get('') && $this->name != null) border-success @endif  @error('name') border-danger @enderror"
+                    class="form-control @if (!$errors->get('') && $this->name != null) border-success is-valid @endif  @error('name') border-danger is-invalid @enderror"
                     x-on:input="$wire.set('name', $('#name').val());" placeholder="Ingrese el nombre"
                     autocomplete="off">
                 @error('name')
-                    <span class="error text-danger">{{ $message }}</span>
+                    <span class="d-block text-danger invalid-feedback">{{ $message }}</span>
                 @enderror
                 @if (!$errors->get('name') && $this->name != null)
-                    <span class="flex text-success">Campo correcto</span>
+                    <span class="d-block text-success valid-feedback">Campo correcto</span>
                 @endif
             </div>
         </div>
@@ -100,9 +100,9 @@
                 </select>
             </div>
             @if (empty($this->permisos_seleccionados))
-                <span class="error text-danger">Debe seleccionar al menos un permiso.</span>
+                <span class="d-block text-danger invalid-feedback">Debe seleccionar al menos un permiso.</span>
             @else
-                <span class="flex text-success">Campo correcto</span>
+                <span class="d-block text-success valid-feedback">Campo correcto</span>
             @endif
         </div>
         <div class="row">
