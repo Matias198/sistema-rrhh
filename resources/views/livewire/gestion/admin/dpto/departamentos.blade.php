@@ -33,8 +33,7 @@
                 <label for="departamento_seleccionado">Departamento</label>
                 <span class="d-tooltip parpadea" data-toggle="tooltip" data-placement="top"
                     title="Campo obligatorio">*</span>
-                <select name="departamento_seleccionado" id="departamento_seleccionado"
-                    class="form-control select2" name="departamento_seleccionado"
+                <select name="departamento_seleccionado" id="departamento_seleccionado" class="form-control select2"
                     aria-placeholder="Seleccione una opción">
                     <option selected value="">Seleccione una opcion</option>
                     @foreach ($departamentos as $departamento)
@@ -253,10 +252,10 @@
                                 id: result_departamentos[i].id,
                                 text: result_departamentos[i].nombre
                             });
-                        } 
+                        }
 
                         // Ordenar por campo id dejando el id null al inicio
-                        departamentos.sort((a, b) => a.id - b.id); 
+                        departamentos.sort((a, b) => a.id - b.id);
 
                         $('#departamento_seleccionado').select2({
                             placeholder: 'Seleccione una opción',
@@ -264,7 +263,8 @@
                             data: departamentos
                         });
                         $('departamento_seleccionado').on('change', function() {
-                            @this.set('departamento_seleccionado', $('#departamento_seleccionado')
+                            @this.set('departamento_seleccionado', $(
+                                    '#departamento_seleccionado')
                                 .val());
                             if (@this.editando == true) {
                                 cancelar();
@@ -288,8 +288,8 @@
                         }).then((result) => {
                             window.location.reload();
                         });
-                    }); 
-            }) 
+                    });
+            })
         });
 
         Livewire.on('error', function(message) {

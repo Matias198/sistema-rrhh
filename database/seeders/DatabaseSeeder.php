@@ -4,11 +4,16 @@ namespace Database\Seeders;
 
 use App\Models\DepartamentoTrabajo;
 use App\Models\EstadoCivil;
+use App\Models\ObraSocial;
 use App\Models\TipoCapacidad;
 use App\Models\User;
 use App\Models\Pais;
 use App\Models\Persona;
 use App\Models\Sexo;
+use App\Models\TipoContrato;
+use App\Models\TipoDocumento;
+use App\Models\TipoJornada;
+use App\Models\TipoRelacion;
 use Carbon\Carbon;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -230,11 +235,146 @@ class DatabaseSeeder extends Seeder
         }
     }
 
+    // Crear tipo de relacion familiar 
+    public function crearTipoRelacionFamiliar()
+    {
+        // Tipos de relaciones familiares válidos según las normativas legales en Argentina
+        $tipos_relaciones = [
+            'Cónyuge',
+            'Conviviente',
+            'Hijo/a biológico/a menor de 18 años',
+            'Hijo/a adoptado/a menor de 18 años',
+            'Hijo/a mayor de 18 años con discapacidad',
+            'Padre/Madre dependiente',
+            'Suegro/a dependiente',
+            'Hermano/a menor de 18 años',
+            'Hermano/a mayor con discapacidad',
+            'Nieto/a bajo tutela',
+            'Sobrino/a bajo tutela',
+            'Otro familiar bajo tutela legal'
+        ];
+
+        foreach ($tipos_relaciones as $tipo_relacion) {
+            TipoRelacion::create([
+                'nombre' => $tipo_relacion,
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString(),
+            ]);
+        }
+    }
+
+    public function crearObrasSociales()
+    {
+        // Obtener archivo Obras Sociales.txt
+        $obras_sociales = file_get_contents(storage_path('./csv/Obras Sociales.txt'));
+        $obras_sociales = explode("\n", $obras_sociales);
+
+        foreach ($obras_sociales as $obra_social) {
+            ObraSocial::create([
+                'nombre' => $obra_social,
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString(),
+            ]);
+        }
+    }
+
+
+    // crear tipos de contratos
+    public function crearTiposContratos()
+    {
+        $tipos_contratos = [
+            'Contrato a plazo fijo', // Contrato con una duración definida.
+            'Contrato a tiempo indeterminado', // Contrato sin límite de tiempo (el más común en Argentina).
+            'Contrato de aprendizaje', // Contrato para capacitar a jóvenes de entre 16 y 28 años.
+            'Contrato a tiempo parcial', // Contrato con una jornada laboral reducida (menos de 48 horas semanales).
+            'Contrato eventual', // Contrato para tareas transitorias o extraordinarias.
+            'Contrato de temporada', // Contrato para tareas cíclicas o estacionales.
+            'Contrato por grupo o equipo', // Contrato celebrado con un grupo de trabajadores.
+            'Contrato de trabajo remoto', // Contrato bajo la Ley de Teletrabajo.
+        ];
+
+        $descripciones = [
+            'Contrato laboral con una duración definida.',
+            'Contrato laboral sin límite de tiempo.',
+            'Contrato laboral para capacitar a jóvenes.',
+            'Contrato laboral con una jornada reducida.',
+            'Contrato laboral para tareas transitorias.',
+            'Contrato laboral para tareas cíclicas.',
+            'Contrato laboral celebrado con un grupo de trabajadores.',
+            'Contrato laboral bajo la Ley de Teletrabajo.',
+        ];
+
+        foreach ($tipos_contratos as $key => $tipo_contrato) {
+            TipoContrato::create([
+                'nombre' => $tipo_contrato,
+                'descripcion' => $descripciones[$key],
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString(),
+            ]);
+        }
+    }
+
+    public function crearTiposJornadasLaborales()
+    {
+        $tipos_jornadas = [
+            'Jornada completa', // Jornada laboral máxima: 8 horas diarias o 48 horas semanales.
+            'Jornada reducida', // Jornada inferior a la completa, por acuerdo entre partes o disposiciones legales.
+            'Jornada nocturna', // Trabajo entre las 21:00 y las 06:00 horas (máximo de 7 horas).
+            'Jornada insalubre', // Jornada reducida por trabajos insalubres (máximo de 6 horas diarias).
+            'Jornada por turnos rotativos', // Jornadas alternadas entre distintos horarios.
+            'Jornada discontinua', // Jornada con períodos de inactividad dentro de la jornada laboral.
+            'Jornada partida', // Jornada dividida por un descanso mayor a dos horas.
+            'Jornada flexible', // Jornada con horarios adaptables dentro de límites legales.
+        ];
+
+        $descripciones = [
+            'Jornada laboral de 8 horas diarias o 48 horas semanales.',
+            'Jornada laboral inferior a la completa, por acuerdo entre partes o disposiciones legales.',
+            'Jornada laboral entre las 21:00 y las 06:00 horas (máximo de 7 horas).',
+            'Jornada laboral reducida por trabajos insalubres (máximo de 6 horas diarias).',
+            'Jornadas alternadas entre distintos horarios.',
+            'Jornada laboral con períodos de inactividad dentro de la jornada.',
+            'Jornada laboral dividida por un descanso mayor a dos horas.',
+            'Jornada laboral con horarios adaptables dentro de límites legales.',
+        ];
+
+        foreach ($tipos_jornadas as $key => $tipo_jornada) {
+            TipoJornada::create([
+                'nombre' => $tipo_jornada,
+                'descripcion' => $descripciones[$key],
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString(),
+            ]);
+        }
+    }
+
+    public function crearTiposDocumentos(){
+        // Certificados de estudios, certificado residencia, curriculum vitae, certificado de familiar a cargo, contrato de trabajo, copia de dni
+        $tipos_documentos = [
+            'Certificado de estudios',
+            'Certificado de residencia',
+            'Curriculum vitae',
+            'Certificado de familiar a cargo',
+            'Contrato de trabajo',
+            'Certificado de emancipacion o permiso del tutor',
+            'Copia de DNI',
+        ];
+
+        foreach ($tipos_documentos as $tipo_documento) {
+            TipoDocumento::create([
+                'nombre' => $tipo_documento,
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString(),
+            ]);
+        }
+    }
+
     /**
      * Seed the application's database.
      */
     public function run(): void
     {
+        $this->crearTipoRelacionFamiliar();
         $this->crearUsuarios();
         $this->crearRolesPermisos();
         $this->crearSexos();
@@ -243,5 +383,9 @@ class DatabaseSeeder extends Seeder
         $this->crearPersonas();
         $this->crearTiposCapacidades();
         $this->crearDepartamentos();
+        $this->crearObrasSociales();
+        $this->crearTiposContratos();
+        $this->crearTiposJornadasLaborales();
+        $this->crearTiposDocumentos();
     }
 }

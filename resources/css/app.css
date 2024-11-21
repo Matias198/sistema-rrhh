@@ -71,6 +71,7 @@
     font-size: 30px;
     filter: opacity(0.5);
     transition: filter 0.3s;
+    cursor: pointer;
 }
 
 .eliminar_item:hover {

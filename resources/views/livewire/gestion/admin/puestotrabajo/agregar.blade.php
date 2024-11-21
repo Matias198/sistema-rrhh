@@ -451,7 +451,7 @@
 
             Livewire.on('success-trabajo', function(message) {
                 Sweetalert2.fire({
-                    title: 'Capacidad Guardada',
+                    title: 'Guardado',
                     text: message[0],
                     icon: 'success',
                     showCancelButton: false,

@@ -43,4 +43,37 @@ class Persona extends Model implements Auditable
     {
         return $this->belongsTo(User::class, 'id_usuario');
     }
+
+    public function obrasSociales()
+    {
+        return $this->belongsToMany(ObraSocial::class, 'personas_obras_sociales', 'id_persona', 'id_obra_social')
+            ->withPivot('numero_afiliado');
+    }
+
+    // M:M con familiares
+    public function familiares()
+    {
+        return $this->belongsToMany(Persona::class, 'personas_familiares', 'id_persona', 'id_familiar')
+            ->withPivot('id_tipo_familiar');
+    }
+
+    public function empleado()
+    {
+        return $this->hasOne(Empleado::class, 'id_persona');
+    }
+
+    public function documentosCertificados()
+    {
+        return $this->hasMany(DocumentoCertificado::class, 'id_persona');
+    }
+
+    public function contactosEmergencia()
+    {
+        return $this->hasMany(ContactoEmergencia::class, 'id_persona');
+    }
+
+    public function capacidadesTrabajos()
+    {
+        return $this->hasMany(CapacidadesTrabajo::class, 'id_persona');
+    }
 }
