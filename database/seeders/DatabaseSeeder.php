@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\DepartamentoTrabajo;
+use App\Models\Empresa;
 use App\Models\EstadoCivil;
 use App\Models\ObraSocial;
 use App\Models\TipoCapacidad;
@@ -29,16 +30,7 @@ class DatabaseSeeder extends Seeder
     function crearUsuarios()
     {
         User::create([
-            'email' => 'matias@mail.com',
-            'password' => Hash::make('12345678'),
-            'email_verified_at' => Carbon::now()->toDateTimeString(),
-            'created_at' => Carbon::now()->toDateTimeString(),
-            'updated_at' => Carbon::now()->toDateTimeString(),
-        ]);
-
-        // Juan Carlos
-        User::create([
-            'email' => 'juan@mail.com',
+            'email' => 'admin@mail.com',
             'password' => Hash::make('12345678'),
             'email_verified_at' => Carbon::now()->toDateTimeString(),
             'created_at' => Carbon::now()->toDateTimeString(),
@@ -170,36 +162,20 @@ class DatabaseSeeder extends Seeder
     function crearPersonas()
     {
         $persona = Persona::create([
-            'nombre' => 'Matías',
-            'segundo_nombre' => 'Daniel',
-            'apellido' => 'Fernández',
-            'dni' => '41419890',
-            'cuil' => '20414198903',
-            'fecha_nacimiento' => '12/06/1999',
-            'calle' => 'Martín Fierro',
-            'altura' => '0000',
+            'nombre' => 'Juan',
+            'segundo_nombre' => 'Carlos',
+            'apellido' => 'Pérez',
+            'dni' => '12345678',
+            'cuil' => '20123456789',
+            'fecha_nacimiento' => '01/01/1999',
+            'calle' => 'Calle Falsa',
+            'altura' => '123',
             'id_sexo' => 1,
             'id_estado_civil' => 1,
             'id_municipio' => 1365,
             'id_usuario' => 1,
         ]);
         $persona->usuario()->associate(User::find(1));
-
-        $persona = Persona::create([
-            'nombre' => 'Juan',
-            'segundo_nombre' => 'Carlos',
-            'apellido' => 'Pérez',
-            'dni' => '12345678',
-            'cuil' => '99123456789',
-            'fecha_nacimiento' => '01/01/1999',
-            'calle' => 'Martín Fierro',
-            'altura' => '0000',
-            'id_sexo' => 1,
-            'id_estado_civil' => 1,
-            'id_municipio' => 1365,
-            'id_usuario' => 2,
-        ]);
-        $persona->usuario()->associate(User::find(2));
     }
 
     // crear tipos de capacidad
@@ -369,6 +345,21 @@ class DatabaseSeeder extends Seeder
         }
     }
 
+    // Crear empresa Morfeo S.A.
+    public function crearEmpresa()
+    {
+        // Crear empresa Morfeo S.A.
+        Empresa::create([
+            'nombre' => 'Morfeo S.A.',
+            'razon_social' => 'Sociedad Anónima',
+            'cuit' => '30-12345678-9',
+            'inicio_actividades' => '01/01/2005',
+            'ubicacion' => 'Buenos Aires, Argentina',
+            'telefono' => '1234567890',
+            'email' => 'morfeosa@mail.com'
+        ]);
+    }
+
     /**
      * Seed the application's database.
      */
@@ -387,5 +378,6 @@ class DatabaseSeeder extends Seeder
         $this->crearTiposContratos();
         $this->crearTiposJornadasLaborales();
         $this->crearTiposDocumentos();
+        $this->crearEmpresa();
     }
 }

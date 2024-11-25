@@ -1,0 +1,44 @@
+ // public function updating($propertyName)
+    // {
+    //     if ($propertyName == 'archivos') {
+    //         $this->aux_archivos = $this->archivos;
+    //     }
+    // }
+
+    // if ($propertyName == 'archivos') {
+        //     try {
+        //         $elementos = $this->archivos;
+        //         $this->archivos = $this->aux_archivos;
+        //         //$this->aux_archivos = []; 
+
+        //         foreach ($elementos as $elemento) {
+        //             // valida si el elemento es pdf, doc, docx, jpg, jpeg, png
+        //             if ($elemento->guessExtension() == 'pdf' || $elemento->guessExtension() == 'doc' || $elemento->guessExtension() == 'docx' || $elemento->guessExtension() == 'jpg' || $elemento->guessExtension() == 'jpeg' || $elemento->guessExtension() == 'png') {
+        //                 //dd($elemento->getClientOriginalName());
+        //                 $encontrado = false;
+        //                 for ($i = 0; $i < count($this->archivos); $i++) {
+        //                     if ($elemento->getClientOriginalName() == $this->archivos[$i]->getClientOriginalName()) {
+        //                         $this->dispatch('errorArchivo', 'El archivo ' . $elemento->getClientOriginalName() . ' ya se encuentra en la lista.');
+        //                         $encontrado = true;
+        //                     }
+        //                 }
+        //                 if (!$encontrado) {
+        //                     $this->archivos[] = $elemento;
+        //                 }
+        //             } else {
+        //                 $this->dispatch('errorArchivo', 'El archivo debe ser un PDF, DOC, DOCX, JPG, JPEG o PNG.');
+        //             }
+        //         }
+        //         // $this->archivos = $this->aux_archivos;
+        //         $this->dispatch('actualizar');
+        //     } catch (\Exception $e) {
+        //         $this->archivos = [];
+        //         $this->dispatch('errorArchivo', 'Error al cargar el archivo.');
+        //     }
+        // }
+
+        
+        // 'archivos.*.required' => 'El archivo es obligatorio.',
+        // 'archivos.*.file' => 'El archivo debe ser un archivo.',
+        // 'archivos.*.mimes' => 'El archivo debe ser un PDF, DOC, DOCX, JPG, JPEG o PNG.',
+        // 'archivos.*.max' => 'El archivo no debe superar los 2MB.',

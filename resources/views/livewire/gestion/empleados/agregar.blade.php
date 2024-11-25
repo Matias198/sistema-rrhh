@@ -35,8 +35,8 @@
                         <div class="card-header" data-card-widget="collapse" style="cursor: pointer;">
                             <h3 class="card-title">Datos Personales</h3>
                             <div class="card-tools">
-                                <button type="button" class="btn btn-tool"><i class="fas fa-square"></i>
-                                </button>
+                                <a type="button" class="btn btn-tool"><i class="fas fa-square"></i>
+                                </a>
                             </div>
                             <!-- /.card-tools -->
                         </div>
@@ -216,15 +216,14 @@
                                         <label for="copia_dni">Fotocopia del DNI</label>
                                         <span class="d-tooltip parpadea" data-toggle="tooltip" data-placement="top"
                                             title="Campo obligatorio">*</span>
-                                        <input type="file" name="copia_dni" hidden id="copia_dni"
-                                            class="form-control" wire:model="copia_dni"
+                                        <input type="file" name="copia_dni" hidden id="copia_dni" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+                                            class="form-control" wire:model="copia_dni" 
                                             placeholder="Ingrese la fotocopia del DNI" autocomplete="off">
                                     </div>
-                                    <button type="button" class="btn btn-primary"
-                                        x-on:click="$('#copia_dni').click()">
+                                    <a type="button" class="btn btn-primary" x-on:click="$('#copia_dni').click()">
                                         <i class="fas fa-upload"></i>
                                         Subir DNI
-                                    </button>
+                                    </a>
                                     <!-- Vista previa si existe el archivo -->
                                     <div class="border mt-3 d-flex text-center justify-content-center align-items-center"
                                         style=" height: 150px; width: 150px;">
@@ -278,17 +277,17 @@
                                                     Permiso</label>
                                                 <span class="d-tooltip parpadea" data-toggle="tooltip"
                                                     data-placement="top" title="Campo obligatorio">*</span>
-                                                <input type="file" name="autorizacion_padres" hidden
+                                                <input type="file" name="autorizacion_padres" hidden accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
                                                     id="autorizacion_padres" class="form-control"
                                                     wire:model="autorizacion_padres"
                                                     placeholder="Ingrese el certificado de emancipacion o permiso de tutores"
                                                     autocomplete="off">
                                             </div>
-                                            <button type="button" class="btn btn-primary"
+                                            <a type="button" class="btn btn-primary"
                                                 x-on:click="$('#autorizacion_padres').click()">
                                                 <i class="fas fa-upload"></i>
                                                 Subir Archivo
-                                            </button>
+                                            </a>
                                             <!-- Vista previa si existe el archivo -->
                                             <div class="border mt-3 d-flex text-center justify-content-center align-items-center"
                                                 style=" height: 150px; width: 150px;">
@@ -354,8 +353,8 @@
                         <div class="card-header" data-card-widget="collapse" style="cursor: pointer;">
                             <h3 class="card-title">Domicilio</h3>
                             <div class="card-tools">
-                                <button type="button" class="btn btn-tool"><i class="fas fa-square"></i>
-                                </button>
+                                <a type="button" class="btn btn-tool"><i class="fas fa-square"></i>
+                                </a>
                             </div>
                             <!-- /.card-tools -->
                         </div>
@@ -463,16 +462,16 @@
                                         <label for="certificado_domicilio">Certificado de Domicilio</label>
                                         <span class="d-tooltip parpadea" data-toggle="tooltip" data-placement="top"
                                             title="Campo obligatorio">*</span>
-                                        <input type="file" name="certificado_domicilio" hidden
+                                        <input type="file" name="certificado_domicilio" hidden accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
                                             id="certificado_domicilio" class="form-control"
                                             wire:model="certificado_domicilio"
                                             placeholder="Ingrese el certificado de domicilio" autocomplete="off">
                                     </div>
-                                    <button type="button" class="btn btn-primary"
+                                    <a type="button" class="btn btn-primary"
                                         x-on:click="$('#certificado_domicilio').click()">
                                         <i class="fas fa-upload"></i>
                                         Subir Archivo
-                                    </button>
+                                    </a>
                                     <!-- Vista previa si existe el archivo -->
                                     <div class="border mt-3 d-flex text-center justify-content-center align-items-center"
                                         style=" height: 150px; width: 150px;">
@@ -529,8 +528,8 @@
                         <div class="card-header" data-card-widget="collapse" style="cursor: pointer;">
                             <h3 class="card-title">Familiares a Cargo</h3>
                             <div class="card-tools">
-                                <button type="button" class="btn btn-tool"><i class="fas fa-square"></i>
-                                </button>
+                                <a type="button" class="btn btn-tool"><i class="fas fa-square"></i>
+                                </a>
                             </div>
                             <!-- /.card-tools -->
                         </div>
@@ -569,7 +568,7 @@
                                             id="nombre_familiar"
                                             class="form-control @if (!$errors->get('') && $this->nombre_familiar != null) border-success is-valid @endif  @error('nombre_familiar') border-danger is-invalid @enderror"
                                             x-on:input="$wire.set('nombre_familiar', $('#nombre_familiar').val());"
-                                            placeholder="Ingrese el nombre_familiar" autocomplete="off">
+                                            placeholder="Ingrese el nombre del familiar" autocomplete="off">
                                         @error('nombre_familiar')
                                             <span class="d-block text-danger invalid-feedback">{{ $message }}</span>
                                         @enderror
@@ -585,7 +584,7 @@
                                             id="apellido_familiar"
                                             class="form-control @if (!$errors->get('') && $this->apellido_familiar != null) border-success is-valid @endif @error('apellido_familiar') border-danger is-invalid @enderror"
                                             x-on:input="$wire.set('apellido_familiar', $('#apellido_familiar').val());"
-                                            placeholder="Ingrese el apellido_familiar" autocomplete="off">
+                                            placeholder="Ingrese el apellido del familiar" autocomplete="off">
                                         @error('apellido_familiar')
                                             <span class="d-block text-danger invalid-feedback">{{ $message }}</span>
                                         @enderror
@@ -677,17 +676,17 @@
                                             <label for="certificado_familiar.*">Certificado de familiar a cargo</label>
                                             <span class="d-tooltip parpadea" data-toggle="tooltip"
                                                 data-placement="top" title="Campo obligatorio">*</span>
-                                            <input type="file" name="certificado_familiar" hidden
+                                            <input type="file" name="certificado_familiar" hidden accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
                                                 id="certificado_familiar" class="form-control"
                                                 wire:model="certificado_familiar"
                                                 placeholder="Ingrese el certificado de discapacidad"
                                                 autocomplete="off">
                                         </div>
-                                        <button type="button" class="btn btn-primary"
+                                        <a type="button" class="btn btn-primary"
                                             x-on:click="$('#certificado_familiar').click()">
                                             <i class="fas fa-upload"></i>
                                             Subir Archivo
-                                        </button>
+                                        </a>
                                         <!-- Vista previa si existe el archivo -->
                                         <div class="border mt-3 d-flex text-center justify-content-center align-items-center"
                                             style=" height: 150px; width: 150px;">
@@ -742,10 +741,10 @@
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col">
-                                        <button class="btn btn-primary" x-on:click="$wire.agregarFamiliar()">
+                                        <a class="btn btn-primary" x-on:click="$wire.agregarFamiliar()">
                                             <i class="fas fa-user"></i>
                                             Cargar Datos del Familiar
-                                        </button>
+                                        </a>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
@@ -786,14 +785,14 @@
                                                                 </div>
                                                             @endif
                                                         <td>
-                                                            <button class="btn btn-danger"
+                                                            <a class="btn btn-danger"
                                                                 onclick="eliminar_familiar('{{ $familiar['dni'] }}')">
                                                                 <i class="fas fa-trash"></i>
-                                                            </button>
-                                                            <button class="btn btn-primary"
+                                                            </a>
+                                                            <a class="btn btn-primary"
                                                                 onclick="editar_familiar('{{ $familiar['dni'] }}')">
                                                                 <i class="fas fa-edit"></i>
-                                                            </button>
+                                                            </a>
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -820,8 +819,8 @@
                         <div class="card-header" data-card-widget="collapse" style="cursor: pointer;">
                             <h3 class="card-title">Obra Social</h3>
                             <div class="card-tools">
-                                <button type="button" class="btn btn-tool"><i class="fas fa-square"></i>
-                                </button>
+                                <a type="button" class="btn btn-tool"><i class="fas fa-square"></i>
+                                </a>
                             </div>
                             <!-- /.card-tools -->
                         </div>
@@ -901,8 +900,8 @@
                         <div class="card-header" data-card-widget="collapse" style="cursor: pointer;">
                             <h3 class="card-title">Información y Contactos de Emergencia</h3>
                             <div class="card-tools">
-                                <button type="button" class="btn btn-tool"><i class="fas fa-square"></i>
-                                </button>
+                                <a type="button" class="btn btn-tool"><i class="fas fa-square"></i>
+                                </a>
                             </div>
                             <!-- /.card-tools -->
                         </div>
@@ -986,10 +985,10 @@
                             <div class="row mb-3">
                                 <!-- Btn agregar contacto de emergencia -->
                                 <div class="col">
-                                    <button class="btn btn-primary" x-on:click="$wire.agregarContactoEmergencia()">
+                                    <a class="btn btn-primary" x-on:click="$wire.agregarContactoEmergencia()">
                                         <i class="fas fa-user"></i>
                                         Cargar Datos del Contacto
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -1011,14 +1010,14 @@
                                                     <td>{{ $contacto['telefono'] }}</td>
                                                     <td>{{ $contacto['email'] }}</td>
                                                     <td>
-                                                        <button class="btn btn-danger"
+                                                        <a class="btn btn-danger"
                                                             onclick="eliminar_contacto('{{ $contacto['telefono'] }}')">
                                                             <i class="fas fa-trash"></i>
-                                                        </button>
-                                                        <button class="btn btn-primary"
+                                                        </a>
+                                                        <a class="btn btn-primary"
                                                             onclick="editar_contacto('{{ $contacto['telefono'] }}')">
                                                             <i class="fas fa-edit"></i>
-                                                        </button>
+                                                        </a>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -1031,8 +1030,8 @@
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center mt-2">
-                        <button class="btn btn-primary" x-on:click="$wire.previousStep()">←</button>
-                        <button class="btn btn-primary" x-on:click="$wire.nextStep()">→</button>
+                        <a class="btn btn-primary" x-on:click="$wire.previousStep()">←</a>
+                        <a class="btn btn-primary" x-on:click="$wire.nextStep()">→</a>
                     </div>
                 </div>
 
@@ -1048,8 +1047,8 @@
                         <div class="card-header" data-card-widget="collapse" style="cursor: pointer;">
                             <h3 class="card-title">Datos del Puesto de Trabajo</h3>
                             <div class="card-tools">
-                                <button type="button" class="btn btn-tool"><i class="fas fa-square"></i>
-                                </button>
+                                <a type="button" class="btn btn-tool"><i class="fas fa-square"></i>
+                                </a>
                             </div>
                             <!-- /.card-tools -->
                         </div>
@@ -1077,9 +1076,60 @@
                                         <span class="d-block text-success valid-feedback">Campo correcto</span>
                                     @endif
                                 </div>
-                                <div class="col"></div>
-                                <div class="col"></div>
-                                <div class="col"></div>
+                                <div class="col">
+                                    <div wire:ignore>
+                                        <label for="hora_entrada">Hora de Entrada</label>
+                                        <span class="d-tooltip parpadea" data-toggle="tooltip" data-placement="top"
+                                            title="Campo obligatorio">*</span>
+                                        <input name="hora_entrada" id="hora_entrada" class="flatpickr form-control"
+                                            placeholder="Seleccione la hora de entrada">
+                                    </div>
+                                    @error('hora_entrada')
+                                        <span class="d-block text-danger invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                    @if (!$errors->get('hora_entrada') && $this->hora_entrada != null)
+                                        <span class="d-block text-success valid-feedback">Campo correcto</span>
+                                    @endif
+                                </div>
+                                <div class="col">
+                                    <div wire:ignore>
+                                        <label for="hora_salida">Hora de Salida</label>
+                                        <span class="d-tooltip parpadea" data-toggle="tooltip" data-placement="top"
+                                            title="Campo obligatorio">*</span>
+                                        <input name="hora_salida" id="hora_salida" class="flatpickr form-control"
+                                            placeholder="Seleccione la hora de entrada">
+                                    </div>
+                                    @error('hora_salida')
+                                        <span class="d-block text-danger invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                    @if (!$errors->get('hora_salida') && $this->hora_salida != null)
+                                        <span class="d-block text-success valid-feedback">Campo correcto</span>
+                                    @endif
+                                </div>
+                                <div class="col">
+                                    <label for="sueldo">Sueldo Bruto</label>
+                                    <span class="d-tooltip parpadea" data-toggle="tooltip" data-placement="top"
+                                        title="Campo obligatorio">*</span>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">$</span>
+                                        </div>
+                                        <input wire:model="sueldo" type="number" name="sueldo" id="sueldo"
+                                            aria-describedby="basic-addon1" step=".01"
+                                            class="form-control 
+                                    @if (!$errors->get('') && $this->sueldo != null) border-success is-valid @endif  
+                                    @error('sueldo') border-danger is-invalid @enderror"
+                                            x-on:input="$wire.set('sueldo', $('#sueldo').val());" placeholder="0.00"
+                                            autocomplete="off">
+                                    </div>
+
+                                    @error('sueldo')
+                                        <span class="d-block text-danger invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                    @if (!$errors->get('sueldo') && $this->sueldo != null)
+                                        <span class="d-block text-success valid-feedback">Campo correcto</span>
+                                    @endif
+                                </div>
                             </div>
                             <p>Información de ingreso al puesto de trabajo</p>
                             <div class="row mb-3">
@@ -1164,16 +1214,16 @@
                                             <label for="contrato_trabajo.*">Contrato de Trabajo</label>
                                             <span class="d-tooltip parpadea" data-toggle="tooltip"
                                                 data-placement="top" title="Campo obligatorio">*</span>
-                                            <input type="file" name="contrato_trabajo" hidden
+                                            <input type="file" name="contrato_trabajo" hidden accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
                                                 id="contrato_trabajo" class="form-control"
                                                 wire:model="contrato_trabajo"
                                                 placeholder="Ingrese el contrato de trabajo" autocomplete="off">
                                         </div>
-                                        <button type="button" class="btn btn-primary"
+                                        <a type="button" class="btn btn-primary"
                                             x-on:click="$('#contrato_trabajo').click()">
                                             <i class="fas fa-upload"></i>
                                             Subir Archivo
-                                        </button>
+                                        </a>
                                         <!-- Vista previa si existe el archivo -->
                                         <div class="border mt-3 d-flex text-center justify-content-center align-items-center"
                                             style=" height: 150px; width: 150px;">
@@ -1238,8 +1288,8 @@
                         <div class="card-header" data-card-widget="collapse" style="cursor: pointer;">
                             <h3 class="card-title">Competencias Satisfactorias del Empleado</h3>
                             <div class="card-tools">
-                                <button type="button" class="btn btn-tool"><i class="fas fa-square"></i>
-                                </button>
+                                <a type="button" class="btn btn-tool"><i class="fas fa-square"></i>
+                                </a>
                             </div>
                             <!-- /.card-tools -->
                         </div>
@@ -1267,7 +1317,8 @@
                                     </div>
                                 @endforeach
                                 @if ($competencias_selected == [])
-                                    <span class="d-block text-danger invalid-feedback">Se requiere al menos una competencia</span>
+                                    <span class="d-block text-danger invalid-feedback">Se requiere al menos una
+                                        competencia</span>
                                 @else
                                     <span class="d-block text-success valid-feedback">Campo correcto</span>
                                 @endif
@@ -1277,16 +1328,16 @@
                                             <label for="currirulum_vitae.*">Currículum Vitae</label>
                                             <span class="d-tooltip parpadea" data-toggle="tooltip"
                                                 data-placement="top" title="Campo obligatorio">*</span>
-                                            <input type="file" name="currirulum_vitae" hidden
+                                            <input type="file" name="currirulum_vitae" hidden accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
                                                 id="currirulum_vitae" class="form-control"
                                                 wire:model="currirulum_vitae"
                                                 placeholder="Ingrese el currículum vitae" autocomplete="off">
                                         </div>
-                                        <button type="button" class="btn btn-primary"
+                                        <a type="button" class="btn btn-primary"
                                             x-on:click="$('#currirulum_vitae').click()">
                                             <i class="fas fa-upload"></i>
                                             Subir Archivo
-                                        </button>
+                                        </a>
                                         <!-- Vista previa si existe el archivo -->
                                         <div class="border mt-3 d-flex text-center justify-content-center align-items-center"
                                             style=" height: 150px; width: 150px;">
@@ -1351,12 +1402,12 @@
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center mt-2">
-                        <button class="btn btn-primary" x-on:click="$wire.previousStep()">←</button>
+                        <a class="btn btn-primary" x-on:click="$wire.previousStep()">←</a>
                         <button class="btn btn-primary" type="submit">
                             <i class="fas fa-save"></i>
                             Contratar Empleado
                         </button>
-                        <button class="btn btn-primary" x-on:click="$wire.nextStep()">→</button>
+                        <a class="btn btn-primary" x-on:click="$wire.nextStep()">→</a>
                     </div>
                 </div>
             </div>
@@ -1470,12 +1521,9 @@
         Livewire.on('actualizar', function() {
             // delay for 1 second
             setTimeout(function() {
-                $('.tipo_documento').select2({
-                    placeholder: 'Seleccione una opción',
-                });
-
                 $('#tipo_jornadas_selected').select2({
                     placeholder: 'Seleccione una opción',
+                    width: '100%',
                 }).on('change', function() {
                     // Modificar
                     @this.set('tipo_jornadas_selected', $('#tipo_jornadas_selected')
@@ -1484,6 +1532,7 @@
 
                 $('#tipo_contratos_selected').select2({
                     placeholder: 'Seleccione una opción',
+                    width: '100%',
                 }).on('change', function() {
                     // Modificar
                     @this.set('tipo_contratos_selected', $('#tipo_contratos_selected')
@@ -1492,6 +1541,7 @@
 
                 $('#obra_social_selected').select2({
                     placeholder: 'Seleccione una opción',
+                    width: '100%',
                 }).on('change', function() {
                     // Modificar
                     @this.set('obra_social_selected', $('#obra_social_selected').val());
@@ -1499,6 +1549,7 @@
 
                 $('#tipo_relacion_familiar_selected').select2({
                     placeholder: 'Seleccione una opción',
+                    width: '100%',
                 }).on('change', function() {
                     // Modificar
                     @this.set('tipo_relacion_familiar_selected', $(
@@ -1507,6 +1558,7 @@
 
                 $('#sexo_selected_familiar').select2({
                     placeholder: 'Seleccione una opción',
+                    width: '100%',
                 }).on('change', function() {
                     // Modificar
                     @this.set('sexo_selected_familiar', $('#sexo_selected_familiar')
@@ -1515,6 +1567,7 @@
 
                 $('#puesto_de_trabajo_selected').select2({
                     placeholder: 'Seleccione una opción',
+                    width: '100%',
                 }).on('change', function() {
                     // Modificar
                     @this.set('puesto_de_trabajo_selected', $(
@@ -1565,10 +1618,38 @@
                     },
                 });
                 $("#fecha_vencimiento").removeAttr('readonly')
+
+                $("#hora_entrada").flatpickr({
+                    "locale": es.Spanish,
+                    enableTime: true,
+                    noCalendar: true,
+                    dateFormat: "H:i",
+                    "onChange": function() {
+                        // Modificar
+                        @this.set('hora_entrada', $(
+                            '#hora_entrada').val());
+                    },
+                });
+                $("#hora_entrada").removeAttr('readonly')
+
+                $("#hora_salida").flatpickr({
+                    "locale": es.Spanish,
+                    enableTime: true,
+                    noCalendar: true,
+                    dateFormat: "H:i",
+                    "onChange": function() {
+                        // Modificar
+                        @this.set('hora_salida', $(
+                            '#hora_salida').val());
+                    },
+                });
+                $("#hora_salida").removeAttr('readonly')
+
             }, 200);
         })
 
-        Livewire.on('errorArchivo', function(params) {
+        Livewire.on('error_critico', function(params) {
+
             const Toast = Sweetalert2.mixin({
                 toast: true,
                 position: "top-end",
@@ -1586,6 +1667,33 @@
             });
         });
 
+        Livewire.on('success-contrato', function(message) {
+            Sweetalert2.fire({
+                title: 'Guardado',
+                text: message[0],
+                icon: 'success',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Aceptar',
+                allowOutsideClick: false
+            }).then((result) => {
+                @this.clear();
+            });
+
+        });
+
+        Livewire.on('error-contrato', function(message) {
+            Sweetalert2.fire({
+                title: 'Error',
+                text: message[0],
+                icon: 'error',
+                showCancelButton: false,
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Aceptar',
+                allowOutsideClick: false
+            })
+        });
+
         window.stepper = new Stepper($('.bs-stepper')[0], {
             linear: false,
             animation: true
@@ -1593,6 +1701,7 @@
 
         $('#puesto_de_trabajo_selected').select2({
             placeholder: 'Seleccione una opción',
+            width: '100%',
         }).on('change', function() {
             // Modificar
             @this.set('puesto_de_trabajo_selected', $(
@@ -1627,8 +1736,35 @@
         });
         $("#fecha_vencimiento").removeAttr('readonly')
 
+        $("#hora_entrada").flatpickr({
+            "locale": es.Spanish,
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: "H:i",
+            "onChange": function() {
+                // Modificar
+                @this.set('hora_entrada', $(
+                    '#hora_entrada').val());
+            },
+        });
+        $("#hora_entrada").removeAttr('readonly')
+
+        $("#hora_salida").flatpickr({
+            "locale": es.Spanish,
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: "H:i",
+            "onChange": function() {
+                // Modificar
+                @this.set('hora_salida', $(
+                    '#hora_salida').val());
+            },
+        });
+        $("#hora_salida").removeAttr('readonly')
+
         $('#tipo_jornadas_selected').select2({
             placeholder: 'Seleccione una opción',
+            width: '100%',
         }).on('change', function() {
             // Modificar
             @this.set('tipo_jornadas_selected', $('#tipo_jornadas_selected').val());
@@ -1636,6 +1772,7 @@
 
         $('#tipo_contratos_selected').select2({
             placeholder: 'Seleccione una opción',
+            width: '100%',
         }).on('change', function() {
             // Modificar
             @this.set('tipo_contratos_selected', $('#tipo_contratos_selected').val());
@@ -1643,7 +1780,7 @@
 
         $('#pais_selected').select2({
             placeholder: 'Seleccione una opción',
-            width: 'resolve',
+            width: '100%',
         }).on('change', function() {
             // Modificar
             @this.set('pais_selected', $('#pais_selected').val());
@@ -1667,7 +1804,7 @@
                     $('#provincia_selected').empty();
                     $('#provincia_selected').select2({
                         placeholder: 'Seleccione una opción',
-                        width: 'resolve',
+                        width: '100%',
                         disabled: () => {
                             if ($('#pais_selected').val() == '') {
                                 return true
@@ -1700,7 +1837,7 @@
                                 $('#municipio_selected').empty();
                                 $('#municipio_selected').select2({
                                     placeholder: 'Seleccione una opción',
-                                    width: 'resolve',
+                                    width: '100%',
                                     disabled: () => {
                                         if ($('#provincia_selected')
                                             .val() == '') {
@@ -1726,7 +1863,7 @@
 
         $('#provincia_selected').select2({
             placeholder: 'Seleccione una opción',
-            width: 'resolve',
+            width: '100%',
             disabled: () => {
                 if ($('#pais_selected').val() == '') {
                     return true
@@ -1738,7 +1875,7 @@
 
         $('#municipio_selected').select2({
             placeholder: 'Seleccione una opción',
-            width: 'resolve',
+            width: '100%',
             disabled: () => {
                 if ($('#provincia_selected').val() == '') {
                     return true
@@ -1750,7 +1887,7 @@
 
         $('#sexo_selected').select2({
             placeholder: 'Seleccione una opción',
-            width: 'resolve',
+            width: '100%',
         }).on('change', function() {
             // Modificar
             @this.set('sexo_selected', $('#sexo_selected').val());
@@ -1758,7 +1895,7 @@
 
         $('#estado_civil').select2({
             placeholder: 'Seleccione una opción',
-            width: 'resolve',
+            width: '100%',
         }).on('change', function() {
             // Modificar
             @this.set('estado_civil', $('#estado_civil').val());

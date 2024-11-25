@@ -3,7 +3,7 @@
 @section('title', 'EMPLEADOS')
 
 @section('content_header')
-    <h1>AGREGAR NUEVO EMPLEADO</h1>
+    <h1>CONTRATAR UN NUEVO EMPLEADO</h1>
 @stop
 
 @section('content')

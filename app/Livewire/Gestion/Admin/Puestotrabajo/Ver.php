@@ -2,8 +2,10 @@
 
 namespace App\Livewire\Gestion\Admin\Puestotrabajo;
 
+use App\Models\Empresa;
 use App\Models\PuestoTrabajo;
 use App\Models\TipoCapacidad;
+use Carbon\Carbon;
 use Livewire\Component;
 
 class Ver extends Component
@@ -13,6 +15,8 @@ class Ver extends Component
     public $tareas;
     public $tipos_capacidades;
     public $tipos_capacidades_puesto;
+    public $empresa;
+    public $anio_inicio;
     // listeners
     protected $listeners = [
         'verPuestoTrabajo' => 'verPuestoTrabajo',
@@ -41,6 +45,8 @@ class Ver extends Component
 
     public function render()
     {
+        $this->empresa = Empresa::where('nombre', 'Morfeo S.A.')->first();
+        $this->anio_inicio = Carbon::parse($this->empresa->inicio_actividades)->format('Y');
         return view('livewire.gestion.admin.puestotrabajo.ver');
     }
 }

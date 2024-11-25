@@ -9,13 +9,13 @@ class DocumentoCertificado extends Model
 {
     use HasFactory;
 
-    protected $table = 'documento_certificado';
+    protected $table = 'documentos_certificados';
 
     protected $fillable = [
         'id_tipo_documento',
         'id_persona',
         'nombre_archivo',
-        'descripcion',
+        'detalle',
         'estado'
     ];
 

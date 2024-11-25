@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::create('contratos', function (Blueprint $table) {
             $table->id();
             $table->string('nombre_archivo');
+            $table->time('hora_entrada');
+            $table->time('hora_salida');
+            $table->decimal('sueldo', 999, 2);
             $table->date('fecha_vencimiento');
             $table->boolean('estado');
             $table->unsignedBigInteger('id_empleado');

@@ -11,6 +11,9 @@ class Contrato extends Model
 
     protected $fillable = [
         'nombre_archivo',
+        'hora_entrada',
+        'hora_salida',
+        'sueldo',
         'fecha_vencimiento',
         'estado',
         'id_tipo_contrato',

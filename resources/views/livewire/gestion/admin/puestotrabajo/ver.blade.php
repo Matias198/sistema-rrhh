@@ -34,7 +34,7 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th colspan="4">Morfeo S.A</th>
+                                    <th colspan="4">{{ $empresa->nombre }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -128,6 +128,12 @@
                     }
                 };
 
+                const nombre_empresa = '{{ $empresa->nombre }}';
+                const razon_social = '{{ $empresa->razon_social }}';
+                const cuit = '{{ $empresa->cuit }}';
+                const ubicacion = '{{ $empresa->ubicacion }}';
+                const anio_inicio = '{{ $anio_inicio }}';
+
                 // New Promise-based usage:
                 // Genera el PDF con el pie de página y fecha/hora
                 html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
@@ -147,18 +153,18 @@
                         });
                     pdf.setFontSize(8);
                     pdf.text("Empresa:", 10, 15);
-                    pdf.text("Morfeo S.A.", 40, 15);
+                    pdf.text(`${nombre_empresa}`, 40, 15);
                     pdf.text("Razón Social:", 10, 20);
-                    pdf.text("Sociedad Anónima", 40, 20);
+                    pdf.text(`${razon_social}`, 40, 20);
                     pdf.text("CUIT:", 10, 25);
-                    pdf.text("30514013846", 40, 25);
+                    pdf.text(`${cuit}`, 40, 25);
 
 
                     pdf.text("Período:", pdf.internal.pageSize.getWidth() - 70, 15);
-                    pdf.text("2005 -" + new Date().getFullYear(), pdf.internal.pageSize.getWidth() -
+                    pdf.text(`${anio_inicio}` + " - " + new Date().getFullYear(), pdf.internal.pageSize.getWidth() -
                         40, 15);
                     pdf.text("Ubicación:", pdf.internal.pageSize.getWidth() - 70, 20);
-                    pdf.text("Buenos Aires, Argentina", pdf.internal.pageSize.getWidth() - 40, 20);
+                    pdf.text(`${ubicacion}`, pdf.internal.pageSize.getWidth() - 40, 20);
                     pdf.text("Fecha y hora:", pdf.internal.pageSize.getWidth() - 70, 25);
                     pdf.text(`${fechaHora}`, pdf.internal.pageSize.getWidth() - 40, 25);
                     
