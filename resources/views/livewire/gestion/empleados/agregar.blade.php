@@ -1668,17 +1668,25 @@
         });
 
         Livewire.on('success-contrato', function(message) {
-            Sweetalert2.fire({
-                title: 'Guardado',
-                text: message[0],
-                icon: 'success',
-                showCancelButton: false,
-                confirmButtonColor: '#3085d6',
-                confirmButtonText: 'Aceptar',
-                allowOutsideClick: false
-            }).then((result) => {
-                @this.clear();
+            const Toast = Sweetalert2.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Sweetalert2.stopTimer;
+                    toast.onmouseleave = Sweetalert2.resumeTimer;
+                }
             });
+            Toast.fire({
+                icon: "error",
+                title: params[0]
+            });
+
+            setTimeout(function() {
+                window.location.href('/gestion/empleados/success');
+            }, 1000);
 
         });
 

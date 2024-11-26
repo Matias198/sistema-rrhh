@@ -25,4 +25,10 @@ class CapacidadesTrabajo extends Model
     {
         return $this->belongsTo(TipoCapacidad::class, 'id_tipo_capacidad');
     }
+
+    // Muchos a muchos con empleados
+    public function empleados()
+    {
+        return $this->belongsToMany(Empleado::class, 'empleados_capacidades', 'id_capacidad', 'id_empleado');
+    }
 }

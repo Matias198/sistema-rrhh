@@ -7,6 +7,7 @@ import "./../../vendor/power-components/livewire-powergrid/dist/powergrid";
 // import "dropzone/dist/dropzone.css";
 
 // window.Dropzone = Dropzone;
+// window.SlimSelect = SlimSelect;
 
 document.addEventListener("DOMContentLoaded", function () { 
     function detectarCambioModoOscuro() {

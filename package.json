@@ -35,6 +35,7 @@
         "overlayscrollbars": "^2.10.0",
         "select2": "^4.1.0-rc.0",
         "sweetalert2": "^11.14.1",
-        "toastr": "^2.1.4"
+        "toastr": "^2.1.4",
+        "tom-select": "^2.4.1"
     }
 }

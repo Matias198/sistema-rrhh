@@ -67,4 +67,23 @@ class RenderController extends Controller
     {
         return view('renders.gestion.admin.dpto.departamentos');
     }
+
+    /**
+     * Renderiza la vista de Gestion de Empleados.
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function render_gestion_empleados_success(){
+        return view('alta.empleado.success');
+    }
+
+    /**
+     * Renderiza la vista de Gestion de Empleados.
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function render_gestion_empleados_ver($id_persona){
+        // EN la ruta se recibe el id de la persona
+        return view('renders.gestion.empleados.ver', compact('id_persona'));
+    }
 }

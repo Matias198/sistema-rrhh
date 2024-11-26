@@ -15,6 +15,8 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::get('/gestion/empleados/listar', [RenderController::class, 'render_gestion_empleados_listar'])->name('gestion-empleados-listar');
 Route::get('/gestion/empleados/nuevo', [RenderController::class, 'render_gestion_empleados_agregar'])->name('gestion-empleados-agregar');
+Route::get('/gestion/empleados/success', [RenderController::class, 'render_gestion_empleados_success'])->name('gestion-empleados-success');
+Route::get('/gestion/empleados/ver/{id_persona}', [RenderController::class, 'render_gestion_empleados_ver'])->name('gestion-empleados-ver');
 
 Route::get('/gestion/admin/roles', [RenderController::class, 'render_gestion_admin_roles'])->name('gestion-admin-roles'); 
 

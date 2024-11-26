@@ -55,7 +55,7 @@ return [
         ],
 
         'select' => [
-            'default' => 'tom',
+            'default' => 'slim',
 
             /*
              * TomSelect Options

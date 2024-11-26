@@ -581,9 +581,8 @@ class Agregar extends Component
                 $contacto->nombre = $contacto_data['nombre'];
                 $contacto->telefono = $contacto_data['telefono'];
                 $contacto->email = $contacto_data['email'];
-                $contacto->id_persona = $persona->id;
-                $contacto->save();
-                $persona->contactosEmergencia()->attach($contacto->id);
+                $contacto->id_persona = $persona->id;                
+                $persona->contactosEmergencia()->save($contacto);
             }
 
             // Crear empleado
@@ -599,7 +598,7 @@ class Agregar extends Component
             $empleado->fecha_ingreso = Carbon::createFromFormat('d-m-Y', $this->fecha_ingreso);
             $empleado->estado_laboral = 'Activo';
             $empleado->persona()->associate($persona->id);
-            $empleado->puestoTrabajo()->associate($this->puesto_de_trabajo_selected);
+            $empleado->puesto()->associate($this->puesto_de_trabajo_selected);
             $empleado->save();
 
             // Agregar contrato de trabajo
@@ -621,6 +620,7 @@ class Agregar extends Component
             $contrato->hora_entrada = $this->hora_entrada;
             $contrato->hora_salida = $this->hora_salida;
             $contrato->sueldo = $this->sueldo;
+            $contrato->estado = true;
             $contrato->fecha_vencimiento = Carbon::parse($this->fecha_vencimiento)->format('d-m-Y');
             $contrato->tipoJornada()->associate($this->tipo_jornadas_selected);
             $contrato->tipoContrato()->associate($this->tipo_contratos_selected);
@@ -628,12 +628,10 @@ class Agregar extends Component
             $contrato->save();
 
             // Asociar contrato a empleado
-            $empleado->contrato()->associate($contrato->id);
+            $empleado->contrato()->save($contrato);
 
             // Agregar competencias
-            foreach ($this->competencias_selected as $competencia) {
-                $empleado->competencias()->associate($competencia);
-            }
+            $empleado->competencias()->attach($this->competencias_selected);
 
             // Cargar curriculum vitae
             $archivo = $this->currirulum_vitae;
@@ -649,31 +647,25 @@ class Agregar extends Component
             $documentos_totales[] = $contrato_cv;
 
             foreach ($documentos_totales as $documento) {
-                //$persona->documentosCertificados()->save($documento_autorizacion);
-                //$persona->documentosCertificados()->save($documento_dni);
-                //$persona->documentosCertificados()->save($documento_domicilio);
-                //$persona->documentosCertificados()->save($documento_familiar);
-                //$persona->documentosCertificados()->save($contrato_trabajo);
-                //$persona->documentosCertificados()->save($contrato_cv);
                 $persona->documentosCertificados()->save($documento);
             }
 
             // Enviar mail con la contraseña
-            $empresa = Empresa::whre('nombre', 'Morfeo S.A.')->first();
+            $empresa = Empresa::where('nombre', 'Morfeo S.A.')->first();
             Mail::to($this->email)->send(new ContratoEmpleado($persona, $empleado, $user, $empresa));
+            
+            // Guardar cambios
+            DB::commit();
 
             $this->dispatch('success-contrato', 'Empleado contratado correctamente.');
-            DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
 
-            dd($documentos_totales, $e);
             // Eliminar todos los archivos subidos
-            if (!empty($documentos_totales)) {
-                foreach ($documentos_totales as $documento) {
-                    Storage::delete($documento->detalle);
-                    $documento->delete();
-                }
+            if (!empty($documentos_totales)) { 
+                Storage::deleteDirectory('public/' . $persona->dni);
+                // limpiar livewire-temp
+                // Storage::deleteDirectory('livewire-tmp');
             }
 
             $this->dispatch('error-contrato', 'Error al contratar al empleado. Mensaje: ' . $e->getMessage());

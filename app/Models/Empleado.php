@@ -24,7 +24,7 @@ class Empleado extends Model
 
     public function puesto()
     {
-        return $this->belongsTo(PuestoTrabajo::class, 'id_puesto');
+        return $this->belongsTo(PuestoTrabajo::class, 'id_puesto_trabajo');
     }
 
     public function contrato()
@@ -32,4 +32,9 @@ class Empleado extends Model
         return $this->hasOne(Contrato::class, 'id_empleado');
     } 
 
+    // Muchos a muchos con capacidades
+    public function competencias()
+    {
+        return $this->belongsToMany(CapacidadesTrabajo::class, 'empleados_capacidades', 'id_empleado', 'id_capacidad');
+    }
 }

@@ -322,6 +322,7 @@ return [
             'icon' => 'fa fa-users',
             'can' => 'gestionar_empleados',
             'url' => 'gestion/empleados/listar',
+            'active' => ['gestion/empleados/listar', 'gestion/empleados/ver/*'],
         ],
         [
             'text' => 'CONTRATAR EMPLEADO',
