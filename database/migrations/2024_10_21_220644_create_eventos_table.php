@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('eventos', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->date('start');
+            $table->date('end');
+           // $table->foreign('id_usuario')->references('id')->on('users');
+            $table->softDeletes();
             $table->timestamps();
-            $table->string('event_name');
-            $table->date('start_date');
-            $table->date('end_date');
+           
         });
     }
 

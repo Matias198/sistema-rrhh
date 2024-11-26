@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Pais;
 use App\Models\Persona;
 use App\Models\Sexo;
+use App\Models\Evento;
 use Carbon\Carbon;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -53,6 +54,7 @@ class DatabaseSeeder extends Seeder
     function crearRolesPermisos()
     {
         $user = User::find(1);
+        $user3 = User::find(3);
         $role1 = Role::create(['name' => 'DIRECTOR']); // administrador
         $role2 = Role::create(['name' => 'JEFE']); // rrhh (realiza contrataciones)
         $role3 = Role::create(['name' => 'EMPLEADO']); // empleado
@@ -71,6 +73,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $user->assignRole($role1);
+        $user3->assignRole($role1);
         $user->save();
     }
 
@@ -254,7 +257,26 @@ class DatabaseSeeder extends Seeder
             ]);
         }
     }
+    // Crear eventos
+    function crearEventos()
+    {
+        $eventos = [
+            ['title' => 'Descanso',
+            'start' => '2024/11/01' ,
+            'end' => '2024/11/01' ],
 
+            ['title' => 'Meet',
+            'start' => '2024/11/02' ,
+            'end' => '2024/11/02' ],
+
+            ['title' => 'Meet 2',
+            'start' => '2024/11/03' ,
+            'end' => '2024/11/03' ],
+        ];
+        foreach ($eventos as $evento){
+            Evento::create($evento);
+        }
+    }
     /**
      * Seed the application's database.
      */
@@ -268,5 +290,6 @@ class DatabaseSeeder extends Seeder
         $this->crearPersonas();
         $this->crearTiposCapacidades();
         $this->crearDepartamentos();
+        $this->crearEventos();
     }
 }

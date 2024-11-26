@@ -18,7 +18,9 @@ Route::get('/gestion/empleados/nuevo', [RenderController::class, 'render_gestion
 
 Route::get('/gestion/admin/roles', [RenderController::class, 'render_gestion_admin_roles'])->name('gestion-admin-roles');
 // eventos
-Route::get('/gestion/eventos/agregar', [RenderController::class, 'render_gestion_eventos_agregar']);
+//Route::get('/gestion/eventos/agregar', [RenderController::class, 'render_gestion_eventos_agregar']);
+Route::post('/gestion/eventos/agregar', [RenderController::class, 'render_gestion_eventos_agregar'])->name('gestion-eventos-agregar');
+
 Route::get('/gestion/admin/roles', [RenderController::class, 'render_gestion_admin_roles'])->name('gestion-admin-roles'); 
 
 Route::get('/gestion/admin/puesto', [RenderController::class, 'render_gestion_admin_puesto_trabajos'])->name('gestion-admin-puesto-trabajos');
