@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('dni')->unique();
             $table->string('cuil')->unique();
             $table->string('calle');
-            $table->string('altura');
+            $table->string('altura')->nullable();
+            $table->string('departamento')->nullable();
             $table->date('fecha_nacimiento');
             $table->unsignedBigInteger('id_sexo');
             $table->unsignedBigInteger('id_estado_civil');

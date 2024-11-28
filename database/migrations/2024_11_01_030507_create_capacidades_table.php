@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('descripcion');
             $table->unsignedBigInteger('id_tipo_capacidad');
             $table->foreign('id_tipo_capacidad')->references('id')->on('tipo_capacidads');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -216,9 +216,10 @@
                                         <label for="copia_dni">Fotocopia del DNI</label>
                                         <span class="d-tooltip parpadea" data-toggle="tooltip" data-placement="top"
                                             title="Campo obligatorio">*</span>
-                                        <input type="file" name="copia_dni" hidden id="copia_dni" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
-                                            class="form-control" wire:model="copia_dni" 
-                                            placeholder="Ingrese la fotocopia del DNI" autocomplete="off">
+                                        <input type="file" name="copia_dni" hidden id="copia_dni"
+                                            accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" class="form-control"
+                                            wire:model="copia_dni" placeholder="Ingrese la fotocopia del DNI"
+                                            autocomplete="off">
                                     </div>
                                     <a type="button" class="btn btn-primary" x-on:click="$('#copia_dni').click()">
                                         <i class="fas fa-upload"></i>
@@ -277,9 +278,9 @@
                                                     Permiso</label>
                                                 <span class="d-tooltip parpadea" data-toggle="tooltip"
                                                     data-placement="top" title="Campo obligatorio">*</span>
-                                                <input type="file" name="autorizacion_padres" hidden accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
-                                                    id="autorizacion_padres" class="form-control"
-                                                    wire:model="autorizacion_padres"
+                                                <input type="file" name="autorizacion_padres" hidden
+                                                    accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" id="autorizacion_padres"
+                                                    class="form-control" wire:model="autorizacion_padres"
                                                     placeholder="Ingrese el certificado de emancipacion o permiso de tutores"
                                                     autocomplete="off">
                                             </div>
@@ -440,8 +441,8 @@
                                 <div class="col">
                                     <div>
                                         <label for="altura">Altura</label>
-                                        <span class="d-tooltip parpadea" data-toggle="tooltip" data-placement="top"
-                                            title="Campo obligatorio">*</span>
+                                        <span class="do-tooltip parpadea" data-toggle="tooltip" data-placement="top"
+                                            title="Campo opcional">?</span>
                                         <input type="number" name="altura" id="altura"
                                             class="form-control @if (!$errors->get('') && $this->altura != null) border-success is-valid @endif @error('altura') border-danger is-invalid @enderror"
                                             placeholder="Ingrese la altura" autocomplete="off"
@@ -454,7 +455,23 @@
                                         <span class="d-block text-success valid-feedback">Campo correcto</span>
                                     @endif
                                 </div>
-                                <div class="col"></div>
+                                <div class="col">
+                                    <div>
+                                        <label for="departamento">Departamento</label>
+                                        <span class="do-tooltip parpadea" data-toggle="tooltip" data-placement="top"
+                                            title="Campo opcional">?</span>
+                                        <input type="text" name="departamento" id="departamento"
+                                            class="form-control @if (!$errors->get('') && $this->departamento != null) border-success is-valid @endif @error('departamento') border-danger is-invalid @enderror"
+                                            placeholder="Ingrese el departamento" autocomplete="off"
+                                            x-on:input="$wire.set('departamento', $('#departamento').val());">
+                                    </div>
+                                    @error('departamento')
+                                        <span class="d-block text-danger invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                    @if (!$errors->get('departamento') && $this->departamento != null)
+                                        <span class="d-block text-success valid-feedback">Campo correcto</span>
+                                    @endif
+                                </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="col">
@@ -462,9 +479,9 @@
                                         <label for="certificado_domicilio">Certificado de Domicilio</label>
                                         <span class="d-tooltip parpadea" data-toggle="tooltip" data-placement="top"
                                             title="Campo obligatorio">*</span>
-                                        <input type="file" name="certificado_domicilio" hidden accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
-                                            id="certificado_domicilio" class="form-control"
-                                            wire:model="certificado_domicilio"
+                                        <input type="file" name="certificado_domicilio" hidden
+                                            accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" id="certificado_domicilio"
+                                            class="form-control" wire:model="certificado_domicilio"
                                             placeholder="Ingrese el certificado de domicilio" autocomplete="off">
                                     </div>
                                     <a type="button" class="btn btn-primary"
@@ -540,7 +557,7 @@
                                     El contratado @if ($nombre && $s_nombre && $apellido && $cuil)
                                         de nombre {{ $nombre . ' ' . $s_nombre . ' ' . $apellido }} cuyo CUIL es
                                         {{ $cuil }},
-                                    @endif declara bajo juramento poseer familiares a su cargo, ya
+                                    @endif afirma poseer familiares a su cargo, ya
                                     sea cónyuge, hijos u otros dependientes
                                     económicos, y se compromete a informar cualquier cambio que modifique el
                                     contenido de esta declaración.
@@ -676,9 +693,9 @@
                                             <label for="certificado_familiar.*">Certificado de familiar a cargo</label>
                                             <span class="d-tooltip parpadea" data-toggle="tooltip"
                                                 data-placement="top" title="Campo obligatorio">*</span>
-                                            <input type="file" name="certificado_familiar" hidden accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
-                                                id="certificado_familiar" class="form-control"
-                                                wire:model="certificado_familiar"
+                                            <input type="file" name="certificado_familiar" hidden
+                                                accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" id="certificado_familiar"
+                                                class="form-control" wire:model="certificado_familiar"
                                                 placeholder="Ingrese el certificado de discapacidad"
                                                 autocomplete="off">
                                         </div>
@@ -947,7 +964,48 @@
                                         <span class="d-block text-success valid-feedback">Campo correcto</span>
                                     @endif
                                 </div>
+                                <div class="col">
+                                    <label for="apellido_emergencia">Apellido del Contacto</label>
+                                    <span class="d-tooltip parpadea" data-toggle="tooltip" data-placement="top"
+                                        title="Campo obligatorio">*</span>
+                                    <input wire:model="apellido_emergencia" type="text" name="apellido_emergencia"
+                                        id="apellido_emergencia"
+                                        class="form-control @if (!$errors->get('') && $this->apellido_emergencia != null) border-success is-valid @endif  @error('apellido_emergencia') border-danger is-invalid @enderror"
+                                        x-on:input="$wire.set('apellido_emergencia', $('#apellido_emergencia').val());"
+                                        placeholder="Ingrese el nombre" autocomplete="off">
+                                    @error('apellido_emergencia')
+                                        <span class="d-block text-danger invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                    @if (!$errors->get('apellido_emergencia') && $this->apellido_emergencia != null)
+                                        <span class="d-block text-success valid-feedback">Campo correcto</span>
+                                    @endif
+                                </div>
 
+                                <div class="col">
+                                    <div wire:ignore>
+                                        <label for="tipo_relacion_familiar_selected_dos">Tipo de Relación</label>
+                                        <span class="d-tooltip parpadea" data-toggle="tooltip" data-placement="top"
+                                            title="Campo obligatorio">*</span>
+                                        <select name="tipo_relacion_familiar_selected_dos"
+                                            id="tipo_relacion_familiar_selected_dos" class="form-control select2"
+                                            aria-placeholder="Seleccione una opción">
+                                            <option selected value="">Seleccione una opcion</option>
+                                            @foreach ($relaciones_familiares as $relacion_familiar)
+                                                <option value="{{ $relacion_familiar->id }}">
+                                                    {{ $relacion_familiar->nombre }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    @error('tipo_relacion_familiar_selected_dos')
+                                        <span class="d-block text-danger invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                    @if (!$errors->get('tipo_relacion_familiar_selected_dos') && $this->tipo_relacion_familiar_selected_dos != null)
+                                        <span class="d-block text-success valid-feedback">Campo correcto</span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
                                 <div class="col">
                                     <label for="telefono_emergencia">Telefono de Emergencia</label>
                                     <span class="d-tooltip parpadea" data-toggle="tooltip" data-placement="top"
@@ -964,7 +1022,6 @@
                                         <span class="d-block text-success valid-feedback">Campo correcto</span>
                                     @endif
                                 </div>
-
                                 <div class="col">
                                     <label for="email_emergencia">Email de Emergencia</label>
                                     <span class="d-tooltip parpadea" data-toggle="tooltip" data-placement="top"
@@ -981,6 +1038,8 @@
                                         <span class="d-block text-success valid-feedback">Campo correcto</span>
                                     @endif
                                 </div>
+                                <div class="col"></div>
+
                             </div>
                             <div class="row mb-3">
                                 <!-- Btn agregar contacto de emergencia -->
@@ -998,8 +1057,10 @@
                                         <thead>
                                             <tr>
                                                 <th>Nombre</th>
+                                                <th>Apellido</th>
                                                 <th>Telefono</th>
                                                 <th>Email</th>
+                                                <th>Tipo de Relación</th>
                                                 <th>Acciones</th>
                                             </tr>
                                         </thead>
@@ -1007,8 +1068,10 @@
                                             @foreach ($contactos_emergencia as $contacto)
                                                 <tr>
                                                     <td>{{ $contacto['nombre'] }}</td>
+                                                    <td>{{ $contacto['apellido'] }}</td>
                                                     <td>{{ $contacto['telefono'] }}</td>
                                                     <td>{{ $contacto['email'] }}</td>
+                                                    <td>{{ $contacto['tipo_relacion'] }}</td>
                                                     <td>
                                                         <a class="btn btn-danger"
                                                             onclick="eliminar_contacto('{{ $contacto['telefono'] }}')">
@@ -1107,7 +1170,7 @@
                                     @endif
                                 </div>
                                 <div class="col">
-                                    <label for="sueldo">Sueldo Bruto</label>
+                                    <label for="sueldo">Sueldo Basico</label>
                                     <span class="d-tooltip parpadea" data-toggle="tooltip" data-placement="top"
                                         title="Campo obligatorio">*</span>
                                     <div class="input-group mb-3">
@@ -1214,9 +1277,9 @@
                                             <label for="contrato_trabajo.*">Contrato de Trabajo</label>
                                             <span class="d-tooltip parpadea" data-toggle="tooltip"
                                                 data-placement="top" title="Campo obligatorio">*</span>
-                                            <input type="file" name="contrato_trabajo" hidden accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
-                                                id="contrato_trabajo" class="form-control"
-                                                wire:model="contrato_trabajo"
+                                            <input type="file" name="contrato_trabajo" hidden
+                                                accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" id="contrato_trabajo"
+                                                class="form-control" wire:model="contrato_trabajo"
                                                 placeholder="Ingrese el contrato de trabajo" autocomplete="off">
                                         </div>
                                         <a type="button" class="btn btn-primary"
@@ -1328,9 +1391,9 @@
                                             <label for="currirulum_vitae.*">Currículum Vitae</label>
                                             <span class="d-tooltip parpadea" data-toggle="tooltip"
                                                 data-placement="top" title="Campo obligatorio">*</span>
-                                            <input type="file" name="currirulum_vitae" hidden accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
-                                                id="currirulum_vitae" class="form-control"
-                                                wire:model="currirulum_vitae"
+                                            <input type="file" name="currirulum_vitae" hidden
+                                                accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" id="currirulum_vitae"
+                                                class="form-control" wire:model="currirulum_vitae"
                                                 placeholder="Ingrese el currículum vitae" autocomplete="off">
                                         </div>
                                         <a type="button" class="btn btn-primary"
@@ -1556,6 +1619,15 @@
                         '#tipo_relacion_familiar_selected').val());
                 });
 
+                $('#tipo_relacion_familiar_selected_dos').select2({
+                    placeholder: 'Seleccione una opción',
+                    width: '100%',
+                }).on('change', function() {
+                    // Modificar
+                    @this.set('tipo_relacion_familiar_selected_dos', $(
+                        '#tipo_relacion_familiar_selected_dos').val());
+                });
+
                 $('#sexo_selected_familiar').select2({
                     placeholder: 'Seleccione una opción',
                     width: '100%',
@@ -1668,27 +1740,9 @@
         });
 
         Livewire.on('success-contrato', function(message) {
-            const Toast = Sweetalert2.mixin({
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.onmouseenter = Sweetalert2.stopTimer;
-                    toast.onmouseleave = Sweetalert2.resumeTimer;
-                }
-            });
-            Toast.fire({
-                icon: "error",
-                title: params[0]
-            });
-
-            setTimeout(function() {
-                window.location.href('/gestion/empleados/success');
-            }, 1000);
-
+            window.location.href = '/gestion/empleados/success';
         });
+
 
         Livewire.on('error-contrato', function(message) {
             Sweetalert2.fire({
@@ -1705,6 +1759,15 @@
         window.stepper = new Stepper($('.bs-stepper')[0], {
             linear: false,
             animation: true
+        });
+
+        $('#tipo_relacion_familiar_selected_dos').select2({
+            placeholder: 'Seleccione una opción',
+            width: '100%',
+        }).on('change', function() {
+            // Modificar
+            @this.set('tipo_relacion_familiar_selected_dos', $(
+                '#tipo_relacion_familiar_selected_dos').val());
         });
 
         $('#puesto_de_trabajo_selected').select2({

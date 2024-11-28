@@ -86,4 +86,14 @@ class RenderController extends Controller
         // EN la ruta se recibe el id de la persona
         return view('renders.gestion.empleados.ver', compact('id_persona'));
     }
+
+    /**
+     * Renderiza la vista de Gestion de Auditoria.
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function render_gestion_admin_auditoria(){
+        $auditorias = \OwenIt\Auditing\Models\Audit::all();
+        return view('renders.gestion.admin.auditoria', compact('auditorias'));
+    }
 }

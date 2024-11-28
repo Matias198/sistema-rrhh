@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class TipoRelacion extends Model
+class TipoRelacion extends Model implements Auditable
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes, \OwenIt\Auditing\Auditable;
 
     protected $table = 'tipos_relaciones';
 
@@ -19,5 +21,17 @@ class TipoRelacion extends Model
     public function personas_familiares()
     {
         return $this->hasMany(PersonaFamiliar::class, 'id_tipo_relacion');
+    }
+
+    // uno a muchos con tabla Contacto_Emergencia
+    public function contacto_emergencia()
+    {
+        return $this->hasMany(ContactoEmergencia::class, 'id_tipo_relacion');
+    }
+
+    // uno a muchos con tabla Familiares
+    public function familiares()
+    {
+        return $this->hasMany(Familiar::class, 'id_tipo_relacion');
     }
 }

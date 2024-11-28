@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('provincias', function (Blueprint $table) {
             $table->id();
             $table->string('codigo')->unique();
-            $table->string('nombre');
+            $table->string('nombre')->unique();
             $table->unsignedBigInteger('id_pais');
             $table->foreign('id_pais')->references('id')->on('pais');
-            //$table->softDeletes();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

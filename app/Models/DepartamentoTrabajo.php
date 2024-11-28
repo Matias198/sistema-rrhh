@@ -4,11 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class DepartamentoTrabajo extends Model
+class DepartamentoTrabajo extends Model implements Auditable
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes, \OwenIt\Auditing\Auditable;
 
+    protected $table = 'departamento_trabajos';
     protected $fillable = [
         'nombre',
         'descripcion',
@@ -18,5 +21,5 @@ class DepartamentoTrabajo extends Model
     public function puestosTrabajos()
     {
         return $this->hasMany(PuestoTrabajo::class, 'id_departamento_trabajo');
-    } 
+    }
 }

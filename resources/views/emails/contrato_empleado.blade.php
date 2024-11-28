@@ -38,11 +38,11 @@
         <p>¡Bienvenido/a a la empresa!</p>
         <p>Te informamos que has sido contratado/a para desempeñar el puesto de 
            <strong>{{ $empleado->puesto->titulo_puesto }}</strong>.</p>
-        <p>El contrato de trabajo se ha firmado el día {{ $empleado->fecha_ingreso }} y tendrá una hasta su vencimiento
-            el día de la fecha {{ $empleado->contrato->fecha_vencimiento }}.</p>
+        <p>El contrato de trabajo se ha firmado el día {{ Carbon\Carbon::parse($empleado->fecha_ingreso)->format('d-m-Y') }} y tendrá una hasta su vencimiento
+            el día de la fecha {{ Carbon\Carbon::parse($empleado->contrato->fecha_vencimiento)->format('d-m-Y') }}.</p>
         <p>El horario de trabajo será de {{ $empleado->contrato->hora_entrada }} a 
            {{ $empleado->contrato->hora_salida }}.</p>
-        <p>El salario mensual será de {{ $empleado->contrato->sueldo }} pesos Argentinos (ARS).</p>
+        <p>El sueldo basico será de {{ $empleado->contrato->sueldo }} pesos Argentinos (ARS).</p>
         <p>Su usuario es: {{ $empleado->persona->usuario->email }}</p>
         <p>Su contraseña es: {{ $empleado->persona->dni }}</p>
         <p>Esperamos que tu estancia en la empresa sea satisfactoria y que puedas desarrollarte profesionalmente.</p>

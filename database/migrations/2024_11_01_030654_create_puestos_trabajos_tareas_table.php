@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_tarea_trabajo');
             $table->foreign('id_tarea_trabajo')->references('id')->on('tarea_trabajos');
             $table->primary(['id_puesto_trabajo', 'id_tarea_trabajo']);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

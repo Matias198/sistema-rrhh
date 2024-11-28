@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('estado_civils', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
-            //$table->softDeletes();
+            $table->string('nombre')->unique();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

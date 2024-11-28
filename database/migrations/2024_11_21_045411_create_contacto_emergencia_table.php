@@ -14,10 +14,14 @@ return new class extends Migration
         Schema::create('contacto_emergencia', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->string('telefono');
-            $table->string('email');
+            $table->string('apellido');
+            $table->string('telefono')->unique()->nullable();
+            $table->string('email')->unique()->nullable();
             $table->unsignedBigInteger('id_persona');
             $table->foreign('id_persona')->references('id')->on('personas');
+            $table->unsignedBigInteger('id_tipo_relacion');
+            $table->foreign('id_tipo_relacion')->references('id')->on('tipos_relaciones');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

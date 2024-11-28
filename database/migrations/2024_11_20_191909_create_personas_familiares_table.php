@@ -18,9 +18,10 @@ return new class extends Migration
             $table->foreign('id_familiar')->references('id')->on('familiares');
             $table->unsignedBigInteger('id_tipo_relacion');
             $table->foreign('id_tipo_relacion')->references('id')->on('tipos_relaciones');
-            $table->string('detalle'); 
+            $table->string('detalle')->nullable(); 
             $table->boolean('estado')->default(true);
             $table->primary(['id_persona', 'id_familiar']);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

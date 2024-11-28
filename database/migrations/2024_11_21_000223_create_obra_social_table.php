@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('obras_sociales', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
+            $table->string('nombre')->unique();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

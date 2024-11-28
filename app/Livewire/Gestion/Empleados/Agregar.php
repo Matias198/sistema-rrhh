@@ -54,6 +54,7 @@ class Agregar extends Component
     public $municipio_selected;
     public $calle;
     public $altura;
+    public $departamento;
     public $estado_civil;
     public $estados_civiles;
     public $tiene_familiares = false;
@@ -64,6 +65,7 @@ class Agregar extends Component
     public $dni_familiar;
     public $fecha_nacimiento_familiar;
     public $tipo_relacion_familiar_selected;
+    public $tipo_relacion_familiar_selected_dos;
     public $relaciones_familiares;
     public $certificado_familiar;
     public $obras_sociales;
@@ -75,6 +77,7 @@ class Agregar extends Component
     public $certificado_domicilio;
     public $email;
     public $nombre_emergencia;
+    public $apellido_emergencia;
     public $telefono_emergencia;
     public $email_emergencia;
     public $contactos_emergencia = [];
@@ -115,7 +118,8 @@ class Agregar extends Component
             'provincia_selected' => 'required',
             'municipio_selected' => 'required',
             'calle' => 'required',
-            'altura' => 'required|numeric',
+            'altura' => 'numeric|nullable|min:0',
+            'departamento' => 'nullable|regex:/^[A-Za-z0-9\s]+$/',
             'estado_civil' => 'required',
 
             // Obra social
@@ -124,8 +128,9 @@ class Agregar extends Component
 
             // Contacto Emergencia
             'nombre_emergencia' => 'required|regex:/^[A-Za-z\s]+$/',
+            'apellido_emergencia' => 'required|regex:/^[A-Za-z\s]+$/',
             'telefono_emergencia' => 'required|regex:/^[\d]{4}-[\d]{6}$/',
-            'email_emergencia' => 'required|email',
+            'email_emergencia' => 'required|email|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/|unique:contacto_emergencia,email',
 
             // Contrato
             'email' => 'required|email|unique:users,email|regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/',
@@ -175,8 +180,9 @@ class Agregar extends Component
         'provincia_selected.required' => 'El campo de la provincia es obligatorio.',
         'municipio_selected.required' => 'El campo del municipio es obligatorio.',
         'calle.required' => 'El campo de la calle es obligatorio.',
-        'altura.required' => 'El campo de la altura es obligatorio.',
         'altura.numeric' => 'La altura debe ser un número.',
+        'altura.min' => 'La altura debe ser mayor a 0.',
+        'departamento.regex' => 'El departamento solo puede contener letras, números y espacios.',
         'estado_civil.required' => 'El campo del estado civil es obligatorio.',
 
         // Obra social
@@ -187,10 +193,13 @@ class Agregar extends Component
         // Contacto Emergencia
         'nombre_emergencia.required' => 'El campo del nombre es obligatorio.',
         'nombre_emergencia.regex' => 'El campo del nombre solo puede contener letras y espacios.',
+        'apellido_emergencia.required' => 'El campo del apellido es obligatorio.',
+        'apellido_emergencia.regex' => 'El campo del apellido solo puede contener letras y espacios.',
         'telefono_emergencia.required' => 'El campo del teléfono es obligatorio.',
         'telefono_emergencia.regex' => 'El teléfono debe ser en formato XXXX-XXXXXX donde las X son digitos. Debe especificar los guiones en las unidades de mil y millón.',
         'email_emergencia.required' => 'El campo del email es obligatorio.',
         'email_emergencia.email' => 'El email debe ser un email válido.',
+        'email_emergencia.unique' => 'El email ya se encuentra registrado en la base de datos.',
 
         'email.required' => 'El campo del email es obligatorio.',
         'email.email' => 'El email debe ser un email válido.',
@@ -331,7 +340,8 @@ class Agregar extends Component
             'provincia_selected' => 'required',
             'municipio_selected' => 'required',
             'calle' => 'required',
-            'altura' => 'required|numeric',
+            'altura' => 'numeric|nullable|min:0',
+            'departamento' => 'nullable|regex:/^[A-Za-z0-9\s]+$/',
             'estado_civil' => 'required',
 
             // Obra social
@@ -382,8 +392,9 @@ class Agregar extends Component
             'provincia_selected.required' => 'El campo de la provincia es obligatorio.',
             'municipio_selected.required' => 'El campo del municipio es obligatorio.',
             'calle.required' => 'El campo de la calle es obligatorio.',
-            'altura.required' => 'El campo de la altura es obligatorio.',
             'altura.numeric' => 'La altura debe ser un número.',
+            'altura.min' => 'La altura debe ser mayor a 0.',
+            'departamento.regex' => 'El departamento solo puede contener letras, números y espacios.',
             'estado_civil.required' => 'El campo del estado civil es obligatorio.',
 
             // Obra social
@@ -483,6 +494,7 @@ class Agregar extends Component
             $persona->cuil = $this->cuil;
             $persona->calle = $this->calle;
             $persona->altura = $this->altura;
+            $persona->departamento = $this->departamento;
             $persona->id_sexo = $this->sexo_selected;
             $persona->id_municipio = $this->municipio_selected;
             $persona->id_estado_civil = $this->estado_civil;
@@ -498,7 +510,7 @@ class Agregar extends Component
                 if (Carbon::createFromFormat('d-m-Y', $this->fecha_nacimiento)->diffInYears(Carbon::now()) < 18) {
                     $archivo = $this->autorizacion_padres;
                     $nombre = uniqid() . '.' . $archivo->guessExtension();
-                    $ruta = $archivo->storeAs('public/' . $persona->dni . '/autorizacion', $nombre);
+                    $ruta = $archivo->storeAs('archivos/' . $persona->dni . '/autorizacion', $nombre);
                     $documento_autorizacion = DocumentoCertificado::create([
                         'nombre_archivo' => $archivo->getClientOriginalName(),
                         'detalle' => $ruta,
@@ -514,7 +526,7 @@ class Agregar extends Component
             // Cargar copia de DNI
             $archivo = $this->copia_dni;
             $nombre = uniqid() . '.' . $archivo->guessExtension();
-            $ruta = $archivo->storeAs('public/' . $persona->dni . '/dni', $nombre);
+            $ruta = $archivo->storeAs('archivos/' . $persona->dni . '/dni', $nombre);
             $documento_dni = DocumentoCertificado::create([
                 'nombre_archivo' => $archivo->getClientOriginalName(),
                 'detalle' => $ruta,
@@ -527,7 +539,7 @@ class Agregar extends Component
             // Cargar certificado de residencia
             $archivo = $this->certificado_domicilio;
             $nombre = uniqid() . '.' . $archivo->guessExtension();
-            $ruta = $archivo->storeAs('public/' . $persona->dni . '/residencia', $nombre);
+            $ruta = $archivo->storeAs('archivos/' . $persona->dni . '/residencia', $nombre);
             $documento_domicilio = DocumentoCertificado::create([
                 'nombre_archivo' => $archivo->getClientOriginalName(),
                 'detalle' => $ruta,
@@ -552,10 +564,11 @@ class Agregar extends Component
                 foreach ($this->familiares_cargo as $familiar_data) {
                     $familiar = new Familiar();
                     $familiar->nombre = $familiar_data['nombre'];
-                    $familiar->apellido = $familiar_data['apellido'];
-                    $familiar->sexo = $familiar_data['sexo'];
+                    $familiar->apellido = $familiar_data['apellido']; 
                     $familiar->dni = $familiar_data['dni'];
                     $familiar->fecha_nacimiento = Carbon::parse($familiar_data['fecha_nacimiento'])->format('d-m-Y');
+                    $familiar->id_sexo = Sexo::where('nombre', $familiar_data['sexo'])->first()->id;
+                    $familiar->sexo()->associate(Sexo::where('nombre', $familiar_data['sexo'])->first()->id);
                     $familiar->save();
 
                     $persona->familiares()->attach($familiar->id, ['id_tipo_relacion' => TipoRelacion::where('nombre', $familiar_data['tipo_relacion'])->first()->id, 'detalle' => $familiar_data['tipo_relacion'], 'estado' => true]);
@@ -563,7 +576,7 @@ class Agregar extends Component
 
                     $archivo = $familiar_data['certificado'];
                     $nombre = uniqid() . '.' . $archivo->guessExtension();
-                    $ruta = $archivo->storeAs('public/' . $persona->dni . '/familiares/' . $familiar_data['dni'], $nombre);
+                    $ruta = $archivo->storeAs('archivos/' . $persona->dni . '/familiares/' . $familiar_data['dni'], $nombre);
                     $documento_familiar = DocumentoCertificado::create([
                         'nombre_archivo' => $archivo->getClientOriginalName(),
                         'detalle' => $ruta,
@@ -575,12 +588,14 @@ class Agregar extends Component
                 }
             }
 
-            // Agregar contactos de emergencia
+            // Agregar contactos de emergencia VERIFICAR
             foreach ($this->contactos_emergencia as $contacto_data) {
                 $contacto = new ContactoEmergencia();
                 $contacto->nombre = $contacto_data['nombre'];
+                $contacto->apellido = $contacto_data['apellido'];
                 $contacto->telefono = $contacto_data['telefono'];
                 $contacto->email = $contacto_data['email'];
+                $contacto->tipoRelacion()->associate(TipoRelacion::where('nombre', $contacto_data['tipo_relacion'])->first()->id);
                 $contacto->id_persona = $persona->id;                
                 $persona->contactosEmergencia()->save($contacto);
             }
@@ -595,7 +610,6 @@ class Agregar extends Component
 
             $empleado = new Empleado();
             $empleado->legajo = $legajo;
-            $empleado->fecha_ingreso = Carbon::createFromFormat('d-m-Y', $this->fecha_ingreso);
             $empleado->estado_laboral = 'Activo';
             $empleado->persona()->associate($persona->id);
             $empleado->puesto()->associate($this->puesto_de_trabajo_selected);
@@ -604,7 +618,7 @@ class Agregar extends Component
             // Agregar contrato de trabajo
             $archivo = $this->contrato_trabajo;
             $nombre = uniqid() . '.' . $archivo->guessExtension();
-            $ruta = $archivo->storeAs('public/' . $persona->dni . '/contrato', $nombre);
+            $ruta = $archivo->storeAs('archivos/' . $persona->dni . '/contrato', $nombre);
             $contrato_trabajo = DocumentoCertificado::create([
                 'nombre_archivo' => $archivo->getClientOriginalName(),
                 'detalle' => $ruta,
@@ -617,6 +631,7 @@ class Agregar extends Component
             // Crear contrato
             $contrato = new Contrato();
             $contrato->nombre_archivo = $archivo->getClientOriginalName();
+            $contrato->fecha_ingreso = Carbon::createFromFormat('d-m-Y', $this->fecha_ingreso);
             $contrato->hora_entrada = $this->hora_entrada;
             $contrato->hora_salida = $this->hora_salida;
             $contrato->sueldo = $this->sueldo;
@@ -636,7 +651,7 @@ class Agregar extends Component
             // Cargar curriculum vitae
             $archivo = $this->currirulum_vitae;
             $nombre = uniqid() . '.' . $archivo->guessExtension();
-            $ruta = $archivo->storeAs('public/' . $persona->dni . '/cv', $nombre);
+            $ruta = $archivo->storeAs('archivos/' . $persona->dni . '/cv', $nombre);
             $contrato_cv = DocumentoCertificado::create([
                 'nombre_archivo' => $archivo->getClientOriginalName(),
                 'detalle' => $ruta,
@@ -663,7 +678,7 @@ class Agregar extends Component
 
             // Eliminar todos los archivos subidos
             if (!empty($documentos_totales)) { 
-                Storage::deleteDirectory('public/' . $persona->dni);
+                Storage::deleteDirectory('archivos/' . $persona->dni);
                 // limpiar livewire-temp
                 // Storage::deleteDirectory('livewire-tmp');
             }
@@ -791,13 +806,17 @@ class Agregar extends Component
 
         $this->contactos_emergencia[] = [
             'nombre' => $this->nombre_emergencia,
+            'apellido' => $this->apellido_emergencia,
             'telefono' => $this->telefono_emergencia,
             'email' => $this->email_emergencia,
+            'tipo_relacion' => TipoRelacion::find($this->tipo_relacion_familiar_selected_dos)->nombre,
         ];
 
         $this->nombre_emergencia = '';
+        $this->apellido_emergencia = '';
         $this->telefono_emergencia = '';
         $this->email_emergencia = '';
+        $this->tipo_relacion_familiar_selected_dos = '';
     }
 
     public function eliminarContactoEmergencia($telefono)
@@ -814,8 +833,10 @@ class Agregar extends Component
         });
 
         $this->nombre_emergencia = $contacto[0]['nombre'];
+        $this->apellido_emergencia = $contacto[0]['apellido'];
         $this->telefono_emergencia = $contacto[0]['telefono'];
         $this->email_emergencia = $contacto[0]['email'];
+        $this->tipo_relacion_familiar_selected_dos = $contacto[0]['tipo_relacion'];
 
         $this->eliminarContactoEmergencia($telefono);
 

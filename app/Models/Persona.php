@@ -6,14 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
-use Spatie\Permission\Traits\HasRoles;
 
 class Persona extends Model implements Auditable
 {
-    use HasFactory;    
-    use SoftDeletes;
-    use \OwenIt\Auditing\Auditable;
+    use HasFactory, SoftDeletes, \OwenIt\Auditing\Auditable;
 
+    protected $table = 'personas';
     protected $fillable = [
         'nombre',
         'segundo_nombre',
@@ -21,6 +19,7 @@ class Persona extends Model implements Auditable
         'dni',
         'cuil',
         'calle',
+        'departamento',
         'altura',
         'fecha_nacimiento',
     ];
@@ -54,8 +53,10 @@ class Persona extends Model implements Auditable
     // M:M con familiares
     public function familiares()
     {
-        return $this->belongsToMany(Persona::class, 'personas_familiares', 'id_persona', 'id_familiar')
-            ->withPivot('id_tipo_familiar');
+        return $this->belongsToMany(Familiar::class, 'personas_familiares', 'id_persona', 'id_familiar')
+            ->withPivot('detalle', 'estado', 'id_tipo_relacion')
+            ->wherePivot('estado', true);
+
     }
 
     public function empleado()

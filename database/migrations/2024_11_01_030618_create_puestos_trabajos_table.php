@@ -18,6 +18,7 @@ return new class extends Migration
             $table->decimal('sueldo_base', 999, 2);
             $table->unsignedBigInteger('id_departamento_trabajo');
             $table->foreign('id_departamento_trabajo')->references('id')->on('departamento_trabajos');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -115,7 +115,7 @@ return [
         'img' => [
             'path' => './img/icon.png',
             'alt' => 'RRHH System Preloader Image',
-            'effect' => 'animation__shake',
+            'effect' => 'none',
             'width' => 60,
             'height' => 60,
         ],
@@ -364,6 +364,12 @@ return [
             'icon' => 'fa fa-lock',
             'url' => 'gestion/admin/roles',
             'can' => 'gestionar_roles_permisos',
+        ],
+        [
+            'text' => 'AUDITORIA',
+            'icon' => 'fa fa-search',
+            'url' => 'gestion/admin/auditoria',
+            'can' => 'gestionar_auditorias',
         ],  
     ],
 

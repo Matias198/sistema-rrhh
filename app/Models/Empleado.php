@@ -4,11 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Empleado extends Model
+class Empleado extends Model implements Auditable
 {
-    use HasFactory;
-
+    use HasFactory, SoftDeletes, \OwenIt\Auditing\Auditable;
+    protected $table = 'empleados';
     protected $fillable = [
         'legajo',
         'fecha_ingreso',
@@ -30,7 +32,7 @@ class Empleado extends Model
     public function contrato()
     {
         return $this->hasOne(Contrato::class, 'id_empleado');
-    } 
+    }
 
     // Muchos a muchos con capacidades
     public function competencias()

@@ -110,7 +110,24 @@ class Capacidades extends Component
                 $this->tipo = $capacidad->tipoCapacidad->nombre;
             }
         }
- 
+    }
+
+    public function eliminar()
+    {
+        if ($this->editando) {
+            DB::beginTransaction();
+            try {
+                $capacidad = CapacidadesTrabajo::find($this->capacidad_seleccionada);
+                $capacidad->delete();
+                $this->dispatch('success_capacidad', 'Capacidad eliminada correctamente');
+                DB::commit();
+            } catch (\Exception $e) {
+                DB::rollBack();
+                $this->dispatch('error_capacidad', 'No se pudo eliminar la capacidad, verifique los datos e intenete nuevamente. ' + $e->getMessage());
+            }
+        }else {
+            $this->dispatch('error_capacidad', 'No se puede eliminar una capacidad que no existe');
+        }
     }
 
     public function guardar()

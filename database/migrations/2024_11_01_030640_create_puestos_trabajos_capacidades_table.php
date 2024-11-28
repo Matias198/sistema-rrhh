@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreign('id_capacidades_trabajo')->references('id')->on('capacidades_trabajos');
             $table->primary(['id_puesto_trabajo', 'id_capacidades_trabajo']);
             $table->boolean('excluyente')->default(false);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

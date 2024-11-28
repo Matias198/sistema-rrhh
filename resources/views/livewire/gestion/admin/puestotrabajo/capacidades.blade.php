@@ -132,17 +132,18 @@
                 <span class="d-block text-success valid-feedback">Campo correcto</span>
             @endif
         </div>
-        <div class="row">
-            <div class="col d-flex justify-content-end">
-                <button id="cancelarCapacidad" name="cancelarCapacidad" type="button" class="btn btn-danger">
-                    <i class="fas fa-eraser"></i> Cancelar
+        <div class="row mb-3">
+            <div class="col d-flex justify-content-center">
+                <button id="cancelarCapacidad" name="cancelarCapacidad" type="button" class="btn btn-secondary mx-1">
+                    <i class="fas fa-stop"></i> Cancelar
                 </button>
-            </div>
-            <div class="col d-flex justify-content-start">
-                <button type="submit" class="btn btn-success" @if ($this->nombre_capacidad == '' || $this->descripcion_capacidad == '') disabled @endif>
+                <button type="submit" class="btn btn-success mx-1" @if ($this->nombre_capacidad == '' || $this->descripcion_capacidad == '') disabled @endif>
                     <i class="fas fa-save"></i> Guardar
                 </button>
-            </div>
+                <button id="eliminarCapacidad" name="eliminarCapacidad" type="button" class="btn btn-danger mx-1" @if (!$this->editando) disabled @endif>
+                    <i class="fas fa-eraser"></i> Eliminar
+                </button>
+            </div> 
         </div>
     </form>
 </div>
@@ -167,6 +168,24 @@
                 }
             })
         }
+
+        $('#eliminarCapacidad').on('click', function() {
+            Sweetalert2.fire({
+                title: 'Eliminar Capacidad',
+                text: '¿Desea eliminar la capacidad seleccionada?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, eliminar',
+                cancelButtonText: 'No, salir',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    @this.eliminar();
+                }
+            })
+        });
 
         $('#cancelarCapacidad').on('click', function() {
             Sweetalert2.fire({

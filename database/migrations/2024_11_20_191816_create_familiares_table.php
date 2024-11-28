@@ -15,9 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('nombre');   
             $table->string('apellido');
-            $table->string('sexo');
-            $table->string('dni');
-            $table->date('fecha_nacimiento');            
+            $table->string('dni')->unique();
+            $table->date('fecha_nacimiento');  
+            $table->unsignedBigInteger('id_sexo');
+            $table->foreign('id_sexo')->references('id')->on('sexos');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

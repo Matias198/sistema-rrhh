@@ -14,12 +14,13 @@ return new class extends Migration
         Schema::create('documentos_certificados', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_persona');
-            $table->unsignedBigInteger('id_tipo_documento');
             $table->foreign('id_persona')->references('id')->on('personas');
+            $table->unsignedBigInteger('id_tipo_documento');
             $table->foreign('id_tipo_documento')->references('id')->on('tipos_documentos');
             $table->string('nombre_archivo');
             $table->string('detalle', 255)->nullable();
             $table->boolean('estado')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

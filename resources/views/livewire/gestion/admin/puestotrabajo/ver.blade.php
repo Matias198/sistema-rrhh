@@ -47,6 +47,10 @@
                                     <td colspan="3">{{ $puestoTrabajo->descripcion_generica }}</td>
                                 </tr>
                                 <tr>
+                                    <th scope="row" width="20%">Sueldo base:</th>
+                                    <td colspan="3">$ {{ $puestoTrabajo->sueldo_base }} (ARS)</td>
+                                </tr>
+                                <tr>
                                     <th scope="row" colspan="4" width="20%">Descripción del puesto:</th>
                                 </tr>
                                 <tr>

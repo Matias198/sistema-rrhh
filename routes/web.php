@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\FilesController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RenderController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 Route::get('/', function () {
     return view('welcome');
@@ -25,3 +27,8 @@ Route::get('gestion/admin/puesto/agregar', [RenderController::class, 'render_ges
 
 // departamento
 Route::get('/gestion/admin/departamentos', [RenderController::class, 'render_gestion_admin_departamentos'])->name('gestion-admin-departamentos');
+
+Route::get('/archivos/{dni}/{tipo_documento}/{filename}/{user_id}', [FilesController::class, 'obtenerArchivo'])->name('private.access'); 
+
+// auditoria gestion/admin/auditoria
+Route::get('/gestion/admin/auditoria', [RenderController::class, 'render_gestion_admin_auditoria'])->name('gestion-admin-auditoria');

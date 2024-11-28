@@ -17,6 +17,7 @@ return new class extends Migration
             $table->time('hora_entrada');
             $table->time('hora_salida');
             $table->decimal('sueldo', 999, 2);
+            $table->date('fecha_ingreso');
             $table->date('fecha_vencimiento');
             $table->boolean('estado');
             $table->unsignedBigInteger('id_empleado');

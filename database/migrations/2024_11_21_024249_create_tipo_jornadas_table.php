@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('tipo_jornadas', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
-            $table->string('descripcion');
+            $table->string('nombre')->unique();
+            $table->string('descripcion')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

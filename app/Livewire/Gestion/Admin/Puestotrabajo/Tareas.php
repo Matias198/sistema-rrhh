@@ -102,7 +102,22 @@ class Tareas extends Component
         }
     }
 
-
+    public function eliminar(){
+        if ($this->editando){
+            DB::beginTransaction();
+            try {
+                $tarea = TareaTrabajo::find($this->tarea_seleccionada);
+                $tarea->delete();
+                $this->dispatch('success_tarea', 'Tarea eliminada correctamente');
+                DB::commit();
+            } catch (\Exception $e) {
+                DB::rollBack();
+                $this->dispatch('error_tarea', 'No se pudo eliminar la tarea, verifique los datos e intenete nuevamente. ' + $e->getMessage());
+            }
+        }else{
+            $this->dispatch('error_tarea', 'No se puede eliminar una tarea que no existe');
+        }
+    }
 
     public function guardar()
     {

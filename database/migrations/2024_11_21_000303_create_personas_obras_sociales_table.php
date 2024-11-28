@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreign('id_obra_social')->references('id')->on('obras_sociales');
             $table->string('numero_afiliado');
             $table->primary(['id_persona', 'id_obra_social']);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

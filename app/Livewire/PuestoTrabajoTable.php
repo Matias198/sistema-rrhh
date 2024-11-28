@@ -45,7 +45,7 @@ final class PuestoTrabajoTable extends PowerGridComponent
             ->add('titulo_puesto')
             ->add('sueldo_base', fn(PuestoTrabajo $model) => '$' . number_format($model->sueldo_base, 2, '.', ''))
             ->add('id_departamento_trabajo', fn(PuestoTrabajo $model) => $model->departamentoTrabajo()->first()->nombre)
-            ->add('created_at_formatted', fn(PuestoTrabajo $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
+            ->add('created_at_formatted', fn(PuestoTrabajo $model) => Carbon::parse($model->created_at)->format('d/m/Y'));
     }
 
     public function columns(): array

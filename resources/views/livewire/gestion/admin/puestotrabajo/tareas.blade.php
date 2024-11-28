@@ -105,14 +105,15 @@
             </div>
         </div>
         <div class="row">
-            <div class="col d-flex justify-content-end">
-                <button id="cancelarTarea" name="cancelarTarea" type="button" class="btn btn-danger">
-                    <i class="fas fa-eraser"></i> Cancelar
+            <div class="col d-flex justify-content-center">
+                <button id="cancelarTarea" name="cancelarTarea" type="button" class="btn btn-secondary mx-1">
+                    <i class="fas fa-stop"></i> Cancelar
                 </button>
-            </div>
-            <div class="col d-flex justify-content-start">
-                <button type="submit" class="btn btn-success" @if ($this->nombre_tarea == '' || $this->descripcion_tarea == '') disabled @endif>
+                <button type="submit" class="btn btn-success mx-1" @if ($this->nombre_tarea == '' || $this->descripcion_tarea == '') disabled @endif>
                     <i class="fas fa-save"></i> Guardar
+                </button>
+                <button id="eliminarTarea" name="eliminarTarea" type="button" class="btn btn-danger mx-1" @if (!$this->editando) disabled @endif>
+                    <i class="fas fa-eraser"></i> Eliminar
                 </button>
             </div>
         </div>
@@ -139,6 +140,24 @@
                 }
             })
         }
+
+        $('#eliminarTarea').on('click', function() {
+            Sweetalert2.fire({
+                title: 'Eliminar Tarea',
+                text: '¿Desea eliminar la tarea seleccionada?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, eliminar',
+                cancelButtonText: 'No, salir',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    @this.eliminar();
+                }
+            })
+        }); 
 
         $('#cancelarTarea').on('click', function() {
             Sweetalert2.fire({

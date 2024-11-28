@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('tarea_trabajos', function (Blueprint $table) {
             $table->id();
             $table->string('nombre')->unique();
-            $table->string('descripcion');
+            $table->string('descripcion')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

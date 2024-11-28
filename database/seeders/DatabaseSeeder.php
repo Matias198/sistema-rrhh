@@ -41,14 +41,16 @@ class DatabaseSeeder extends Seeder
     function crearRolesPermisos()
     {
         $user = User::find(1);
-        $role1 = Role::create(['name' => 'DIRECTOR']); // administrador
-        $role2 = Role::create(['name' => 'JEFE']); // rrhh (realiza contrataciones)
-        $role3 = Role::create(['name' => 'EMPLEADO']); // empleado
+        $role1 = Role::create(['name' => 'SYSADMIN']); // system administrator
+        $role2 = Role::create(['name' => 'DIRECTOR']); // administrador
+        $role3 = Role::create(['name' => 'JEFE']); // rrhh (realiza contrataciones)
+        $role4 = Role::create(['name' => 'EMPLEADO']); // empleado
         $permission1 = Permission::create(['name' => 'gestionar_empleados']);
         $permission2 = Permission::create(['name' => 'gestionar_parametros']);
         $permission3 = Permission::create(['name' => 'gestionar_roles_permisos']);
         $permission4 = Permission::create(['name' => 'gestionar_puesto_trabajos']);
         $permission5 = Permission::create(['name' => 'gestionar_departamentos']);
+        $permission6 = Permission::create(['name' => 'gestionar_auditorias']);
 
         $role1->givePermissionTo([
             $permission1,
@@ -56,6 +58,7 @@ class DatabaseSeeder extends Seeder
             $permission3,
             $permission4,
             $permission5,
+            $permission6,
         ]);
 
         $user->assignRole($role1);
@@ -104,8 +107,8 @@ class DatabaseSeeder extends Seeder
             $provincia = explode(',', $provincia);
             //dd($provincia);
             $pais->provincias()->create([
-                'codigo' => $provincia[1],
-                'nombre' => $provincia[2],
+                'codigo' => str_replace('"', '', $provincia[1]),
+                'nombre' => str_replace('"', '', $provincia[2]),
                 'id_pais' => intval($provincia[3]),
                 'created_at' => Carbon::now()->toDateTimeString(),
                 'updated_at' => Carbon::now()->toDateTimeString(),
@@ -125,8 +128,9 @@ class DatabaseSeeder extends Seeder
                 if ($provincia->id == intval($municipio[3])) {
                     $provincia->municipios()->create([
                         //"id","codigo","nombre","id_provincia","created_at","updated_at" 
-                        'codigo' => $municipio[1],
-                        'nombre' => $municipio[2],
+                        // Quitar comillas en codigo y nombre
+                        'codigo' => str_replace('"', '', $municipio[1]),
+                        'nombre' => str_replace('"', '', $municipio[2]),
                         'id_provincia' => $municipio[3],
                         'created_at' => Carbon::now()->toDateTimeString(),
                         'updated_at' => Carbon::now()->toDateTimeString(),
@@ -371,7 +375,7 @@ class DatabaseSeeder extends Seeder
         $this->crearSexos();
         $this->crearEstadosCiviles();
         $this->crearUbicaciones();
-        $this->crearPersonas();
+        //$this->crearPersonas();
         $this->crearTiposCapacidades();
         $this->crearDepartamentos();
         $this->crearObrasSociales();
