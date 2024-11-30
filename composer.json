@@ -12,6 +12,7 @@
         "laravel/tinker": "^2.9",
         "laravel/ui": "^4.5",
         "livewire/livewire": "^3.5",
+        "openspout/openspout": "^4.28",
         "owen-it/laravel-auditing": "^13.6",
         "power-components/livewire-powergrid": "^6.0",
         "spatie/laravel-permission": "^6.9"

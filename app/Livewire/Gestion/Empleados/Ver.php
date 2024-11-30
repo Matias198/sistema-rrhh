@@ -3,8 +3,10 @@
 namespace App\Livewire\Gestion\Empleados;
 
 use App\Models\DocumentoCertificado;
+use App\Models\Empresa;
 use App\Models\Persona;
 use App\Models\TipoDocumento;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Validator;
 use Livewire\Component;
@@ -18,6 +20,8 @@ class Ver extends Component
     public $persona;
     public $capacidades;
     public $documento_file;
+    public $empresa;
+    public $anio_inicio;
 
     // Listeners
     protected $listeners = ['actualizar_mail' => 'actualizar_mail'];
@@ -28,6 +32,8 @@ class Ver extends Component
         if ($this->persona == null) {
             return redirect()->route('gestion-empleados-listar');
         }
+        $this->empresa = Empresa::first();
+        $this->anio_inicio = Carbon::parse($this->empresa->inicio_actividades)->format('Y');
     }
 
     public function actualizar_mail(){

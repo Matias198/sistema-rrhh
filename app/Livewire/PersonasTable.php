@@ -14,9 +14,12 @@ use PowerComponents\LivewirePowerGrid\Facades\Filter;
 use PowerComponents\LivewirePowerGrid\Facades\PowerGrid;
 use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
+use PowerComponents\LivewirePowerGrid\Traits\WithExport;
+use PowerComponents\LivewirePowerGrid\Components\SetUp\Exportable;
 
 final class PersonasTable extends PowerGridComponent
 {
+    use WithExport;
     public string $tableName = 'personas-table-duh97v-table';
 
     public function setUp(): array
@@ -24,6 +27,12 @@ final class PersonasTable extends PowerGridComponent
         // $this->showCheckBox();
 
         return [
+            PowerGrid::exportable(fileName: 'nomina_empleados')
+                ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV)
+                ->striped('A6ACCD') 
+                ->csvSeparator(separator: ',')
+                ->csvDelimiter(delimiter: "'"),
+
             PowerGrid::header()
                 ->showSearchInput(),
             PowerGrid::footer()
@@ -88,6 +97,7 @@ final class PersonasTable extends PowerGridComponent
 
             Column::make('CUIL', 'cuil')
                 ->sortable()
+                ->visibleInExport(false)
                 ->searchable(),
 
             Column::make('Sexo', 'sexo')
@@ -104,6 +114,7 @@ final class PersonasTable extends PowerGridComponent
                 ->sortable(),
 
             Column::action('Action')
+                ->visibleInExport(false)
         ];
     }
 
@@ -135,7 +146,7 @@ final class PersonasTable extends PowerGridComponent
 
 
     #[\Livewire\Attributes\On('ver')]
-    public function ver($rowId) 
+    public function ver($rowId)
     {
         // Navegar a la vista de ver empleado
         return redirect()->route('gestion-empleados-ver', $rowId);

@@ -100,8 +100,8 @@
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal"
                         x-on:click="$wire.clear()">Regresar</button>
-                    <button id="descargar-pdf-btn" type="button" class="btn btn-success"
-                        @if ($puestoTrabajo == null) disabled @endif>Descargar</button>
+                    <button id="descargar-pdf-btn" type="button" class="btn btn-secondary"
+                        @if ($puestoTrabajo == null) disabled @endif><i class="fas fa-file-pdf"></i>Guardar PDF</button>
                 </div>
             </div>
             <!-- /.modal-content -->

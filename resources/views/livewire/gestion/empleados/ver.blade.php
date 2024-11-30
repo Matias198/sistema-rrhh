@@ -1,5 +1,14 @@
-<div>
+<div id="reporte_empleado_pdf">
     @if ($persona)
+        @hasanyrole('DIRECTOR GENERAL|JEFE DE AREA|SYSADMIN')
+            <div class="d-flex justify-content-end mb-3">
+                <button id="descargar-pdf-btn" type="button" class="btn btn-secondary"
+                    @if ($persona == null) disabled @endif>
+                    <i class="fas fa-file-pdf"></i>
+                    Guardar PDF</button>
+            </div>
+        @endhasanyrole
+
         <!-- DATOS PERSONALES -->
 
         <div class="card card-primary">
@@ -76,7 +85,7 @@
 
         <!-- DOMICILIO -->
 
-        <div class="card card-primary collapsed-card">
+        <div class="card card-primary collapsed-card mt-1" style="page-break-before: always;">
             <div class="card-header" data-card-widget="collapse" style="cursor: pointer;">
                 <h3 class="card-title">Domicilio</h3>
                 <div class="card-tools">
@@ -133,7 +142,7 @@
 
         <!-- FAMILIARES A CARGO -->
         @if ($persona->familiares()->get()->first())
-            <div class="card card-primary collapsed-card">
+            <div class="card card-primary collapsed-card mt-1" style="page-break-before: always;">
                 <div class="card-header" data-card-widget="collapse" style="cursor: pointer;">
                     <h3 class="card-title">Familiares a Cargo</h3>
                     <div class="card-tools">
@@ -181,7 +190,7 @@
         <!-- OBRA SOCIAL -->
 
         @if (!empty($persona->obrasSociales()->get()->first()))
-            <div class="card card-primary collapsed-card">
+            <div class="card card-primary collapsed-card mt-1" style="page-break-before: always;">
                 <div class="card-header" data-card-widget="collapse" style="cursor: pointer;">
                     <h3 class="card-title">Obra Social</h3>
                     <div class="card-tools">
@@ -214,7 +223,7 @@
 
         <!-- CONTACTO Y CONTACTOS DE EMERGENCIA -->
 
-        <div class="card card-primary collapsed-card">
+        <div class="card card-primary collapsed-card mt-1" style="page-break-before: always;">
             <div class="card-header" data-card-widget="collapse" style="cursor: pointer;">
                 <h3 class="card-title">Información y Contactos de Emergencia</h3>
                 <div class="card-tools">
@@ -271,7 +280,7 @@
 
         <!-- DATOS DE EMPLEADO -->
 
-        <div class="card card-primary collapsed-card">
+        <div class="card card-primary collapsed-card mt-1" style="page-break-before: always;">
             <div class="card-header" data-card-widget="collapse" style="cursor: pointer;">
                 <h3 class="card-title">Datos del Puesto de Trabajo</h3>
                 <div class="card-tools">
@@ -362,7 +371,7 @@
 
         <!-- CAPACIDADES DEL EMPLEADO -->
 
-        <div class="card card-primary collapsed-card">
+        <div class="card card-primary collapsed-card mt-1" style="page-break-before: always;">
             <div class="card-header" data-card-widget="collapse" style="cursor: pointer;">
                 <h3 class="card-title">Competencias Satisfactorias del Empleado</h3>
                 <div class="card-tools">
@@ -404,7 +413,7 @@
 
         <!-- DOCUMENTACION DEL EMPLEADO -->
 
-        <div class="card card-primary collapsed-card">
+        <div class="card card-primary collapsed-card mt-1" style="page-break-before: always;">
             <div class="card-header" data-card-widget="collapse" style="cursor: pointer;">
                 <h3 class="card-title">Documentación del Empleado</h3>
                 <div class="card-tools">
@@ -424,7 +433,7 @@
                                 <th>Tipo</th>
                                 <th>Estado</th>
                                 <th>Fecha de Carga</th>
-                                <th>Acciones</th>
+                                <th class="action_header">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -442,7 +451,7 @@
                                     <td>{{ $documento->created_at }}</td>
 
                                     @if ($documento->estado == 1)
-                                        <td>
+                                        <td class="action_column">
                                             <a type="button" class="btn btn-primary"
                                                 x-on:click="verArchivo([{{ $documento->id }}, '{{ $documento->detalle }}'])">Ver</a>
                                             @hasanyrole('DIRECTOR GENERAL|JEFE DE AREA|SYSADMIN')
@@ -471,6 +480,114 @@
         </div>
     @endif
 </div>
+@hasanyrole('DIRECTOR GENERAL|JEFE DE AREA|SYSADMIN')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        // export pdf card-body
+        $('#descargar-pdf-btn').click(function() {
+            var element = document.getElementById('reporte_empleado_pdf');
+            // if $puestoTrabajo->titulo_puesto != null then $puestoTrabajo->titulo_puesto en nombre
+
+            // Oculta el botón de descarga y muestra el contenido
+            $('#descargar-pdf-btn').css('display', 'none');
+            $('.card-body').css('display', 'block');
+            $('.card-header').removeClass('collapsed-card');
+            $('.card-header').addClass('expanded-card');
+            $('.action_column').css('display', 'none');
+            $('.action_header').css('display', 'none');
+
+            var opt = {
+                // margin top, left, bottom, right
+                margin: [25, 10, 25, 10],
+                filename: 'MorfeoSA-ReporteEmpleado' + Date.now() + '.pdf',
+                image: {
+                    type: 'jpeg',
+                    quality: 1
+                },
+                html2canvas: {
+                    scale: 2
+                },
+                jsPDF: {
+                    unit: 'mm',
+                    format: 'a4',
+                    orientation: 'portrait'
+                }
+            };
+
+            const nombre_empresa = '{{ $empresa->nombre }}';
+            const razon_social = '{{ $empresa->razon_social }}';
+            const cuit = '{{ $empresa->cuit }}';
+            const ubicacion = '{{ $empresa->ubicacion }}';
+            const anio_inicio = '{{ $anio_inicio }}';
+
+            // New Promise-based usage:
+            // Genera el PDF con el pie de página y fecha/hora
+            html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
+                // Calcula la cantidad de páginas
+                const totalPages = pdf.internal.getNumberOfPages();
+                // Agrega la fecha y hora en la parte superior derecha
+                const fechaHora = new Date().toLocaleString();
+
+                // Agrega el encabezado en la primera página
+                pdf.setPage(1);
+                pdf.setFontSize(15);
+                pdf.text("Reporte de Empleado", pdf.internal
+                    .pageSize
+                    .getWidth() /
+                    2, 10, {
+                        align: 'center'
+                    });
+                pdf.setFontSize(8);
+                pdf.text("Empresa:", 10, 15);
+                pdf.text(`${nombre_empresa}`, 40, 15);
+                pdf.text("Razón Social:", 10, 20);
+                pdf.text(`${razon_social}`, 40, 20);
+                pdf.text("CUIT:", 10, 25);
+                pdf.text(`${cuit}`, 40, 25);
+
+
+                pdf.text("Período:", pdf.internal.pageSize.getWidth() - 70, 15);
+                pdf.text(`${anio_inicio}` + " - " + new Date().getFullYear(), pdf.internal
+                    .pageSize.getWidth() -
+                    40, 15);
+                pdf.text("Ubicación:", pdf.internal.pageSize.getWidth() - 70, 20);
+                pdf.text(`${ubicacion}`, pdf.internal.pageSize.getWidth() - 40, 20);
+                pdf.text("Fecha y hora:", pdf.internal.pageSize.getWidth() - 70, 25);
+                pdf.text(`${fechaHora}`, pdf.internal.pageSize.getWidth() - 40, 25);
+
+                // Agrega el pie de página centrado en la parte inferior
+                pdf.setFontSize(10);
+                pdf.setPage(1);
+                pdf.text(`Página ${1} de ${totalPages}`, pdf.internal.pageSize.getWidth() /
+                    2, pdf.internal.pageSize.getHeight() - 10, {
+                        align: 'center'
+                    });
+
+                // Itera sobre cada página para agregar el número de página
+                for (let i = 2; i <= totalPages; i++) {
+                    pdf.setPage(i);
+                    pdf.text(`Página ${i} de ${totalPages}`, pdf.internal.pageSize.getWidth() /
+                        2, pdf.internal.pageSize.getHeight() - 10, {
+                            align: 'center'
+                        });
+                }
+            }).save().then(function() {
+                // Muestra el botón de descarga y oculta el contenido
+                $('#descargar-pdf-btn').css('display', 'block');
+                $('.card-body').css('display', 'none');
+                $('.card-header').removeClass('expanded-card');
+                $('.card-header').addClass('collapsed-card');
+                $('.action_column').css('display', 'block');
+                $('.action_header').css('display', 'block');
+            });
+
+
+
+        });
+    });
+</script>
+@endhasanyrole
 <script>
     document.addEventListener('DOMContentLoaded', function() {
 

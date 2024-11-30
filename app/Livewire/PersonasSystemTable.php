@@ -14,14 +14,23 @@ use PowerComponents\LivewirePowerGrid\Facades\Filter;
 use PowerComponents\LivewirePowerGrid\Facades\PowerGrid;
 use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
+use PowerComponents\LivewirePowerGrid\Traits\WithExport;
+use PowerComponents\LivewirePowerGrid\Components\SetUp\Exportable;
 
 final class PersonasSystemTable extends PowerGridComponent
 {
+    use WithExport;
     public string $tableName = 'personas-system-table-goqdsg-table';
 
     public function setUp(): array
     {
         return [
+            PowerGrid::exportable(fileName: 'nomina_jefes_area')
+                ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV)
+                ->striped('A6ACCD') 
+                ->csvSeparator(separator: ',')
+                ->csvDelimiter(delimiter: "'"),
+
             PowerGrid::header()
                 ->showSearchInput(),
             PowerGrid::footer()

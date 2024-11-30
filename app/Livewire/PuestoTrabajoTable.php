@@ -11,9 +11,12 @@ use PowerComponents\LivewirePowerGrid\Facades\Filter;
 use PowerComponents\LivewirePowerGrid\Facades\PowerGrid;
 use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
+use PowerComponents\LivewirePowerGrid\Traits\WithExport;
+use PowerComponents\LivewirePowerGrid\Components\SetUp\Exportable;
 
 final class PuestoTrabajoTable extends PowerGridComponent
 {
+    use WithExport;
     public string $tableName = 'puesto-trabajo-table-9cnyb2-table';
 
     public function setUp(): array
@@ -21,6 +24,12 @@ final class PuestoTrabajoTable extends PowerGridComponent
         // $this->showCheckBox();
 
         return [
+            PowerGrid::exportable(fileName: 'nomina_puestos_trabajo')
+                ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV)
+                ->striped('A6ACCD') 
+                ->csvSeparator(separator: ',')
+                ->csvDelimiter(delimiter: "'"),
+
             PowerGrid::header()
                 ->showSearchInput(),
             PowerGrid::footer()
