@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_persona');
             $table->foreign('id_persona')->references('id')->on('personas');
             $table->unsignedBigInteger('id_tipo_relacion');
-            $table->foreign('id_tipo_relacion')->references('id')->on('tipos_relaciones');
+            $table->foreign('id_tipo_relacion')->references('id')->on('relaciones_familiares');
             $table->softDeletes();
             $table->timestamps();
         });

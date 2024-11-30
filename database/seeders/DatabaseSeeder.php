@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\CapacidadesTrabajo;
 use App\Models\DepartamentoTrabajo;
 use App\Models\Empresa;
 use App\Models\EstadoCivil;
@@ -10,7 +11,10 @@ use App\Models\TipoCapacidad;
 use App\Models\User;
 use App\Models\Pais;
 use App\Models\Persona;
+use App\Models\PuestoTrabajo;
+use App\Models\RelacionFamilia;
 use App\Models\Sexo;
+use App\Models\TareaTrabajo;
 use App\Models\TipoContrato;
 use App\Models\TipoDocumento;
 use App\Models\TipoJornada;
@@ -27,10 +31,29 @@ use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
+    public $user_sysadmin;
+    public $user_director;
+    public $user_jefe;
     function crearUsuarios()
     {
-        User::create([
+        $this->user_sysadmin = User::create([
             'email' => 'admin@mail.com',
+            'password' => Hash::make('12345678'),
+            'email_verified_at' => Carbon::now()->toDateTimeString(),
+            'created_at' => Carbon::now()->toDateTimeString(),
+            'updated_at' => Carbon::now()->toDateTimeString(),
+        ]);
+
+        $this->user_director = User::create([
+            'email' => 'director@mail.com',
+            'password' => Hash::make('12345678'),
+            'email_verified_at' => Carbon::now()->toDateTimeString(),
+            'created_at' => Carbon::now()->toDateTimeString(),
+            'updated_at' => Carbon::now()->toDateTimeString(),
+        ]);
+
+        $this->user_jefe = User::create([
+            'email' => 'rrhh@mail.com',
             'password' => Hash::make('12345678'),
             'email_verified_at' => Carbon::now()->toDateTimeString(),
             'created_at' => Carbon::now()->toDateTimeString(),
@@ -40,18 +63,24 @@ class DatabaseSeeder extends Seeder
 
     function crearRolesPermisos()
     {
-        $user = User::find(1);
+        //$user = User::find(1);
+
         $role1 = Role::create(['name' => 'SYSADMIN']); // system administrator
-        $role2 = Role::create(['name' => 'DIRECTOR']); // administrador
-        $role3 = Role::create(['name' => 'JEFE']); // rrhh (realiza contrataciones)
+        $role2 = Role::create(['name' => 'DIRECTOR GENERAL']); // gerente
+        $role3 = Role::create(['name' => 'JEFE DE AREA']); // rrhh (realiza contrataciones)
         $role4 = Role::create(['name' => 'EMPLEADO']); // empleado
+
         $permission1 = Permission::create(['name' => 'gestionar_empleados']);
-        $permission2 = Permission::create(['name' => 'gestionar_parametros']);
+        $permission2 = Permission::create(['name' => 'gestionar_eventos']);
         $permission3 = Permission::create(['name' => 'gestionar_roles_permisos']);
         $permission4 = Permission::create(['name' => 'gestionar_puesto_trabajos']);
         $permission5 = Permission::create(['name' => 'gestionar_departamentos']);
         $permission6 = Permission::create(['name' => 'gestionar_auditorias']);
+        $permission7 = Permission::create(['name' => 'gestionar_personas']);
+        $permission8 = Permission::create(['name' => 'ver_perfil']);
 
+        // Contratar empleados, listar empleados, gestionar puestos de trabajo, gestionar departamentos
+        // gestionar auditorias
         $role1->givePermissionTo([
             $permission1,
             $permission2,
@@ -59,10 +88,37 @@ class DatabaseSeeder extends Seeder
             $permission4,
             $permission5,
             $permission6,
+            $permission7,
         ]);
 
-        $user->assignRole($role1);
-        $user->save();
+        // Contratar empleados, listar empleados, gestionar puestos de trabajo, gestionar departamentos
+        $role2->givePermissionTo([
+            $permission1,
+            $permission2,
+            $permission4,
+            $permission5,
+            $permission7,
+        ]);
+
+        // Contratar empleados, listar empleados, gestionar puestos de trabajo
+        $role3->givePermissionTo([
+            $permission1,
+            $permission2,
+        ]);
+
+        $role4->givePermissionTo([
+            $permission2,
+            $permission8,
+        ]);
+
+        $this->user_sysadmin->assignRole($role1);
+        $this->user_sysadmin->save();
+
+        $this->user_director->assignRole($role2);
+        $this->user_director->save();
+
+        $this->user_jefe->assignRole($role3);
+        $this->user_jefe->save();
     }
 
     function crearSexos()
@@ -165,7 +221,7 @@ class DatabaseSeeder extends Seeder
 
     function crearPersonas()
     {
-        $persona = Persona::create([
+        Persona::create([
             'nombre' => 'Juan',
             'segundo_nombre' => 'Carlos',
             'apellido' => 'Pérez',
@@ -174,12 +230,28 @@ class DatabaseSeeder extends Seeder
             'fecha_nacimiento' => '01/01/1999',
             'calle' => 'Calle Falsa',
             'altura' => '123',
+            'departamento' => '1A',
             'id_sexo' => 1,
             'id_estado_civil' => 1,
             'id_municipio' => 1365,
             'id_usuario' => 1,
-        ]);
-        $persona->usuario()->associate(User::find(1));
+        ])->usuario()->associate($this->user_director)->save();
+
+        Persona::create([
+            'nombre' => 'María',
+            'segundo_nombre' => 'Elena',
+            'apellido' => 'Gómez',
+            'dni' => '87654321',
+            'cuil' => '27123456789',
+            'fecha_nacimiento' => '01/01/1999',
+            'calle' => 'Calle Falsa',
+            'altura' => '123',
+            'departamento' => '1A',
+            'id_sexo' => 2,
+            'id_estado_civil' => 1,
+            'id_municipio' => 1365,
+            'id_usuario' => 2,
+        ])->usuario()->associate($this->user_jefe)->save();
     }
 
     // crear tipos de capacidad
@@ -199,10 +271,10 @@ class DatabaseSeeder extends Seeder
     function crearDepartamentos()
     {
         $departamentos = [
-            ['nombre' => 'Administración y Finanzas', 'descripcion' => 'Departamento de administración y finanzas'],
-            ['nombre' => 'Ventas', 'descripcion' => 'Departamento de ventas'],
-            ['nombre' => 'Logística', 'descripcion' => 'Departamento de logística'],
-            ['nombre' => 'Gerencia General', 'descripcion' => 'Departamento de gerencia general'],
+            ['nombre' => 'ADMINISTRACION Y FINANZAS', 'descripcion' => 'Departamento de administración y finanzas'],
+            ['nombre' => 'VENTAS', 'descripcion' => 'Departamento de ventas'],
+            ['nombre' => 'LOGISTICA', 'descripcion' => 'Departamento de logística'],
+            ['nombre' => 'GERENCIA GENERAL', 'descripcion' => 'Departamento de gerencia general'],
         ];
 
         foreach ($departamentos as $departamento) {
@@ -328,7 +400,8 @@ class DatabaseSeeder extends Seeder
         }
     }
 
-    public function crearTiposDocumentos(){
+    public function crearTiposDocumentos()
+    {
         // Certificados de estudios, certificado residencia, curriculum vitae, certificado de familiar a cargo, contrato de trabajo, copia de dni
         $tipos_documentos = [
             'Certificado de estudios',
@@ -364,6 +437,236 @@ class DatabaseSeeder extends Seeder
         ]);
     }
 
+    public function crearPuestoEmpleadoComercio()
+    {
+        // Crear tareas del puesto de trabajo
+        // ATENCIÓN AL CLIENTE: Brindar información sobre productos y servicios, resolver consultas, gestionar reclamos y garantizar una experiencia satisfactoria.
+        // GESTIÓN DE VENTAS: Procesar pagos, realizar facturación, aplicar promociones y registrar transacciones en el sistema.
+        // CONTROL DE STOCK: Verificar el inventario, reponer productos, coordinar con proveedores y organizar depósitos.
+        // TAREAS ADMINISTRATIVAS: Archivar documentos, realizar reportes de ventas y mantener registros actualizados.
+        // MANTENIMIENTO DEL LOCAL: Asegurar la limpieza, el orden y el cumplimiento de normas de seguridad.
+        // DISPOSICIÓN PARA TAREAS REQUERIDAS: Realizar cualquier otra actividad que sea asignada por el supervisor.
+        $tareas = [
+            'ATENCION AL CLIENTE' => 'Brindar información sobre productos y servicios, resolver consultas, gestionar reclamos y garantizar una experiencia satisfactoria.',
+            'GESTIÓN DE VENTAS' => 'Procesar pagos, realizar facturación, aplicar promociones y registrar transacciones en el sistema.',
+            'CONTROL DE STOCK' => 'Verificar el inventario, reponer productos, coordinar con proveedores y organizar depósitos.',
+            'TAREAS ADMINISTRATIVAS' => 'Archivar documentos, realizar reportes de ventas y mantener registros actualizados.',
+            'MANTENIMIENTO DEL LOCAL' => 'Asegurar la limpieza, el orden y el cumplimiento de normas de seguridad.',
+            'DISPOSICIÓN PARA TAREAS REQUERIDAS' => 'Realizar cualquier otra actividad que sea asignada por el supervisor.',
+        ];
+
+        $tareas_totales = [];
+        foreach ($tareas as $tarea => $descripcion) {
+            $tareas_totales[] = TareaTrabajo::create([
+                'nombre' => $tarea,
+                'descripcion' => $descripcion,
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString(),
+            ]);
+        }
+
+        // Crear capacidades del puesto de trabajo
+        // Responsabilidades adquiridas:
+        // RELACIONES: Trato constante con clientes, proveedores y compañeros, manteniendo cordialidad y profesionalismo.
+        // Condiciones de trabajo:
+        // AMBIENTE: Trabajo en local comercial, con horarios rotativos y picos de actividad.
+        // Requisitos intelectuales:    
+        // ESCOLARIDAD INDISPENSABLE: Secundaria completa.
+        // EXPERIENCIA: 6 meses a 1 año en atención al cliente, manejo de caja o roles similares.
+        // APTITUDES ADICIONALES: Excelente comunicación, organización, trabajo en equipo, capacidad de resolución de problemas y atención al detalle.
+        $tipos_capacidades = ['Requisitos intelectuales', 'Requisitos físicos', ' Responsabilidades adquiridas', 'Condiciones de trabajo'];
+        $capacidades = [
+            'RELACIONES EN VENTAS' => [
+                'Trato constante con clientes, proveedores y compañeros, manteniendo cordialidad y profesionalismo.',
+                $tipos_capacidades[2],
+                true
+            ],
+            'AMBIENTE EN VENTAS' => [
+                'Trabajo en local comercial, con horarios rotativos y picos de actividad.',
+                $tipos_capacidades[3],
+                true
+            ],
+            'ESCOLARIDAD INDISPENSABLE EN VENTAS' => [
+                'Secundaria completa.',
+                $tipos_capacidades[0],
+                true
+            ],
+            'EXPERIENCIA EN VENTAS' => [
+                '6 meses a 1 año en atención al cliente, manejo de caja o roles similares.',
+                $tipos_capacidades[0],
+                true
+            ],
+            'APTITUDES ADICIONALES EN VENTAS' => [
+                'Excelente comunicación, organización, trabajo en equipo, capacidad de resolución de problemas y atención al detalle.',
+                $tipos_capacidades[0],
+                false
+            ]
+        ];
+
+        $capacidades_totales = [];
+        foreach ($capacidades as $capacidad => $descripcion) {
+            $capacidades_totales[] = [
+                CapacidadesTrabajo::create([
+                    'nombre' => $capacidad,
+                    'descripcion' => $descripcion[0],
+                    'id_tipo_capacidad' => TipoCapacidad::where('nombre', $descripcion[1])->first()->id,
+                    'created_at' => Carbon::now()->toDateTimeString(),
+                    'updated_at' => Carbon::now()->toDateTimeString(),
+                ])->tipoCapacidad()->associate(TipoCapacidad::where('nombre', $descripcion[1])->first()->id),
+                $descripcion[2]
+            ];
+        }
+
+
+        // Crear puesto de trabajo 
+        // Título del puesto: EMPLEADO DE COMERCIO
+        // Descripción genérica:
+        // Atender clientes, procesar ventas, gestionar stock, realizar tareas administrativas y mantener el orden en el local.
+        // Sueldo base: $ 250,000.00 (ARS)
+
+        $puesto_trabajo = [
+            'titulo' => 'EMPLEADO DE COMERCIO',
+            'descripcion' => 'Atender clientes, procesar ventas, gestionar stock, realizar tareas administrativas y mantener el orden en el local.',
+            'sueldo_base' => 250000.00,
+        ];
+
+        $puesto = PuestoTrabajo::create([
+            'titulo_puesto' => $puesto_trabajo['titulo'],
+            'descripcion_generica' => $puesto_trabajo['descripcion'],
+            'sueldo_base' => $puesto_trabajo['sueldo_base'],
+            'id_departamento_trabajo' => DepartamentoTrabajo::where('nombre', 'VENTAS')->first()->id,
+            'created_at' => Carbon::now()->toDateTimeString(),
+            'updated_at' => Carbon::now()->toDateTimeString(),
+        ])->departamentoTrabajo()->associate(DepartamentoTrabajo::where('nombre', 'VENTAS')->first()->id);
+
+        // Asignar capacidades al puesto de trabajo
+        foreach ($capacidades_totales as $capacidad) {
+            $puesto->capacidadesTrabajos()->attach($capacidad[0]->id, ['excluyente' => $capacidad[1]]);
+        }
+
+        // Asignar tareas al puesto de trabajo
+        foreach ($tareas_totales as $tarea) {
+            $puesto->tareasTrabajos()->attach($tarea->id);
+        }
+    }
+
+    public function crearPuestoReclutadorRRHH()
+    {
+        // Crear tareas del puesto de trabajo
+        $tareas = [
+            'RECLUTAMIENTO Y SELECCION' => 'Publicar ofertas laborales, filtrar currículums, realizar entrevistas y coordinar procesos de selección.',
+            'GESTIÓN DE PERSONAL' => 'Mantener actualizados los expedientes del personal y coordinar inducciones y capacitaciones.',
+            'ADMINISTRACIÓN DE NOMINA' => 'Supervisar el cálculo de salarios, controlar ausencias y gestionar beneficios para los empleados.',
+            'EVALUACIONES DE DESEMPEÑO' => 'Diseñar y aplicar métricas para evaluar el desempeño del personal.',
+            'REPORTES Y ANALISIS' => 'Preparar informes de gestión, métricas de contratación y sugerencias para optimizar recursos humanos.',
+            'OTRAS FUNCIONES ASIGNADAS' => 'Colaborar en proyectos relacionados con el área de administración y finanzas.',
+        ];
+
+        $tareas_totales = [];
+        foreach ($tareas as $tarea => $descripcion) {
+            $tareas_totales[] = TareaTrabajo::create([
+                'nombre' => $tarea,
+                'descripcion' => $descripcion,
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString(),
+            ]);
+        }
+
+        // Crear capacidades del puesto de trabajo
+        $tipos_capacidades = ['Requisitos intelectuales', 'Requisitos físicos', ' Responsabilidades adquiridas', 'Condiciones de trabajo'];
+        $capacidades = [
+            'RELACIONES INTERPERSONALES EN RRHH' => [
+                'Habilidad para interactuar de manera efectiva con candidatos, empleados y directivos.',
+                $tipos_capacidades[2],
+                true
+            ],
+            'AMBIENTE DE OFICINA EN RRHH' => [
+                'Trabajo en un entorno administrativo con horarios regulares.',
+                $tipos_capacidades[3],
+                true
+            ],
+            'ESCOLARIDAD INDISPENSABLE EN RRHH' => [
+                'Graduado en Recursos Humanos, Administración o carreras afines.',
+                $tipos_capacidades[0],
+                true
+            ],
+            'EXPERIENCIA EN RRHH' => [
+                '2 años de experiencia en reclutamiento o gestión de personal.',
+                $tipos_capacidades[0],
+                true
+            ],
+            'APTITUDES ADICIONALES EN RRHH' => [
+                'Organización, comunicación efectiva, trabajo en equipo y enfoque en resultados.',
+                $tipos_capacidades[0],
+                false
+            ]
+        ];
+
+        $capacidades_totales = [];
+        foreach ($capacidades as $capacidad => $descripcion) {
+            $capacidades_totales[] = [
+                CapacidadesTrabajo::create([
+                    'nombre' => $capacidad,
+                    'descripcion' => $descripcion[0],
+                    'id_tipo_capacidad' => TipoCapacidad::where('nombre', $descripcion[1])->first()->id,
+                    'created_at' => Carbon::now()->toDateTimeString(),
+                    'updated_at' => Carbon::now()->toDateTimeString(),
+                ])->tipoCapacidad()->associate(TipoCapacidad::where('nombre', $descripcion[1])->first()->id),
+                $descripcion[2]
+            ];
+        }
+
+        // Crear puesto de trabajo
+        $puesto_trabajo = [
+            'titulo' => 'RECLUTADOR DE RECURSOS HUMANOS',
+            'descripcion' => 'Gestionar el reclutamiento, selección y administración de personal, asegurando el cumplimiento de las políticas del área.',
+            'sueldo_base' => 350000.00,
+        ];
+
+        $puesto = PuestoTrabajo::create([
+            'titulo_puesto' => $puesto_trabajo['titulo'],
+            'descripcion_generica' => $puesto_trabajo['descripcion'],
+            'sueldo_base' => $puesto_trabajo['sueldo_base'],
+            'id_departamento_trabajo' => DepartamentoTrabajo::where('nombre', 'ADMINISTRACION Y FINANZAS')->first()->id,
+            'created_at' => Carbon::now()->toDateTimeString(),
+            'updated_at' => Carbon::now()->toDateTimeString(),
+        ])->departamentoTrabajo()->associate(DepartamentoTrabajo::where('nombre', 'ADMINISTRACION Y FINANZAS')->first()->id);
+
+        // Asignar capacidades al puesto de trabajo
+        foreach ($capacidades_totales as $capacidad) {
+            $puesto->capacidadesTrabajos()->attach($capacidad[0]->id, ['excluyente' => $capacidad[1]]);
+        }
+
+        // Asignar tareas al puesto de trabajo
+        foreach ($tareas_totales as $tarea) {
+            $puesto->tareasTrabajos()->attach($tarea->id);
+        }
+    }
+
+    public function crearRelacionesFamiliares()
+    {
+        $relaciones = [
+            'Padre',
+            'Madre',
+            'Hijo/a',
+            'Hermano/a',
+            'Abuelo/a',
+            'Tio/a',
+            'Primo/a',
+            'Sobrino/a',
+            'Cuñado/a',
+            'Suegro/a',
+            'Yerno',
+        ];
+
+        foreach ($relaciones as $relacion) {
+            RelacionFamilia::create([
+                'nombre' => $relacion,
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString(),
+            ]);
+        }
+    }
     /**
      * Seed the application's database.
      */
@@ -383,5 +686,8 @@ class DatabaseSeeder extends Seeder
         $this->crearTiposJornadasLaborales();
         $this->crearTiposDocumentos();
         $this->crearEmpresa();
+        $this->crearPuestoEmpleadoComercio();
+        $this->crearRelacionesFamiliares();
+        $this->crearPuestoReclutadorRRHH();
     }
 }

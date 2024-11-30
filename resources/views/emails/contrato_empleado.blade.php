@@ -45,6 +45,7 @@
         <p>El sueldo basico será de {{ $empleado->contrato->sueldo }} pesos Argentinos (ARS).</p>
         <p>Su usuario es: {{ $empleado->persona->usuario->email }}</p>
         <p>Su contraseña es: {{ $empleado->persona->dni }}</p>
+        <p><strong>RECUERDE CAMBIAR SU CONTRASEÑA EN EL MENÚ: "PERFIL → SETTINGS".</strong></p>
         <p>Esperamos que tu estancia en la empresa sea satisfactoria y que puedas desarrollarte profesionalmente.</p>
         <p>Atentamente,</p>
         <p>El equipo de {{ $empresa->nombre }}</p>

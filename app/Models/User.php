@@ -50,7 +50,10 @@ class User extends Authenticatable implements Auditable
 
     public function adminlte_image()
     {
-        return asset("./img/profile.jpg");
+        if ($this->persona) {
+            return asset($this->persona->getFoto());
+        }
+        return asset("./img/profile.webp");
     }
 
     public function persona()

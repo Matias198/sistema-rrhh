@@ -18,14 +18,24 @@ class Ver extends Component
     public $persona;
     public $capacidades;
     public $documento_file;
+
+    // Listeners
+    protected $listeners = ['actualizar_mail' => 'actualizar_mail'];
     public function mount($id_persona)
     {
         $this->id_persona = $id_persona;
+        $this->persona = Persona::find($this->id_persona);
+        if ($this->persona == null) {
+            return redirect()->route('gestion-empleados-listar');
+        }
+    }
+
+    public function actualizar_mail(){
+        $this->persona = Persona::find($this->id_persona);
     }
 
     public function render()
     {
-        $this->persona = Persona::find($this->id_persona);
         $this->capacidades = $this->persona->empleado->puesto->capacidadesTrabajos->pluck('nombre')->toArray();
         return view('livewire.gestion.empleados.ver');
     }

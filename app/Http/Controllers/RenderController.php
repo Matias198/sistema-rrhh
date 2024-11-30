@@ -96,4 +96,22 @@ class RenderController extends Controller
         $auditorias = \OwenIt\Auditing\Models\Audit::all();
         return view('renders.gestion.admin.auditoria', compact('auditorias'));
     }
+
+    /**
+     * Renderiza la vista de Gestion de Usuarios.
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function render_gestion_admin_usuarios(){
+        return view('renders.gestion.admin.usuarios.listar');
+    }
+
+    /**
+     * Renderiza la vista de Perfil de Usuario.
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function render_gestion_admin_usuarios_perfil(){
+        return view('renders.gestion.usuarios.perfil');
+    }
 }

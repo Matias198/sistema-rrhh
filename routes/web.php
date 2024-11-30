@@ -32,3 +32,9 @@ Route::get('/archivos/{dni}/{tipo_documento}/{filename}/{user_id}', [FilesContro
 
 // auditoria gestion/admin/auditoria
 Route::get('/gestion/admin/auditoria', [RenderController::class, 'render_gestion_admin_auditoria'])->name('gestion-admin-auditoria');
+
+// usuarios del sistema
+Route::get('/gestion/admin/usuarios', [RenderController::class, 'render_gestion_admin_usuarios'])->name('gestion-admin-usuarios');
+
+// perfil de usuario
+Route::get('/perfil/usuario', [RenderController::class, 'render_gestion_admin_usuarios_perfil'])->name('gestion-admin-usuarios-perfil');

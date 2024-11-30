@@ -90,8 +90,18 @@ final class AuditsTable extends PowerGridComponent
     public function filters(): array
     {
         return [
-            Filter::inputText('event')->operators(),
+            Filter::select('event')
+                ->dataSource([
+                    ['id' => 'created', 'event' => 'Creado'],
+                    ['id' => 'updated', 'event' => 'Actualizado'],
+                    ['id' => 'deleted', 'event' => 'Eliminado'],
+                    ['id' => 'restored', 'event' => 'Restaurado'],
+                ])
+                ->optionLabel('event')
+                ->optionValue('id'),
+
             Filter::inputText('auditable_type')->operators(),
+
             Filter::datepicker('created_at'),
             Filter::datepicker('updated_at'),
         ];

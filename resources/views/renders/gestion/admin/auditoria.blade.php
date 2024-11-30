@@ -40,6 +40,27 @@
                     newValuesHtml += `<br><strong>${key}:</strong> ${value}`;
                 }
 
+                // Formatear params.created_at
+                params.created_at = new Date(params.created_at).toLocaleString();
+
+                // Formatear event
+                switch (params.event) {
+                    case 'created':
+                        params.event = 'Creado';
+                        break;
+                    case 'updated':
+                        params.event = 'Actualizado';
+                        break;
+                    case 'deleted':
+                        params.event = 'Eliminado';
+                        break;
+                    case 'restored':
+                        params.event = 'Restaurado';
+                        break;
+                    default:
+                        params.event = 'Desconocido';
+                        break;
+                }
                 Sweetalert2.fire({
                     title: 'AUDITORIA',
                     html: `

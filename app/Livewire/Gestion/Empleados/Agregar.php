@@ -18,6 +18,7 @@ use App\Models\Sexo;
 use App\Models\Pais;
 use App\Models\Persona;
 use App\Models\PuestoTrabajo;
+use App\Models\RelacionFamilia;
 use App\Models\TipoContrato;
 use App\Models\TipoDocumento;
 use App\Models\TipoJornada;
@@ -25,6 +26,7 @@ use App\Models\TipoRelacion;
 use App\Models\User;
 use App\Rules\Validator\CuilValidator;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -33,6 +35,7 @@ use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Validate;
+use Spatie\Permission\Models\Role;
 use Throwable;
 
 class Agregar extends Component
@@ -65,6 +68,7 @@ class Agregar extends Component
     public $dni_familiar;
     public $fecha_nacimiento_familiar;
     public $tipo_relacion_familiar_selected;
+    public $relaciones_familiares_dos;
     public $tipo_relacion_familiar_selected_dos;
     public $relaciones_familiares;
     public $certificado_familiar;
@@ -96,7 +100,12 @@ class Agregar extends Component
     public $tipos_documentos;
     public $hora_entrada;
     public $hora_salida;
+    public $hora_inicio_receso;
+    public $hora_fin_receso;
     public $sueldo;
+    public $roles;
+    public $rol_seleccionado;
+    public $not_contrato_indeterminado = true;
 
     protected function rules()
     {
@@ -138,7 +147,7 @@ class Agregar extends Component
             'tipo_jornadas_selected' => 'required',
             'tipo_contratos_selected' => 'required',
             'fecha_ingreso' => 'required|date|date_format:d-m-Y',
-            'fecha_vencimiento' => 'required|date|date_format:d-m-Y|after:fecha_ingreso',
+            'fecha_vencimiento' => 'required_if:not_contrato_indeterminado,true|date|date_format:d-m-Y|after:fecha_ingreso',
             'contrato_trabajo' => 'required|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
             'puesto_de_trabajo_selected' => 'required',
             'competencias_selected' => 'required',
@@ -149,7 +158,12 @@ class Agregar extends Component
 
             'hora_entrada' => 'required',
             'hora_salida' => 'required',
+            'hora_inicio_receso' => 'after:hora_entrada|before:hora_salida',
+            'hora_fin_receso' => 'after:hora_inicio_receso|before:hora_salida',
             'sueldo' => 'required|numeric|min:0|regex:/^\d+(\.\d{1,2})?$/',
+
+            // Roles
+            'rol_seleccionado' => 'required',
         ];
     }
 
@@ -211,10 +225,19 @@ class Agregar extends Component
 
         'hora_entrada.required' => 'El campo de la hora de entrada es obligatorio.',
         'hora_salida.required' => 'El campo de la hora de salida es obligatorio.',
+        'hora_inicio_receso.after' => 'El campo de la hora de inicio de receso debe ser posterior a la hora de entrada.',
+        'hora_inicio_receso.before' => 'El campo de la hora de inicio de receso debe ser anterior a la hora de fin de receso.',
+        'hora_fin_receso.after' => 'El campo de la hora de fin del receso debe ser posterior a la hora de inicio del receso.',
+        'hora_fin_receso.before' => 'El campo de la hora de fin de receso debe ser anterior a la hora de salida.',
+
+
         'sueldo.required' => 'El campo del sueldo es obligatorio.',
         'sueldo.numeric' => 'El sueldo debe ser un número.',
         'sueldo.min' => 'El sueldo debe ser mayor a 0.',
         'sueldo.regex' => 'El sueldo debe ser un número con dos decimales.',
+
+        // Roles
+        'rol_seleccionado.required' => 'El campo del rol es obligatorio.',
     ];
 
     public function updated($propertyName)
@@ -228,6 +251,35 @@ class Agregar extends Component
         if ($propertyName == 'tiene_familiares' || $propertyName == 'tiene_obra_social') {
             $this->dispatch('actualizar');
         }
+
+        if ($propertyName == 'tipo_contratos_selected') {
+            $tipoContrato = TipoContrato::find($this->tipo_contratos_selected);
+            if ($tipoContrato->nombre == 'Contrato a tiempo indeterminado') {
+                $this->not_contrato_indeterminado = false;
+                $this->fecha_vencimiento = '';
+                $this->dispatch('control_fecha', true);
+            } else {
+                $this->dispatch('control_fecha', false);
+            }
+        }
+
+        if ($this->hora_inicio_receso){
+            $this->validate([
+                'hora_inicio_receso' => 'after:hora_entrada|before:hora_salida',
+            ],[
+                'hora_inicio_receso.after' => 'El campo de la hora de inicio de receso debe ser posterior a la hora de entrada.',
+                'hora_inicio_receso.before' => 'El campo de la hora de inicio de receso debe ser anterior a la hora de fin de receso.',
+            ]);
+        }
+
+        if ($this->hora_fin_receso){
+            $this->validate([
+                'hora_fin_receso' => 'after:hora_inicio_receso|before:hora_salida',
+            ],[
+                'hora_fin_receso.after' => 'El campo de la hora de fin del receso debe ser posterior a la hora de inicio del receso.',
+                'hora_fin_receso.before' => 'El campo de la hora de fin de receso debe ser anterior a la hora de salida.',
+            ]);
+        }
     }
     public function mount()
     {
@@ -236,12 +288,14 @@ class Agregar extends Component
         $this->municipios = collect();
         $this->sexos = Sexo::all()->sortBy('nombre');
         $this->relaciones_familiares = TipoRelacion::all()->sortBy('nombre');
+        $this->relaciones_familiares_dos = RelacionFamilia::all()->sortBy('nombre');
         $this->obras_sociales = ObraSocial::all()->sortBy('nombre');
         $this->estados_civiles = EstadoCivil::all()->sortBy('nombre');
         $this->tipo_jornadas = TipoJornada::all()->sortBy('nombre');
         $this->tipo_contratos = TipoContrato::all()->sortBy('nombre');
         $this->puestos_de_trabajo = PuestoTrabajo::all()->sortBy('nombre');
         $this->tipos_documentos = TipoDocumento::all()->sortBy('nombre');
+        $this->roles = Role::whereNot('name', 'SYSADMIN')->whereNot('name', 'DIRECTOR GENERAL')->get()->sortBy('name');
     }
 
     public function render()
@@ -354,7 +408,7 @@ class Agregar extends Component
             'tipo_jornadas_selected' => 'required',
             'tipo_contratos_selected' => 'required',
             'fecha_ingreso' => 'required|date|date_format:d-m-Y',
-            'fecha_vencimiento' => 'required|date|date_format:d-m-Y|after:fecha_ingreso',
+            'fecha_vencimiento' => 'required_if:not_contrato_indeterminado,true|date|date_format:d-m-Y|after:fecha_ingreso',
             'contrato_trabajo' => 'required|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
             'puesto_de_trabajo_selected' => 'required',
             'competencias_selected' => 'required',
@@ -365,7 +419,10 @@ class Agregar extends Component
 
             'hora_entrada' => 'required',
             'hora_salida' => 'required',
+            'hora_inicio_receso' => 'after:hora_entrada|before:hora_salida',
+            'hora_fin_receso' => 'after:hora_inicio_receso|before:hora_salida',
             'sueldo' => 'required|numeric|min:0|regex:/^\d+(\.\d{1,2})?$/',
+
         ];
 
         $mensajes = [
@@ -416,6 +473,7 @@ class Agregar extends Component
             'sueldo.numeric' => 'El sueldo debe ser un número.',
             'sueldo.min' => 'El sueldo debe ser mayor a 0.',
             'sueldo.regex' => 'El sueldo debe ser un número con dos decimales.',
+
         ];
 
         //$this->validate($reglas, $mensajes);
@@ -435,6 +493,72 @@ class Agregar extends Component
     {
         $this->validarTodo();
 
+        if ($this->sueldo < PuestoTrabajo::find($this->puesto_de_trabajo_selected)->sueldo_base) {
+            $this->dispatch('error_critico', 'El sueldo no puede ser menor al sueldo base mínimo del puesto de trabajo.');
+            return;
+        }
+
+        $hora_entrada = Carbon::createFromFormat('H:i', $this->hora_entrada);
+        $hora_salida = Carbon::createFromFormat('H:i', $this->hora_salida);
+        $hora_inicio_receso = null;
+        $hora_fin_receso = null;
+        if ($this->hora_inicio_receso && $this->hora_fin_receso) {
+            $hora_inicio_receso = Carbon::createFromFormat('H:i', $this->hora_inicio_receso);
+            $hora_fin_receso = Carbon::createFromFormat('H:i', $this->hora_fin_receso);
+            $diferencia = $hora_entrada->diffInHours($hora_salida) - $hora_inicio_receso->diffInHours($hora_fin_receso);
+        }else{
+            $diferencia = $hora_entrada->diffInHours($hora_salida);
+        }
+
+        if ($diferencia > 8) {
+            $this->dispatch('error_critico', 'La jornada laboral no puede superar las 8 horas.');
+            return;
+        }
+
+        // 8hs diarias en jornada completa
+        $jornada = TipoJornada::find($this->tipo_jornadas_selected);
+        if ($jornada->nombre == 'Jornada completa') {
+            if ($diferencia < 8) {
+                $this->dispatch('error_critico', 'La jornada laboral completa debe ser de 8 horas.');
+                return;
+            }
+        }
+
+        // Jornada reducida inferior a 8hs
+        if ($jornada->nombre == 'Jornada reducida') {
+            if ($diferencia >= 8) {
+                $this->dispatch('error_critico', 'La jornada laboral reducida no puede superar o igualar las 8 horas.');
+                return;
+            }
+        }
+
+        // Jornada nocturna entre 21hs y 6hs con maximo de 7hs
+        if ($jornada->nombre == 'Jornada nocturna') {
+            if ($hora_entrada->isBefore(Carbon::createFromFormat('H:i', '21:00')) || $hora_salida->isAfter(Carbon::createFromFormat('H:i', '06:00'))) {
+                $this->dispatch('error_critico', 'La jornada laboral nocturna debe ser entre las 21hs y las 6hs.');
+                return;
+            }
+            if ($diferencia > 7) {
+                $this->dispatch('error_critico', 'La jornada laboral nocturna no puede superar las 7 horas.');
+                return;
+            }
+        }
+
+        // Insalubre no puede superar las 6hs
+        if ($jornada->nombre == 'Jornada insalubre') {
+            if ($diferencia > 6) {
+                $this->dispatch('error_critico', 'La jornada laboral insalubre no puede superar las 6 horas.');
+                return;
+            }
+        }
+
+        if ($jornada->nombre == 'Jornada por turnos rotativos' || $jornada->nombre == 'Jornada discontinua' ||  $jornada->nombre == 'Jornada flexible' || $jornada->nombre == 'Jornada partida') {
+            if ($diferencia > 8) {
+                $this->dispatch('error_critico', 'La ' . $jornada->nombre . ' no puede superar las 8 horas.');
+                return;
+            }
+        }
+
         if ($this->tiene_obra_social) {
             $this->validarObraSocial();
         }
@@ -446,13 +570,26 @@ class Agregar extends Component
         // Comprobar todos los archivos subidos
 
         if ($this->fecha_nacimiento) {
-            if (Carbon::createFromFormat('d-m-Y', $this->fecha_nacimiento)->diffInYears(Carbon::now()) < 18) {
-                if (!$this->autorizacion_padres || $this->autorizacion_padres == '') {
-                    $this->dispatch('error_critico', 'Debe cargar una autorización de padres en el apartado "Datos Personales".');
-                    return;
+            $esMenorDeEdad = Carbon::createFromFormat('d-m-Y', $this->fecha_nacimiento)->diffInYears(Carbon::now()) < 18;
+
+            if ($esMenorDeEdad) {
+                if ($this->estado_civil) {
+                    $estadoCivil = EstadoCivil::find($this->estado_civil);
+                    if ($estadoCivil && $estadoCivil->nombre == 'Soltero/a') {
+                        if (!$this->autorizacion_padres || $this->autorizacion_padres == '') {
+                            $this->dispatch('error_critico', 'Debe cargar una autorización de padres en el apartado "Datos Personales".');
+                            return;
+                        }
+                    }
+                } else {
+                    if (!$this->autorizacion_padres || $this->autorizacion_padres == '') {
+                        $this->dispatch('error_critico', 'Debe cargar una autorización de padres en el apartado "Datos Personales".');
+                        return;
+                    }
                 }
             }
         }
+
 
         if (!$this->copia_dni || $this->copia_dni == '') {
             $this->dispatch('error_critico', 'Debe cargar una copia de DNI en el apartado "Datos Personales".');
@@ -474,6 +611,21 @@ class Agregar extends Component
             return;
         }
 
+        if (User::find(Auth::user()->id)->hasRole('SYSADMIN|DIRECTOR GENERAL')) {
+            $this->withValidator(function (Validator $validator) {
+                $validator->after(function ($validator) {
+                    $errors = $validator->messages()->messages();
+                    foreach ($errors as $i => $value) {
+                        $this->dispatch('error_critico', $value[0]);
+                        return;
+                    }
+                });
+            })->validate([
+                'rol_seleccionado' => 'required',
+            ], [
+                'rol_seleccionado.required' => 'El campo del rol es obligatorio.',
+            ]);
+        }
         $documentos_totales = [];
         try {
             DB::beginTransaction();
@@ -482,8 +634,14 @@ class Agregar extends Component
                 'email' => $this->email,
                 'password' => Hash::make($this->dni),
             ]);
-            // Asignar Rol: EMPLEADO
-            $user->assignRole('EMPLEADO');
+
+            if (User::find(Auth::user()->id)->hasRole('SYSADMIN|DIRECTOR GENERAL')) {
+                // Asignar Rol: Seleccionado
+                $user->assignRole(Role::find($this->rol_seleccionado)->name);
+            } else {
+                // Asignar Rol: EMPLEADO
+                $user->assignRole('EMPLEADO');
+            }
 
             $persona = new Persona();
             $persona->nombre = $this->nombre;
@@ -506,8 +664,11 @@ class Agregar extends Component
             $persona->usuario()->associate($user->id);
 
             // Si es menor de edad cargar autorización de padres
-            if ($this->fecha_nacimiento) {
-                if (Carbon::createFromFormat('d-m-Y', $this->fecha_nacimiento)->diffInYears(Carbon::now()) < 18) {
+            $esMenorDeEdad = Carbon::createFromFormat('d-m-Y', $this->fecha_nacimiento)->diffInYears(Carbon::now()) < 18;
+
+            if ($esMenorDeEdad) {
+                $estadoCivil = EstadoCivil::find($this->estado_civil);
+                if ($estadoCivil && $estadoCivil->nombre == 'Soltero/a') {
                     $archivo = $this->autorizacion_padres;
                     $nombre = uniqid() . '.' . $archivo->guessExtension();
                     $ruta = $archivo->storeAs('archivos/' . $persona->dni . '/autorizacion', $nombre);
@@ -517,7 +678,6 @@ class Agregar extends Component
                         'id_persona' => $persona->id,
                         'id_tipo_documento' => TipoDocumento::where('nombre', 'Certificado de emancipacion o permiso del tutor')->first()->id,
                     ]);
-
                     $documentos_totales[] = $documento_autorizacion;
                 }
             }
@@ -564,7 +724,7 @@ class Agregar extends Component
                 foreach ($this->familiares_cargo as $familiar_data) {
                     $familiar = new Familiar();
                     $familiar->nombre = $familiar_data['nombre'];
-                    $familiar->apellido = $familiar_data['apellido']; 
+                    $familiar->apellido = $familiar_data['apellido'];
                     $familiar->dni = $familiar_data['dni'];
                     $familiar->fecha_nacimiento = Carbon::parse($familiar_data['fecha_nacimiento'])->format('d-m-Y');
                     $familiar->id_sexo = Sexo::where('nombre', $familiar_data['sexo'])->first()->id;
@@ -595,8 +755,8 @@ class Agregar extends Component
                 $contacto->apellido = $contacto_data['apellido'];
                 $contacto->telefono = $contacto_data['telefono'];
                 $contacto->email = $contacto_data['email'];
-                $contacto->tipoRelacion()->associate(TipoRelacion::where('nombre', $contacto_data['tipo_relacion'])->first()->id);
-                $contacto->id_persona = $persona->id;                
+                $contacto->tipoRelacion()->associate(RelacionFamilia::where('nombre', $contacto_data['tipo_relacion'])->first()->id);
+                $contacto->id_persona = $persona->id;
                 $persona->contactosEmergencia()->save($contacto);
             }
 
@@ -632,11 +792,16 @@ class Agregar extends Component
             $contrato = new Contrato();
             $contrato->nombre_archivo = $archivo->getClientOriginalName();
             $contrato->fecha_ingreso = Carbon::createFromFormat('d-m-Y', $this->fecha_ingreso);
+            $contrato->hora_inicio_receso = $hora_inicio_receso;
+            $contrato->hora_fin_receso = $hora_fin_receso;
             $contrato->hora_entrada = $this->hora_entrada;
             $contrato->hora_salida = $this->hora_salida;
             $contrato->sueldo = $this->sueldo;
             $contrato->estado = true;
-            $contrato->fecha_vencimiento = Carbon::parse($this->fecha_vencimiento)->format('d-m-Y');
+            if ($this->not_contrato_indeterminado) {
+                $contrato->fecha_vencimiento = Carbon::parse($this->fecha_vencimiento)->format('d-m-Y');
+            }
+            $contrato->fecha_vencimiento = null;
             $contrato->tipoJornada()->associate($this->tipo_jornadas_selected);
             $contrato->tipoContrato()->associate($this->tipo_contratos_selected);
             $contrato->empleado()->associate($empleado->id);
@@ -668,7 +833,7 @@ class Agregar extends Component
             // Enviar mail con la contraseña
             $empresa = Empresa::where('nombre', 'Morfeo S.A.')->first();
             Mail::to($this->email)->send(new ContratoEmpleado($persona, $empleado, $user, $empresa));
-            
+
             // Guardar cambios
             DB::commit();
 
@@ -677,7 +842,7 @@ class Agregar extends Component
             DB::rollBack();
 
             // Eliminar todos los archivos subidos
-            if (!empty($documentos_totales)) { 
+            if (!empty($documentos_totales)) {
                 Storage::deleteDirectory('archivos/' . $persona->dni);
                 // limpiar livewire-temp
                 // Storage::deleteDirectory('livewire-tmp');
@@ -809,7 +974,7 @@ class Agregar extends Component
             'apellido' => $this->apellido_emergencia,
             'telefono' => $this->telefono_emergencia,
             'email' => $this->email_emergencia,
-            'tipo_relacion' => TipoRelacion::find($this->tipo_relacion_familiar_selected_dos)->nombre,
+            'tipo_relacion' => RelacionFamilia::find($this->tipo_relacion_familiar_selected_dos)->nombre,
         ];
 
         $this->nombre_emergencia = '';
@@ -836,7 +1001,7 @@ class Agregar extends Component
         $this->apellido_emergencia = $contacto[0]['apellido'];
         $this->telefono_emergencia = $contacto[0]['telefono'];
         $this->email_emergencia = $contacto[0]['email'];
-        $this->tipo_relacion_familiar_selected_dos = $contacto[0]['tipo_relacion'];
+        $this->tipo_relacion_familiar_selected_dos = RelacionFamilia::where('nombre', $contacto[0]['tipo_relacion'])->first()->id;
 
         $this->eliminarContactoEmergencia($telefono);
 

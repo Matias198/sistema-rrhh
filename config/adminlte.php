@@ -64,7 +64,7 @@ return [
     */
 
     'logo' => '<b>RRHH</b> System',
-    'logo_img' => './img/icon.png',
+    'logo_img' => './img/icon.webp',
     'logo_img_class' => 'brand-image img-circle elevation-3 bg-white',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
@@ -113,7 +113,7 @@ return [
         'enabled' => true,
         'mode' => 'cwrapper',
         'img' => [
-            'path' => './img/icon.png',
+            'path' => './img/icon.webp',
             'alt' => 'RRHH System Preloader Image',
             'effect' => 'none',
             'width' => 60,
@@ -263,7 +263,7 @@ return [
     'register_url' => 'register',
     'password_reset_url' => 'password/reset',
     'password_email_url' => 'password/email',
-    'profile_url' => false,
+    'profile_url' => 'perfil/usuario',
 
     /*
     |--------------------------------------------------------------------------
@@ -316,13 +316,19 @@ return [
             'url' => 'home',
             'icon' => 'fa fa-home',
         ],
-        ['header' => 'HERRAMIENTAS DE GESTIÓN'],
+        ['header' => 'HERRAMIENTAS DE GESTIÓN', 'can' => 'gestionar_empleados'],
         [
             'text' => 'VER CONTRATADOS',
-            'icon' => 'fa fa-users',
+            'icon' => 'fa fa-user-edit',
             'can' => 'gestionar_empleados',
             'url' => 'gestion/empleados/listar',
             'active' => ['gestion/empleados/listar', 'gestion/empleados/ver/*'],
+        ],
+        [
+            'text' => 'VER JEFES DE AREA',
+            'icon' => 'fa fa-users',
+            'can' => 'gestionar_personas',
+            'url' => 'gestion/admin/usuarios',
         ],
         [
             'text' => 'CONTRATAR EMPLEADO',
@@ -330,7 +336,7 @@ return [
             'can' => 'gestionar_empleados',
             'url' => 'gestion/empleados/nuevo',
         ], 
-        ['header' => 'PARAMETROS DEL SISTEMA'],
+        ['header' => 'PARAMETROS DEL SISTEMA', 'can' => 'gestionar_departamentos'],
         [
             'text' => 'DEPARTAMENTOS',
             'icon' => 'fa fa-building',

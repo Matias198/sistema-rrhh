@@ -26,7 +26,7 @@
         }
 
         .back {
-            background-image: url('./img/recursoshumanos-bg.jpg');
+            background-image: url('./img/recursoshumanos-bg.webp');
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
@@ -90,7 +90,11 @@
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                @if (!Auth::user()->hasRole('SYSADMIN')) 
                                 {{ Auth::user()->persona()->first()->nombre . ' ' . Auth::user()->persona()->first()->apellido }}
+                                @else
+                                SYSTEM ADMIN
+                                @endif
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">

@@ -25,7 +25,7 @@
     {{-- Base Stylesheets --}}
     @if (!config('adminlte.enabled_laravel_mix'))
         <link rel="stylesheet" href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('vendor/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
+        {{-- <link rel="stylesheet" href="{{ asset('vendor/overlayScrollbars/css/OverlayScrollbars.min.css') }}"> --}}
         <link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/adminlte.min.css') }}">
 
         @if (config('adminlte.google_fonts.allowed', true))
@@ -74,7 +74,8 @@
         <meta name="msapplication-TileImage" content="{{ asset('favicon/ms-icon-144x144.png') }}">
     @endif
 
-    @vite(['resources/css/app.css', 'resources/css/sweetalert2.min.css', 'resources/css/toastr.min.css', 'resources/css/select2.css', 'resources/css/flatpickr.css', 'resources/css/bootstrap-duallistbox.css', 'resources/css/icheck-bootstrap.css', 'resources/css/bs-stepper.css', 'resources/css/slimselect.css', 'resources/js/app.js', 'resources/js/es.js', 'resources/js/bootstrap.js', 'resources/js/bootstrap.bundle.min.js', 'resources/js/jquery.js', 'resources/js/sweetalert2.all.min.js', 'resources/js/toastr.min.js', 'resources/js/select2.full.js', 'resources/js/flatpickr.js', 'resources/js/jquery.bootstrap-duallistbox.js', 'resources/js/html2pdf.bundle.js', 'resources/js/bs-stepper.js', 'resources/js/icheck.min.js', 'resources/js/jquery.overlayScrollbars.min.js', 'resources/js/slimselect.min.js'])
+    {{-- vite(['resources/css/app.css', 'resources/css/sweetalert2.min.css', 'resources/css/toastr.min.css', 'resources/css/select2.css', 'resources/css/flatpickr.css', 'resources/css/bootstrap-duallistbox.css', 'resources/css/icheck-bootstrap.css', 'resources/css/bs-stepper.css', 'resources/css/slimselect.css', 'resources/js/app.js', 'resources/js/es.js', 'resources/js/bootstrap.js', 'resources/js/bootstrap.bundle.min.js', 'resources/js/jquery.js', 'resources/js/sweetalert2.all.min.js', 'resources/js/toastr.min.js', 'resources/js/select2.full.js', 'resources/js/flatpickr.js', 'resources/js/jquery.bootstrap-duallistbox.js', 'resources/js/html2pdf.bundle.js', 'resources/js/bs-stepper.js', 'resources/js/icheck.min.js', 'resources/js/slimselect.min.js']) --}}
+    @vite(['resources/css/app.css', 'resources/css/sweetalert2.min.css', 'resources/css/toastr.min.css', 'resources/css/select2.css', 'resources/css/flatpickr.css', 'resources/css/bootstrap-duallistbox.css', 'resources/css/icheck-bootstrap.css', 'resources/css/bs-stepper.css', 'resources/css/slimselect.css', 'resources/js/app.js', 'resources/js/es.js', 'resources/js/sweetalert2.all.min.js', 'resources/js/toastr.min.js', 'resources/js/select2.full.js', 'resources/js/flatpickr.js', 'resources/js/jquery.bootstrap-duallistbox.js', 'resources/js/html2pdf.bundle.js', 'resources/js/bs-stepper.js', 'resources/js/icheck.min.js', 'resources/js/slimselect.min.js'])
 </head>
 
 <body class="@yield('classes_body')" @yield('body_data')>
@@ -86,7 +87,7 @@
     @if (!config('adminlte.enabled_laravel_mix'))
         <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
         <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-        <script src="{{ asset('vendor/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
+        {{-- <script src="{{ asset('vendor/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script> --}}
         <script src="{{ asset('vendor/adminlte/dist/js/adminlte.min.js') }}"></script>
     @else
         <script src="{{ mix(config('adminlte.laravel_mix_js_path', 'js/app.js')) }}"></script>

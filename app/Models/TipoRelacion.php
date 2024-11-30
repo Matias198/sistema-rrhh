@@ -22,13 +22,6 @@ class TipoRelacion extends Model implements Auditable
     {
         return $this->hasMany(PersonaFamiliar::class, 'id_tipo_relacion');
     }
-
-    // uno a muchos con tabla Contacto_Emergencia
-    public function contacto_emergencia()
-    {
-        return $this->hasMany(ContactoEmergencia::class, 'id_tipo_relacion');
-    }
-
     // uno a muchos con tabla Familiares
     public function familiares()
     {

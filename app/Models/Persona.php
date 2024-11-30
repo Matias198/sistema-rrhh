@@ -78,4 +78,14 @@ class Persona extends Model implements Auditable
     {
         return $this->hasMany(CapacidadesTrabajo::class, 'id_persona');
     }
+
+    public function getFoto(){
+        if ($this->sexo->nombre == 'Masculino') {
+            return asset("./img/masculino.webp");
+        } elseif ($this->sexo->nombre == 'Femenino') {
+            return asset("./img/femenino.webp");
+        } else {
+            return asset("./img/apache.webp");
+        }
+    }
 }

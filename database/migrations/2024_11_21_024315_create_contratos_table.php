@@ -15,10 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('nombre_archivo');
             $table->time('hora_entrada');
+            $table->time('hora_inicio_receso')->nullable();
+            $table->time('hora_fin_receso')->nullable();
             $table->time('hora_salida');
             $table->decimal('sueldo', 999, 2);
             $table->date('fecha_ingreso');
-            $table->date('fecha_vencimiento');
+            $table->date('fecha_vencimiento')->nullable();
             $table->boolean('estado');
             $table->unsignedBigInteger('id_empleado');
             $table->unsignedBigInteger('id_tipo_contrato');

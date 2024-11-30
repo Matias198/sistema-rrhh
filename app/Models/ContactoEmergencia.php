@@ -25,6 +25,6 @@ class ContactoEmergencia extends Model implements Auditable
 
     public function tipoRelacion()
     {
-        return $this->belongsTo(TipoRelacion::class, 'id_tipo_relacion');
+        return $this->belongsTo(RelacionFamilia::class, 'id_tipo_relacion');
     }
 }

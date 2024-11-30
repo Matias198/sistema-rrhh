@@ -14,6 +14,8 @@ class Contrato extends Model implements Auditable
     protected $fillable = [
         'nombre_archivo',
         'hora_entrada',
+        'hora_inicio_receso',
+        'hora_fin_receso',
         'hora_salida',
         'sueldo',
         'fecha_ingreso',

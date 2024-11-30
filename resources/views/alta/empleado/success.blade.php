@@ -9,7 +9,7 @@
     <div class="body_custom">
         <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
             <div class="container_custom">
-                <img class="icon" src="{{asset('/img/empleado-del-mes.png')}}" alt="">
+                <img class="icon" src="{{asset('/img/empleado-del-mes.webp')}}" alt="">
                 <h1 class="h1_custom">Alta de empleado exitosa</h1>
                 <p class="p_custom">El empleado ha sido registrado correctamente en el sistema.</p>
                 <a href="{{ route('gestion-empleados-listar') }}" class="btn_custom">Ver empleados</a>

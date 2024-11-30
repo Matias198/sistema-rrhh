@@ -126,7 +126,7 @@
                                         <span class="d-tooltip parpadea" data-toggle="tooltip" data-placement="top"
                                             title="Campo obligatorio">*</span>
                                         <input name="fecha_nacimiento" id="fecha_nacimiento"
-                                            class="flatpickr form-control"
+                                            class="flatpickr form-control" autocomplete="off"
                                             placeholder="Seleccione la fecha de nacimiento">
                                     </div>
                                     @error('fecha_nacimiento')
@@ -174,7 +174,7 @@
                                     @error('estado_civil')
                                         <span class="d-block text-danger invalid-feedback">{{ $message }}</span>
                                         {{-- <script>
-                                            window.validarEstadoCivil = () => {
+                                            window.validarApp\Models\EstadoCivil = () => {
                                                 elementos = $('.select2-selection.select2-selection--single.form-control');
                                                 for (let i = 0; i < elementos.length; i++) {
                                                     element = elementos[i];
@@ -185,7 +185,7 @@
                                                     }
                                                 }
                                             }
-                                            validarEstadoCivil();
+                                            validarApp\Models\EstadoCivil();
                                         </script> --}}
                                     @enderror
                                     @if (!$errors->get('estado_civil') && $this->estado_civil != null)
@@ -196,18 +196,38 @@
                                 </div>
                             </div>
                             @if ($fecha_nacimiento != null)
-                                @if (Carbon\Carbon::parse($fecha_nacimiento)->format('Y') >= date('Y') - 18)
-                                    <div class="row mb-3">
-                                        <div class="col">
-                                            <div class="alert alert-warning alert-dismissible">
-                                                <h5><i class="icon fas fa-exclamation-triangle"></i> Advertencia!</h5>
-                                                La fecha de nacimiento ingresada indica
-                                                que el
-                                                empleado es menor de edad. Por favor, ingrese el certificado de
-                                                emancipación o permiso de los padres, tutores o encargados.
+                                @if ($estado_civil != null)
+                                    @if (App\Models\EstadoCivil::find($estado_civil)->nombre == 'Soltero/a')
+                                        @if (Carbon\Carbon::parse($fecha_nacimiento)->format('Y') >= date('Y') - 18)
+                                            <div class="row mb-3">
+                                                <div class="col">
+                                                    <div class="alert alert-warning alert-dismissible">
+                                                        <h5><i class="icon fas fa-exclamation-triangle"></i>
+                                                            Advertencia!</h5>
+                                                        La fecha de nacimiento ingresada indica
+                                                        que el
+                                                        empleado es menor de edad. Por favor, ingrese el certificado de
+                                                        emancipación o permiso de los padres, tutores o encargados.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @endif
+                                @else
+                                    @if (Carbon\Carbon::parse($fecha_nacimiento)->format('Y') >= date('Y') - 18)
+                                        <div class="row mb-3">
+                                            <div class="col">
+                                                <div class="alert alert-warning alert-dismissible">
+                                                    <h5><i class="icon fas fa-exclamation-triangle"></i>
+                                                        Advertencia!</h5>
+                                                    La fecha de nacimiento ingresada indica
+                                                    que el
+                                                    empleado es menor de edad. Por favor, ingrese el certificado de
+                                                    emancipación o permiso de los padres, tutores o encargados.
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    @endif
                                 @endif
                             @endif
                             <div class="row mb-3">
@@ -244,11 +264,11 @@
                                                                 <i class="fas fa-trash eliminar_item"></i>
                                                             </div>
                                                             @if ($copia_dni->guessExtension() == 'pdf')
-                                                                <img src="{{ asset('img/pdf.png') }}" alt=""
+                                                                <img src="{{ asset('img/pdf.webp') }}" alt=""
                                                                     class="img-fluid" width="100">
                                                             @elseif ($copia_dni->guessExtension() == 'docx' || $copia_dni->guessExtension() == 'doc')
-                                                                <img src="{{ asset('img/word.png') }}" alt=""
-                                                                    class="img-fluid" width="100">
+                                                                <img src="{{ asset('img/word.webp') }}"
+                                                                    alt="" class="img-fluid" width="100">
                                                             @else
                                                                 <img src="{{ $copia_dni->temporaryUrl() }}"
                                                                     alt="" class="img-fluid" width="100">
@@ -272,7 +292,10 @@
                                 </div>
                                 <div class="col">
                                     @if ($fecha_nacimiento != null)
+                                @if ($estado_civil != null)
+                                    @if (App\Models\EstadoCivil::find($estado_civil)->nombre == 'Soltero/a')
                                         @if (Carbon\Carbon::parse($fecha_nacimiento)->format('Y') >= date('Y') - 18)
+                                        <div class="col">
                                             <div wire:ignore>
                                                 <label for="autorizacion_padres">Certificado Emancipacion o
                                                     Permiso</label>
@@ -309,11 +332,11 @@
                                                                         <i class="fas fa-trash eliminar_item"></i>
                                                                     </div>
                                                                     @if ($autorizacion_padres->guessExtension() == 'pdf')
-                                                                        <img src="{{ asset('img/pdf.png') }}"
+                                                                        <img src="{{ asset('img/pdf.webp') }}"
                                                                             alt="" class="img-fluid"
                                                                             width="100">
                                                                     @elseif ($autorizacion_padres->guessExtension() == 'docx' || $autorizacion_padres->guessExtension() == 'doc')
-                                                                        <img src="{{ asset('img/word.png') }}"
+                                                                        <img src="{{ asset('img/word.webp') }}"
                                                                             alt="" class="img-fluid"
                                                                             width="100">
                                                                     @else
@@ -332,17 +355,95 @@
                                                 @endif
                                             </div>
                                             @if ($this->autorizacion_padres == '')
-                                                <span class="d-block text-danger invalid-feedback">Se requiere un
+                                                <span class="d-block text-danger invalid-feedback">Se requiere
+                                                    un
                                                     certificado valido</span>
                                             @endif
                                             @if ($this->autorizacion_padres != '')
-                                                <span class="d-block text-success valid-feedback">Campo correcto</span>
+                                                <span class="d-block text-success valid-feedback">Campo
+                                                    correcto</span>
                                             @endif
+                                        </div>
                                         @endif
                                     @endif
+                                @else
+                                    @if (Carbon\Carbon::parse($fecha_nacimiento)->format('Y') >= date('Y') - 18)
+                                        <div class="col">
+                                            <div wire:ignore>
+                                                <label for="autorizacion_padres">Certificado Emancipacion o
+                                                    Permiso</label>
+                                                <span class="d-tooltip parpadea" data-toggle="tooltip"
+                                                    data-placement="top" title="Campo obligatorio">*</span>
+                                                <input type="file" name="autorizacion_padres" hidden
+                                                    accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" id="autorizacion_padres"
+                                                    class="form-control" wire:model="autorizacion_padres"
+                                                    placeholder="Ingrese el certificado de emancipacion o permiso de tutores"
+                                                    autocomplete="off">
+                                            </div>
+                                            <a type="button" class="btn btn-primary"
+                                                x-on:click="$('#autorizacion_padres').click()">
+                                                <i class="fas fa-upload"></i>
+                                                Subir Archivo
+                                            </a>
+                                            <!-- Vista previa si existe el archivo -->
+                                            <div class="border mt-3 d-flex text-center justify-content-center align-items-center"
+                                                style=" height: 150px; width: 150px;">
+                                                @if (!$autorizacion_padres)
+                                                    <div class="text-secondary font-italic">
+                                                        Vista previa no disponible
+                                                    </div>
+                                                @else
+                                                    <div class="d-flex justify-content-start align-items-center">
+                                                        <div class="d-flex flex-column align-items-start">
+                                                            <div data-toggle="tooltip" data-placement="bottom"
+                                                                title="{{ $autorizacion_padres->getClientOriginalName() }}">
+                                                                <div
+                                                                    class="d-flex justify-content-center align-items-center">
+                                                                    <div class="position-absolute"
+                                                                        onclick="event.stopPropagation();"
+                                                                        wire:click="eliminarAutorizacionPadres('{{ $autorizacion_padres->getClientOriginalName() }}')">
+                                                                        <i class="fas fa-trash eliminar_item"></i>
+                                                                    </div>
+                                                                    @if ($autorizacion_padres->guessExtension() == 'pdf')
+                                                                        <img src="{{ asset('img/pdf.webp') }}"
+                                                                            alt="" class="img-fluid"
+                                                                            width="100">
+                                                                    @elseif ($autorizacion_padres->guessExtension() == 'docx' || $autorizacion_padres->guessExtension() == 'doc')
+                                                                        <img src="{{ asset('img/word.webp') }}"
+                                                                            alt="" class="img-fluid"
+                                                                            width="100">
+                                                                    @else
+                                                                        <img src="{{ $autorizacion_padres->temporaryUrl() }}"
+                                                                            alt="" class="img-fluid"
+                                                                            width="100">
+                                                                    @endif
+                                                                </div>
+                                                                <div class="d-block text-truncate"
+                                                                    style="max-width: 100px;">
+                                                                    {{ $autorizacion_padres->getClientOriginalName() }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                            @if ($this->autorizacion_padres == '')
+                                                <span class="d-block text-danger invalid-feedback">Se requiere
+                                                    un
+                                                    certificado valido</span>
+                                            @endif
+                                            @if ($this->autorizacion_padres != '')
+                                                <span class="d-block text-success valid-feedback">Campo
+                                                    correcto</span>
+                                            @endif
+                                        </div>
+                                    @endif
+                                @endif
+                            @endif 
                                 </div>
-                                <div class="col"></div>
+                                <div class="col">
 
+                                </div>
                             </div>
                         </div>
                         <!-- /.card-body -->
@@ -508,11 +609,11 @@
                                                                 <i class="fas fa-trash eliminar_item"></i>
                                                             </div>
                                                             @if ($certificado_domicilio->guessExtension() == 'pdf')
-                                                                <img src="{{ asset('img/pdf.png') }}" alt=""
+                                                                <img src="{{ asset('img/pdf.webp') }}" alt=""
                                                                     class="img-fluid" width="100">
                                                             @elseif ($certificado_domicilio->guessExtension() == 'docx' || $autorizacion_padres->guessExtension() == 'doc')
-                                                                <img src="{{ asset('img/word.png') }}" alt=""
-                                                                    class="img-fluid" width="100">
+                                                                <img src="{{ asset('img/word.webp') }}"
+                                                                    alt="" class="img-fluid" width="100">
                                                             @else
                                                                 <img src="{{ $certificado_domicilio->temporaryUrl() }}"
                                                                     alt="" class="img-fluid" width="100">
@@ -654,7 +755,7 @@
                                             <span class="d-tooltip parpadea" data-toggle="tooltip"
                                                 data-placement="top" title="Campo obligatorio">*</span>
                                             <input name="fecha_nacimiento_familiar" id="fecha_nacimiento_familiar"
-                                                class="flatpickr form-control"
+                                                class="flatpickr form-control" autocomplete="off"
                                                 placeholder="Seleccione la fecha de nacimiento">
                                         </div>
                                         @error('fecha_nacimiento_familiar')
@@ -725,11 +826,11 @@
                                                                     <i class="fas fa-trash eliminar_item"></i>
                                                                 </div>
                                                                 @if ($certificado_familiar->guessExtension() == 'pdf')
-                                                                    <img src="{{ asset('img/pdf.png') }}"
+                                                                    <img src="{{ asset('img/pdf.webp') }}"
                                                                         alt="" class="img-fluid"
                                                                         width="100">
                                                                 @elseif ($certificado_familiar->guessExtension() == 'docx' || $certificado_familiar->guessExtension() == 'doc')
-                                                                    <img src="{{ asset('img/word.png') }}"
+                                                                    <img src="{{ asset('img/word.webp') }}"
                                                                         alt="" class="img-fluid"
                                                                         width="100">
                                                                 @else
@@ -990,7 +1091,7 @@
                                             id="tipo_relacion_familiar_selected_dos" class="form-control select2"
                                             aria-placeholder="Seleccione una opción">
                                             <option selected value="">Seleccione una opcion</option>
-                                            @foreach ($relaciones_familiares as $relacion_familiar)
+                                            @foreach ($relaciones_familiares_dos as $relacion_familiar)
                                                 <option value="{{ $relacion_familiar->id }}">
                                                     {{ $relacion_familiar->nombre }}</option>
                                             @endforeach
@@ -1140,36 +1241,6 @@
                                     @endif
                                 </div>
                                 <div class="col">
-                                    <div wire:ignore>
-                                        <label for="hora_entrada">Hora de Entrada</label>
-                                        <span class="d-tooltip parpadea" data-toggle="tooltip" data-placement="top"
-                                            title="Campo obligatorio">*</span>
-                                        <input name="hora_entrada" id="hora_entrada" class="flatpickr form-control"
-                                            placeholder="Seleccione la hora de entrada">
-                                    </div>
-                                    @error('hora_entrada')
-                                        <span class="d-block text-danger invalid-feedback">{{ $message }}</span>
-                                    @enderror
-                                    @if (!$errors->get('hora_entrada') && $this->hora_entrada != null)
-                                        <span class="d-block text-success valid-feedback">Campo correcto</span>
-                                    @endif
-                                </div>
-                                <div class="col">
-                                    <div wire:ignore>
-                                        <label for="hora_salida">Hora de Salida</label>
-                                        <span class="d-tooltip parpadea" data-toggle="tooltip" data-placement="top"
-                                            title="Campo obligatorio">*</span>
-                                        <input name="hora_salida" id="hora_salida" class="flatpickr form-control"
-                                            placeholder="Seleccione la hora de entrada">
-                                    </div>
-                                    @error('hora_salida')
-                                        <span class="d-block text-danger invalid-feedback">{{ $message }}</span>
-                                    @enderror
-                                    @if (!$errors->get('hora_salida') && $this->hora_salida != null)
-                                        <span class="d-block text-success valid-feedback">Campo correcto</span>
-                                    @endif
-                                </div>
-                                <div class="col">
                                     <label for="sueldo">Sueldo Basico</label>
                                     <span class="d-tooltip parpadea" data-toggle="tooltip" data-placement="top"
                                         title="Campo obligatorio">*</span>
@@ -1184,8 +1255,9 @@
                                     @error('sueldo') border-danger is-invalid @enderror"
                                             x-on:input="$wire.set('sueldo', $('#sueldo').val());" placeholder="0.00"
                                             autocomplete="off">
+                                        
                                     </div>
-
+                                    <p class="text-muted text-sm">{{ $puesto_de_trabajo_selected ? 'El sueldo base de referencia para el puesto seleccionado es de $' . App\Models\PuestoTrabajo::find($puesto_de_trabajo_selected)->sueldo_base . ' ARS' : 'Seleccione un puesto de trabajo para obtener un valor de referencia' }}</p>
                                     @error('sueldo')
                                         <span class="d-block text-danger invalid-feedback">{{ $message }}</span>
                                     @enderror
@@ -1194,7 +1266,6 @@
                                     @endif
                                 </div>
                             </div>
-                            <p>Información de ingreso al puesto de trabajo</p>
                             <div class="row mb-3">
                                 <div class="col">
                                     <div wire:ignore>
@@ -1202,7 +1273,7 @@
                                         <span class="d-tooltip parpadea" data-toggle="tooltip" data-placement="top"
                                             title="Campo obligatorio">*</span>
                                         <input name="fecha_ingreso" id="fecha_ingreso" class="flatpickr form-control"
-                                            placeholder="Seleccione la fecha de ingreso">
+                                            placeholder="Seleccione la fecha de ingreso" autocomplete="off">
                                     </div>
                                     @error('fecha_ingreso')
                                         <span class="d-block text-danger invalid-feedback">{{ $message }}</span>
@@ -1217,7 +1288,7 @@
                                         <span class="d-tooltip parpadea" data-toggle="tooltip" data-placement="top"
                                             title="Campo obligatorio">*</span>
                                         <input name="fecha_vencimiento" id="fecha_vencimiento"
-                                            class="flatpickr form-control"
+                                            class="flatpickr form-control" autocomplete="off"
                                             placeholder="Seleccione la fecha de vencimiento">
                                     </div>
                                     @error('fecha_vencimiento')
@@ -1240,6 +1311,9 @@
                                                     {{ $tipo_contrato->nombre }}</option>
                                             @endforeach
                                         </select>
+                                        @foreach ($tipo_contratos as $tipo_contrato)    
+                                            <p id="ayuda_contrato_{{$tipo_contrato->id}}" class="text-muted text-sm ayuda_contrato" hidden>{{$tipo_contrato->descripcion}}</p>
+                                        @endforeach
                                     </div>
                                     @error('tipo_contratos_selected')
                                         <span class="d-block text-danger invalid-feedback">{{ $message }}</span>
@@ -1261,11 +1335,77 @@
                                                     {{ $tipo_jornada->nombre }}</option>
                                             @endforeach
                                         </select>
+                                        @foreach ($tipo_jornadas as $tipo_jornada)    
+                                            <p id="ayuda_jornada_{{$tipo_jornada->id}}" class="text-muted text-sm ayuda_jornada" hidden>{{$tipo_jornada->descripcion}}</p>
+                                        @endforeach
                                     </div>
                                     @error('tipo_jornadas_selected')
                                         <span class="d-block text-danger invalid-feedback">{{ $message }}</span>
                                     @enderror
                                     @if (!$errors->get('tipo_jornadas_selected') && $this->tipo_jornadas_selected != null)
+                                        <span class="d-block text-success valid-feedback">Campo correcto</span>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                
+                                <div class="col">
+                                    <div wire:ignore>
+                                        <label for="hora_entrada">Hora de Entrada</label>
+                                        <span class="d-tooltip parpadea" data-toggle="tooltip" data-placement="top"
+                                            title="Campo obligatorio">*</span>
+                                        <input name="hora_entrada" id="hora_entrada" class="flatpickr form-control" autocomplete="off"
+                                            placeholder="Seleccione la hora de entrada">
+                                    </div>
+                                    @error('hora_entrada')
+                                        <span class="d-block text-danger invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                    @if (!$errors->get('hora_entrada') && $this->hora_entrada != null)
+                                        <span class="d-block text-success valid-feedback">Campo correcto</span>
+                                    @endif
+                                </div>
+                                <div class="col">
+                                    <div wire:ignore>
+                                        <label for="hora_inicio_receso">Inicio de Receso</label>
+                                        <span class="o-tooltip parpadea" data-toggle="tooltip" data-placement="top"
+                                            title="Campo opcional">?</span>
+                                        <input name="hora_inicio_receso" id="hora_inicio_receso" class="flatpickr form-control" autocomplete="off"
+                                            placeholder="Seleccione la hora de entrada">
+                                    </div>
+                                    @error('hora_inicio_receso')
+                                        <span class="d-block text-danger invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                    @if (!$errors->get('hora_inicio_receso') && $this->hora_inicio_receso != null)
+                                        <span class="d-block text-success valid-feedback">Campo correcto</span>
+                                    @endif
+                                </div>
+                                <div class="col">
+                                    <div wire:ignore>
+                                        <label for="hora_fin_receso">Fin de Receso</label>
+                                        <span class="o-tooltip parpadea" data-toggle="tooltip" data-placement="top"
+                                            title="Campo opcional">?</span>
+                                        <input name="hora_fin_receso" id="hora_fin_receso" class="flatpickr form-control" autocomplete="off"
+                                            placeholder="Seleccione la hora de entrada">
+                                    </div>
+                                    @error('hora_fin_receso')
+                                        <span class="d-block text-danger invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                    @if (!$errors->get('hora_fin_receso') && $this->hora_fin_receso != null)
+                                        <span class="d-block text-success valid-feedback">Campo correcto</span>
+                                    @endif
+                                </div>
+                                <div class="col">
+                                    <div wire:ignore>
+                                        <label for="hora_salida">Hora de Salida</label>
+                                        <span class="d-tooltip parpadea" data-toggle="tooltip" data-placement="top"
+                                            title="Campo obligatorio">*</span>
+                                        <input name="hora_salida" id="hora_salida" class="flatpickr form-control" autocomplete="off"
+                                            placeholder="Seleccione la hora de entrada">
+                                    </div>
+                                    @error('hora_salida')
+                                        <span class="d-block text-danger invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                    @if (!$errors->get('hora_salida') && $this->hora_salida != null)
                                         <span class="d-block text-success valid-feedback">Campo correcto</span>
                                     @endif
                                 </div>
@@ -1308,11 +1448,11 @@
                                                                     <i class="fas fa-trash eliminar_item"></i>
                                                                 </div>
                                                                 @if ($contrato_trabajo->guessExtension() == 'pdf')
-                                                                    <img src="{{ asset('img/pdf.png') }}"
+                                                                    <img src="{{ asset('img/pdf.webp') }}"
                                                                         alt="" class="img-fluid"
                                                                         width="100">
                                                                 @elseif ($contrato_trabajo->guessExtension() == 'docx' || $contrato_trabajo->guessExtension() == 'doc')
-                                                                    <img src="{{ asset('img/word.png') }}"
+                                                                    <img src="{{ asset('img/word.webp') }}"
                                                                         alt="" class="img-fluid"
                                                                         width="100">
                                                                 @else
@@ -1358,7 +1498,6 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-
                             @if ($puesto_de_trabajo_selected != null)
                                 <p>Competencias que el empleado ofrece para cubrir el puesto de trabajo seleccionado:
                                 </p>
@@ -1371,12 +1510,9 @@
                                                     value="{{ $competencia->id }}"
                                                     x-on:click="$wire.agregarCompetencia({{ $competencia->id }}, $('#cchb{{ $competencia->id }}').is(':checked'));">
                                                 <label
-                                                    for="cchb{{ $competencia->id }}">{{ $competencia->nombre }}</label>
+                                                    for="cchb{{ $competencia->id }}">{{ $competencia->nombre }}<p class="text-sm font-italic text-secondary"> {{ $competencia->descripcion }}</p></label>
                                             </div>
                                         </div>
-                                        <div class="col"></div>
-                                        <div class="col"></div>
-                                        <div class="col"></div>
                                     </div>
                                 @endforeach
                                 @if ($competencias_selected == [])
@@ -1422,11 +1558,11 @@
                                                                     <i class="fas fa-trash eliminar_item"></i>
                                                                 </div>
                                                                 @if ($currirulum_vitae->guessExtension() == 'pdf')
-                                                                    <img src="{{ asset('img/pdf.png') }}"
+                                                                    <img src="{{ asset('img/pdf.webp') }}"
                                                                         alt="" class="img-fluid"
                                                                         width="100">
                                                                 @elseif ($currirulum_vitae->guessExtension() == 'docx' || $currirulum_vitae->guessExtension() == 'doc')
-                                                                    <img src="{{ asset('img/word.png') }}"
+                                                                    <img src="{{ asset('img/word.webp') }}"
                                                                         alt="" class="img-fluid"
                                                                         width="100">
                                                                 @else
@@ -1463,6 +1599,52 @@
                         </div>
                         <!-- /.card-body -->
                     </div>
+
+                    @if (Auth::user()->hasRole('SYSADMIN|DIRECTOR GENERAL'))
+                        <div class="card card-primary">
+                            <div class="card-header" data-card-widget="collapse" style="cursor: pointer;">
+                                <h3 class="card-title">Rol del Empleado</h3>
+                                <div class="card-tools">
+                                    <a type="button" class="btn btn-tool"><i class="fas fa-square"></i>
+                                    </a>
+                                </div>
+                                <!-- /.card-tools -->
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <div class="row mb-3">
+                                    <div class="col">
+                                        <div wire:ignore>
+                                            <label for="rol_seleccionado">Roles</label>
+                                            <span class="d-tooltip parpadea" data-toggle="tooltip"
+                                                data-placement="top" title="Campo obligatorio">*</span>
+                                            <select name="rol_seleccionado" id="rol_seleccionado"
+                                                class="form-control select2" name="state"
+                                                aria-placeholder="Seleccione una opción">
+                                                <option value="" selected>Seleccione una opción</option>
+                                                @foreach ($roles as $rol)
+                                                    <option value="{{ $rol->id }}">{{ $rol->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        @error('rol_seleccionado')
+                                            <span
+                                                class="d-block text-danger invalid-feedback">{{ $message }}</span>
+                                        @enderror
+                                        @if (!$errors->get('rol_seleccionado') && $this->rol_seleccionado != null)
+                                            <span class="d-block text-success valid-feedback">Campo correcto</span>
+                                        @endif
+                                    </div>
+                                    <div class="col"></div>
+                                    <div class="col"></div>
+                                    <div class="col"></div>
+                                </div>
+                                {{-- <a type="button" class="btn btn-secondary" x-on:click="$wire.getCompetencias()">Competencias</a> --}}
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                    @endif
 
                     <div class="d-flex justify-content-between align-items-center mt-2">
                         <a class="btn btn-primary" x-on:click="$wire.previousStep()">←</a>
@@ -1565,6 +1747,29 @@
             })
         }
 
+        Livewire.on('control_fecha', function(params) {
+            if (params[0]){
+                $("#fecha_vencimiento").flatpickr().destroy();
+                $("#fecha_vencimiento").val('');
+                $("#fecha_vencimiento").attr('readonly', true);
+            }else{
+                $("#fecha_vencimiento").attr('readonly', false);
+                $("#fecha_vencimiento").flatpickr({
+                    "locale": es.Spanish,
+                    dateFormat: 'd-m-Y',
+                    "minDate": new Date(new Date().setFullYear(new Date()
+                        .getFullYear())),
+                    "onChange": function() {
+                        // Modificar
+                        @this.set('fecha_vencimiento', $(
+                            '#fecha_vencimiento').val());
+                    },
+                });
+                $("#fecha_vencimiento").removeAttr('readonly')
+
+            }
+        });
+
         Livewire.on('limpiar_familiar', function(params) {
             $('#dni_familiar').val('');
             $('#nombre_familiar').val('');
@@ -1589,8 +1794,9 @@
                     width: '100%',
                 }).on('change', function() {
                     // Modificar
-                    @this.set('tipo_jornadas_selected', $('#tipo_jornadas_selected')
-                        .val());
+                    @this.set('tipo_jornadas_selected', $('#tipo_jornadas_selected').val());
+                    $('.ayuda_jornada').attr('hidden', true);
+                    $('#ayuda_jornada_' + $('#tipo_jornadas_selected').val()).attr('hidden', false);
                 });
 
                 $('#tipo_contratos_selected').select2({
@@ -1598,7 +1804,17 @@
                     width: '100%',
                 }).on('change', function() {
                     // Modificar
-                    @this.set('tipo_contratos_selected', $('#tipo_contratos_selected')
+                    @this.set('tipo_contratos_selected', $('#tipo_contratos_selected').val());
+                    $('.ayuda_contrato').attr('hidden', true);
+                    $('#ayuda_contrato_' + $('#tipo_contratos_selected').val()).attr('hidden', false);
+                });
+
+                $('#rol_seleccionado').select2({
+                    placeholder: 'Seleccione una opción',
+                    width: '100%',
+                }).on('change', function() {
+                    // Modificar
+                    @this.set('rol_seleccionado', $('#rol_seleccionado')
                         .val());
                 });
 
@@ -1716,7 +1932,32 @@
                     },
                 });
                 $("#hora_salida").removeAttr('readonly')
+                
+                $("#hora_inicio_receso").flatpickr({
+                    "locale": es.Spanish,
+                    enableTime: true,
+                    noCalendar: true,
+                    dateFormat: "H:i",
+                    "onChange": function() {
+                        // Modificar
+                        @this.set('hora_inicio_receso', $(
+                            '#hora_inicio_receso').val());
+                    },
+                });
+                $("#hora_inicio_receso").removeAttr('readonly')
 
+                $("#hora_fin_receso").flatpickr({
+                    "locale": es.Spanish,
+                    enableTime: true,
+                    noCalendar: true,
+                    dateFormat: "H:i",
+                    "onChange": function() {
+                        // Modificar
+                        @this.set('hora_fin_receso', $(
+                            '#hora_fin_receso').val());
+                    },
+                });
+                $("#hora_fin_receso").removeAttr('readonly')
             }, 200);
         })
 
@@ -1759,6 +2000,15 @@
         window.stepper = new Stepper($('.bs-stepper')[0], {
             linear: false,
             animation: true
+        });
+
+        $('#rol_seleccionado').select2({
+            placeholder: 'Seleccione una opción',
+            width: '100%',
+        }).on('change', function() {
+            // Modificar
+            @this.set('rol_seleccionado', $('#rol_seleccionado')
+                .val());
         });
 
         $('#tipo_relacion_familiar_selected_dos').select2({
@@ -1833,12 +2083,40 @@
         });
         $("#hora_salida").removeAttr('readonly')
 
+        $("#hora_inicio_receso").flatpickr({
+            "locale": es.Spanish,
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: "H:i",
+            "onChange": function() {
+                // Modificar
+                @this.set('hora_inicio_receso', $(
+                    '#hora_inicio_receso').val());
+            },
+        });
+        $("#hora_inicio_receso").removeAttr('readonly')
+
+        $("#hora_fin_receso").flatpickr({
+            "locale": es.Spanish,
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: "H:i",
+            "onChange": function() {
+                // Modificar
+                @this.set('hora_fin_receso', $(
+                    '#hora_fin_receso').val());
+            },
+        });
+        $("#hora_fin_receso").removeAttr('readonly')
+
         $('#tipo_jornadas_selected').select2({
             placeholder: 'Seleccione una opción',
             width: '100%',
         }).on('change', function() {
             // Modificar
             @this.set('tipo_jornadas_selected', $('#tipo_jornadas_selected').val());
+            $('.ayuda_jornada').attr('hidden', true);
+            $('#ayuda_jornada_' + $('#tipo_jornadas_selected').val()).attr('hidden', false);
         });
 
         $('#tipo_contratos_selected').select2({
@@ -1847,6 +2125,8 @@
         }).on('change', function() {
             // Modificar
             @this.set('tipo_contratos_selected', $('#tipo_contratos_selected').val());
+            $('.ayuda_contrato').attr('hidden', true);
+            $('#ayuda_contrato_' + $('#tipo_contratos_selected').val()).attr('hidden', false);
         });
 
         $('#pais_selected').select2({
