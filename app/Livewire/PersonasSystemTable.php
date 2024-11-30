@@ -73,7 +73,7 @@ final class PersonasSystemTable extends PowerGridComponent
         return PowerGrid::fields()
             ->add('legajo', fn(Persona $model) => $model->empleado->legajo)
             ->add('nombre', fn(Persona $model) => $model->nombre . ' ' . $model->segundo_nombre . ' ' . $model->apellido)
-            ->add('sexo', fn(Persona $model) => $model->sexo->nombre)
+            ->add('sexos', fn(Persona $model) => $model->sexo->nombre)
             ->add('cuil')
             ->add('titulo_puesto', fn(Persona $model) => $model->empleado->puesto->titulo_puesto)
             ->add('municipio', fn(Persona $model) => $model->municipio->nombre)
@@ -96,7 +96,7 @@ final class PersonasSystemTable extends PowerGridComponent
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Sexo', 'sexo')
+            Column::make('Sexo', 'sexos')
                 ->sortable()
                 ->searchable(),
 
@@ -121,7 +121,7 @@ final class PersonasSystemTable extends PowerGridComponent
 
             Filter::datepicker('fecha_ingreso_formatted', 'empleados.fecha_ingreso'),
 
-            Filter::select('sexo', 'personas.id_sexo')
+            Filter::select('sexos', 'personas.id_sexo')
                 ->dataSource(Sexo::all())
                 ->optionLabel('nombre')
                 ->optionValue('id'),

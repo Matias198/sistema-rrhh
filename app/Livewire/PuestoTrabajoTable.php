@@ -74,8 +74,7 @@ final class PuestoTrabajoTable extends PowerGridComponent
                 ->searchable(),
 
             Column::make('Fecha de creacion', 'created_at_formatted')
-                ->sortable()
-                ->searchable(),
+                ->sortable(),
 
             Column::action('Action')
         ];
