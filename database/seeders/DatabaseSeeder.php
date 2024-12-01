@@ -77,7 +77,8 @@ class DatabaseSeeder extends Seeder
         $permission5 = Permission::create(['name' => 'gestionar_departamentos']);
         $permission6 = Permission::create(['name' => 'gestionar_auditorias']);
         $permission7 = Permission::create(['name' => 'gestionar_personas']);
-        $permission8 = Permission::create(['name' => 'ver_perfil']);
+        $permission8 = Permission::create(['name' => 'gestionar_gerentes']);
+        $permission9 = Permission::create(['name' => 'ver_perfil']);
 
         // Contratar empleados, listar empleados, gestionar puestos de trabajo, gestionar departamentos
         // gestionar auditorias
@@ -89,6 +90,7 @@ class DatabaseSeeder extends Seeder
             $permission5,
             $permission6,
             $permission7,
+            $permission8,
         ]);
 
         // Contratar empleados, listar empleados, gestionar puestos de trabajo, gestionar departamentos
@@ -98,6 +100,7 @@ class DatabaseSeeder extends Seeder
             $permission4,
             $permission5,
             $permission7,
+            $permission8,
         ]);
 
         // Contratar empleados, listar empleados, gestionar puestos de trabajo
@@ -108,7 +111,7 @@ class DatabaseSeeder extends Seeder
 
         $role4->givePermissionTo([
             $permission2,
-            $permission8,
+            $permission9,
         ]);
 
         $this->user_sysadmin->assignRole($role1);
@@ -643,6 +646,99 @@ class DatabaseSeeder extends Seeder
         }
     }
 
+    public function crearPuestoGerenteGeneral()
+    {
+        // Crear tareas del puesto de trabajo
+        $tareas = [
+            'PLANIFICACIÓN ESTRATÉGICA GERNECIAL' => 'Diseñar estrategias para el crecimiento y sostenibilidad de la empresa.',
+            'SUPERVISIÓN GERENCIAL DE ÁREAS' => 'Coordinar las actividades de los diferentes departamentos, asegurando eficiencia y cumplimiento de metas.',
+            'GESTIÓN GERENCIAL Y FINANCIERA' => 'Aprobar presupuestos, evaluar inversiones y monitorear el rendimiento financiero.',
+            'RELACIONES GERENCIALES E INSTITUCIONALES' => 'Representar a la empresa ante socios, clientes y organismos externos.',
+            'TOMA DE DECISIONES GERENCIALES' => 'Analizar información clave y ejecutar soluciones efectivas.',
+            'LIDERAZGO GERENCIAL Y GESTIÓN DE EQUIPOS' => 'Motivar al personal y fomentar un ambiente de trabajo positivo.',
+        ];
+
+        $tareas_totales = [];
+        foreach ($tareas as $tarea => $descripcion) {
+            $tareas_totales[] = TareaTrabajo::create([
+                'nombre' => $tarea,
+                'descripcion' => $descripcion,
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString(),
+            ]);
+        }
+
+        // Crear capacidades del puesto de trabajo
+        $tipos_capacidades = ['Requisitos intelectuales', 'Requisitos físicos', ' Responsabilidades adquiridas', 'Condiciones de trabajo'];
+        $capacidades = [
+            'RELACIONES INTERPERSONALES GERENCIALES' => [
+                'Capacidad para interactuar con socios estratégicos, clientes y líderes internos de forma profesional.',
+                $tipos_capacidades[2],
+                true
+            ],
+            'AMBIENTE DE TRABAJO GERENCIAL' => [
+                'Trabajo en oficinas corporativas, con horarios flexibles y posibilidad de viajes frecuentes.',
+                $tipos_capacidades[3],
+                true
+            ],
+            'ESCOLARIDAD INDISPENSABLE GERENCIAL' => [
+                'Título universitario en Administración, Economía, Ingeniería o áreas afines.',
+                $tipos_capacidades[0],
+                true
+            ],
+            'EXPERIENCIA GERENCIAL' => [
+                'Mínimo 5 años en puestos de alta dirección o gerencia.',
+                $tipos_capacidades[0],
+                true
+            ],
+            'APTITUDES ADICIONALES GERENCIALES' => [
+                'Liderazgo, visión estratégica, habilidades de negociación y resolución de problemas.',
+                $tipos_capacidades[0],
+                true
+            ]
+        ];
+
+        $capacidades_totales = [];
+        foreach ($capacidades as $capacidad => $descripcion) {
+            $capacidades_totales[] = [
+                CapacidadesTrabajo::create([
+                    'nombre' => $capacidad,
+                    'descripcion' => $descripcion[0],
+                    'id_tipo_capacidad' => TipoCapacidad::where('nombre', $descripcion[1])->first()->id,
+                    'created_at' => Carbon::now()->toDateTimeString(),
+                    'updated_at' => Carbon::now()->toDateTimeString(),
+                ])->tipoCapacidad()->associate(TipoCapacidad::where('nombre', $descripcion[1])->first()->id),
+                $descripcion[2]
+            ];
+        }
+
+        // Crear puesto de trabajo
+        $puesto_trabajo = [
+            'titulo' => 'GERENTE GENERAL',
+            'descripcion' => 'Dirigir y supervisar las operaciones generales de la empresa, definiendo estrategias y liderando equipos para alcanzar los objetivos organizacionales.',
+            'sueldo_base' => 1200000.00,
+        ];
+
+        $puesto = PuestoTrabajo::create([
+            'titulo_puesto' => $puesto_trabajo['titulo'],
+            'descripcion_generica' => $puesto_trabajo['descripcion'],
+            'sueldo_base' => $puesto_trabajo['sueldo_base'],
+            'id_departamento_trabajo' => DepartamentoTrabajo::where('nombre', 'GERENCIA GENERAL')->first()->id,
+            'created_at' => Carbon::now()->toDateTimeString(),
+            'updated_at' => Carbon::now()->toDateTimeString(),
+        ])->departamentoTrabajo()->associate(DepartamentoTrabajo::where('nombre', 'GERENCIA GENERAL')->first()->id);
+
+        // Asignar capacidades al puesto de trabajo
+        foreach ($capacidades_totales as $capacidad) {
+            $puesto->capacidadesTrabajos()->attach($capacidad[0]->id, ['excluyente' => $capacidad[1]]);
+        }
+
+        // Asignar tareas al puesto de trabajo
+        foreach ($tareas_totales as $tarea) {
+            $puesto->tareasTrabajos()->attach($tarea->id);
+        }
+    }
+
     public function crearRelacionesFamiliares()
     {
         $relaciones = [
@@ -689,5 +785,6 @@ class DatabaseSeeder extends Seeder
         $this->crearPuestoEmpleadoComercio();
         $this->crearRelacionesFamiliares();
         $this->crearPuestoReclutadorRRHH();
+        $this->crearPuestoGerenteGeneral();
     }
 }

@@ -1,17 +1,13 @@
 @extends('adminlte::page')
 
-@section('title', 'EMPLEADOS')
+@section('title', 'GERENTES')
 
 @section('content_header')
-    <h1>PERFIL DEL EMPLEADO</h1>
-    <a class="mr-2 my-2" href="{{ url()->previous() }}">
-        <i class="fas fa-arrow-left"></i>
-        VOLVER A LA TABLA
-    </a>
+    <h1>LISTA DE GERENTES GENERALES</h1>
 @stop
 
 @section('content')
-    @livewire('Gestion.Empleados.Ver', ['id_persona' => $id_persona])
+    @livewire('PersonasGerentesTable')
 @stop
 
 @section('footer')

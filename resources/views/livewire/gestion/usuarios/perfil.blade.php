@@ -4,21 +4,23 @@
             <div class="card-header p-0 pt-1 border-bottom-0">
                 <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
                     <li class="nav-item">
-                        <a wire:ignore.self class="nav-link active" id="perfil" data-toggle="pill" href="#perfil_tab" role="tab"
-                            aria-controls="perfil_tab" aria-selected="true">Profile</a>
+                        <a wire:ignore.self class="nav-link active" id="perfil" data-toggle="pill" href="#perfil_tab"
+                            role="tab" aria-controls="perfil_tab" aria-selected="true">Profile</a>
                     </li>
                     <li class="nav-item">
-                        <a wire:ignore.self class="nav-link" id="settings" data-toggle="pill" href="#settings_tab" role="tab"
-                            aria-controls="settings_tab" aria-selected="false">Settings</a>
+                        <a wire:ignore.self class="nav-link" id="settings" data-toggle="pill" href="#settings_tab"
+                            role="tab" aria-controls="settings_tab" aria-selected="false">Settings</a>
                     </li>
                 </ul>
             </div>
             <div class="card-body">
                 <div class="tab-content" id="custom-tabs-three-tabContent">
-                    <div wire:ignore.self class="tab-pane fade active show" id="perfil_tab" role="tabpanel" aria-labelledby="perfil">
+                    <div wire:ignore.self class="tab-pane fade active show" id="perfil_tab" role="tabpanel"
+                        aria-labelledby="perfil">
                         @livewire('Gestion.Empleados.Ver', ['id_persona' => $id_persona])
                     </div>
-                    <div wire:ignore.self class="tab-pane fade" id="settings_tab" role="tabpanel" aria-labelledby="settings">
+                    <div wire:ignore.self class="tab-pane fade" id="settings_tab" role="tabpanel"
+                        aria-labelledby="settings">
                         <div class="card card-info">
                             <div class="card-header">
                                 <h3 class="card-title">Correo Electronico</h3>
@@ -53,7 +55,8 @@
                                             <label for="email_nuevo">Correo Electronico</label>
                                             <input type="email_nuevo"
                                                 class="form-control @if (!$errors->get('') && $this->email_nuevo != null) border-success is-valid @endif  @error('email_nuevo') border-danger is-invalid @enderror"
-                                                id="email_nuevo" name="email_nuevo" wire:model="email_nuevo" autocomplete="off"
+                                                id="email_nuevo" name="email_nuevo" wire:model="email_nuevo"
+                                                autocomplete="off"
                                                 x-on:input="$wire.set('email_nuevo', $('#email_nuevo').val())">
                                             @error('email_nuevo')
                                                 <span
@@ -188,5 +191,23 @@
                 allowOutsideClick: false
             })
         });
+        
+        $(function() {
+            new bootstrap.Tooltip($('[data-toggle="tooltip"]'))
+        })
+
+        if ($('body').hasClass('dark-mode')) {
+            $('.select2-selection__rendered').css('color', '#ffff')
+            $('.select2-selection').addClass('form-control')
+            var links = $("link");
+            for (var i = 0; i < links.length; i++) {
+                if (links[i].href.indexOf("dark.css") !== -1) {
+                    links[i].href = links[i].href.replace(
+                        "dark",
+                        "flatpickr"
+                    );
+                }
+            }
+        }
     });
 </script>

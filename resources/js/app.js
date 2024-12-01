@@ -9,6 +9,25 @@ import "./../../vendor/power-components/livewire-powergrid/dist/powergrid";
 // window.Dropzone = Dropzone;
 // window.SlimSelect = SlimSelect;
 
+import { Calendar } from "@fullcalendar/core";
+import interactionPlugin from "@fullcalendar/interaction";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import listPlugin from "@fullcalendar/list";
+import bootstrapPlugin from "@fullcalendar/bootstrap";
+import esLocale from "@fullcalendar/core/locales/es";
+
+//import 'bootstrap/dist/css/bootstrap.css';
+import "bootstrap-icons/font/bootstrap-icons.css"; // webpack uses file-loader to handle font files
+
+window.Calendar = Calendar;
+window.interactionPlugin = interactionPlugin;
+window.dayGridPlugin = dayGridPlugin;
+window.timeGridPlugin = timeGridPlugin;
+window.listPlugin = listPlugin;
+window.bootstrapPlugin = bootstrapPlugin;
+window.esLocale = esLocale;
+
 document.addEventListener("DOMContentLoaded", function () { 
     function detectarCambioModoOscuro() {
         
@@ -17,6 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Función para ejecutar cuando se detecte un cambio
         function modoOscuroCambiado() { 
+
             // Aquí puedes colocar tu código para ejecutar cuando el modo oscuro cambia
             if (body.classList.contains(darkModeClass)) { 
                 var links = $("link");

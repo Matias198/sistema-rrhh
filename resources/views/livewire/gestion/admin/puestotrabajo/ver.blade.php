@@ -101,7 +101,8 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal"
                         x-on:click="$wire.clear()">Regresar</button>
                     <button id="descargar-pdf-btn" type="button" class="btn btn-secondary"
-                        @if ($puestoTrabajo == null) disabled @endif><i class="fas fa-file-pdf"></i>Guardar PDF</button>
+                        @if ($puestoTrabajo == null) disabled @endif><i class="fas fa-file-pdf"></i>Guardar
+                        PDF</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -165,13 +166,14 @@
 
 
                     pdf.text("Período:", pdf.internal.pageSize.getWidth() - 70, 15);
-                    pdf.text(`${anio_inicio}` + " - " + new Date().getFullYear(), pdf.internal.pageSize.getWidth() -
+                    pdf.text(`${anio_inicio}` + " - " + new Date().getFullYear(), pdf.internal
+                        .pageSize.getWidth() -
                         40, 15);
                     pdf.text("Ubicación:", pdf.internal.pageSize.getWidth() - 70, 20);
                     pdf.text(`${ubicacion}`, pdf.internal.pageSize.getWidth() - 40, 20);
                     pdf.text("Fecha y hora:", pdf.internal.pageSize.getWidth() - 70, 25);
                     pdf.text(`${fechaHora}`, pdf.internal.pageSize.getWidth() - 40, 25);
-                    
+
                     // Agrega el pie de página centrado en la parte inferior
                     pdf.setFontSize(10);
                     pdf.setPage(1);
@@ -191,6 +193,24 @@
                 }).save();
 
             });
+
+            $(function() {
+                new bootstrap.Tooltip($('[data-toggle="tooltip"]'))
+            })
+
+            if ($('body').hasClass('dark-mode')) {
+                $('.select2-selection__rendered').css('color', '#ffff')
+                $('.select2-selection').addClass('form-control')
+                var links = $("link");
+                for (var i = 0; i < links.length; i++) {
+                    if (links[i].href.indexOf("dark.css") !== -1) {
+                        links[i].href = links[i].href.replace(
+                            "dark",
+                            "flatpickr"
+                        );
+                    }
+                }
+            }
         });
     </script>
 </div>

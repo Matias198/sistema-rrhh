@@ -114,4 +114,13 @@ class RenderController extends Controller
     public function render_gestion_admin_usuarios_perfil(){
         return view('renders.gestion.usuarios.perfil');
     }
+
+    /**
+     * Renderiza la vista de Gestion de Gerentes.
+     * 
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function render_gestion_admin_gerentes(){
+        return view('renders.gestion.admin.gerentes.listar');
+    }
 }

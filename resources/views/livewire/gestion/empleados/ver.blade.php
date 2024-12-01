@@ -664,5 +664,23 @@
                 title: params[0]
             });
         });
+        
+        $(function() {
+            new bootstrap.Tooltip($('[data-toggle="tooltip"]'))
+        })
+
+        if ($('body').hasClass('dark-mode')) {
+            $('.select2-selection__rendered').css('color', '#ffff')
+            $('.select2-selection').addClass('form-control')
+            var links = $("link");
+            for (var i = 0; i < links.length; i++) {
+                if (links[i].href.indexOf("dark.css") !== -1) {
+                    links[i].href = links[i].href.replace(
+                        "dark",
+                        "flatpickr"
+                    );
+                }
+            }
+        }
     });
 </script>

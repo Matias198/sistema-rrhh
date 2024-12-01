@@ -38,3 +38,6 @@ Route::get('/gestion/admin/usuarios', [RenderController::class, 'render_gestion_
 
 // perfil de usuario
 Route::get('/perfil/usuario', [RenderController::class, 'render_gestion_admin_usuarios_perfil'])->name('gestion-admin-usuarios-perfil');
+
+// gestion/admin/gerentes
+Route::get('/gestion/admin/gerentes', [RenderController::class, 'render_gestion_admin_gerentes'])->name('gestion-admin-gerentes');

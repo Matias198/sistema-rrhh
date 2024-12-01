@@ -23,6 +23,7 @@
         "@fullcalendar/timegrid": "^6.1.15",
         "@popperjs/core": "^2.11.8",
         "alpinejs": "^3.14.1",
+        "bootstrap-colorpicker": "^3.4.0",
         "bootstrap-duallistbox": "^3.0.9",
         "bootstrap-icons": "^1.11.3",
         "bs-stepper": "^1.7.0",

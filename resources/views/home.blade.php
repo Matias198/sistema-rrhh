@@ -3,18 +3,18 @@
 @section('title', 'BIENVENIDO')
 
 @section('content_header')
-    <h1>DASHBOARD</h1>
+    <div class="d-flex justify-content-between align-items-center">
+        <h1>DASHBOARD</h1>
+        <a type="button" class="btn btn-primary" onclick="openSwallModal()">
+            {{-- i de email --}}
+            <i class="fas fa-envelope"></i>
+            Agregar Evento
+        </a>
+    </div>
 @stop
 
 @section('content')
-    <div class="card card-primary">
-        <div class="card-header">
-            <h4 class="card-title">Calendario de eventos</h4>
-        </div>
-        <div class="card-body p-0">
-            <div id="calendar"></div>
-        </div>
-    </div>
+    @livewire('gestion.calendario.calendario')
 @stop
 
 @section('footer')
@@ -29,5 +29,4 @@
 @stop
 
 @section('js')
-    @vite('resources/js/home.js')
 @stop

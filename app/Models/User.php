@@ -60,4 +60,9 @@ class User extends Authenticatable implements Auditable
     {
         return $this->hasOne(Persona::class, 'id_usuario');
     }
+    // Eventos
+    public function eventos()
+    {
+        return $this->belongsToMany(Evento::class, 'usuarios_eventos', 'id_user', 'id_evento');
+    }
 }

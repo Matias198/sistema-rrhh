@@ -2038,8 +2038,8 @@
                 .getFullYear())),
             "onChange": function() {
                 // Modificar
-                @this.set('fecha_ingreso', $(
-                    '#fecha_ingreso').val());
+                @this.set('fecha_ingreso', new Date($(
+                    '#fecha_ingreso').val()).format('dd-mm-yyyy'));
             },
         });
         $("#fecha_ingreso").removeAttr('readonly')
@@ -2051,8 +2051,8 @@
                 .getFullYear())),
             "onChange": function() {
                 // Modificar
-                @this.set('fecha_vencimiento', $(
-                    '#fecha_vencimiento').val());
+                @this.set('fecha_vencimiento', new Date($(
+                    '#fecha_vencimiento').val()).format('dd-mm-yyyy'));
             },
         });
         $("#fecha_vencimiento").removeAttr('readonly')

@@ -12,6 +12,7 @@ use App\Models\EstadoCivil;
 use App\Models\Familiar;
 use App\Models\Municipio;
 use App\Models\Empresa;
+use App\Models\Evento;
 use App\Models\ObraSocial;
 use App\Models\Provincia;
 use App\Models\Sexo;
@@ -295,7 +296,11 @@ class Agregar extends Component
         $this->tipo_contratos = TipoContrato::all()->sortBy('nombre');
         $this->puestos_de_trabajo = PuestoTrabajo::all()->sortBy('nombre');
         $this->tipos_documentos = TipoDocumento::all()->sortBy('nombre');
-        $this->roles = Role::whereNot('name', 'SYSADMIN')->whereNot('name', 'DIRECTOR GENERAL')->get()->sortBy('name');
+        if (User::find(Auth::user()->id)->hasRole('SYSADMIN')) {
+            $this->roles = Role::whereNot('name', 'SYSADMIN')->get()->sortBy('name');
+        }else{
+            $this->roles = Role::whereNot('name', 'SYSADMIN')->whereNot('name', 'DIRECTOR GENERAL')->get()->sortBy('name');
+        }        
     }
 
     public function render()
@@ -834,6 +839,18 @@ class Agregar extends Component
             $empresa = Empresa::where('nombre', 'Morfeo S.A.')->first();
             Mail::to($this->email)->send(new ContratoEmpleado($persona, $empleado, $user, $empresa));
 
+
+            // Crear evento publico de cumpleaños
+            $evento = new Evento();
+            $evento->titulo = 'Feliz Cumpleaños ' . $persona->nombre . ' ' . $persona->apellido .'!';
+            $evento->fecha_inicio = Carbon::parse($persona->fecha_nacimiento)->format('d-m-Y');
+            $evento->fecha_fin = Carbon::parse($persona->fecha_nacimiento)->format('d-m-Y');
+            $evento->color = '#8a0683';
+            $evento->url = null;
+            $evento->grupo = 999;
+            $evento->save();
+            $evento->usuarios()->attach($user->id);
+            
             // Guardar cambios
             DB::commit();
 

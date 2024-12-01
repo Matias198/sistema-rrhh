@@ -331,6 +331,12 @@ return [
             'url' => 'gestion/admin/usuarios',
         ],
         [
+            'text' => 'VER GERENTES GENERALES',
+            'icon' => 'fa fa-user-secret',
+            'can' => 'gestionar_gerentes',
+            'url' => 'gestion/admin/gerentes',
+        ],
+        [
             'text' => 'CONTRATAR EMPLEADO',
             'icon' => 'fa fa-user-plus',
             'can' => 'gestionar_empleados',
