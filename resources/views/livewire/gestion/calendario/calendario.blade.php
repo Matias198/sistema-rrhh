@@ -110,7 +110,7 @@
                                     <span class="d-block text-success valid-feedback">Campo correcto</span>
                                 @endif
                             </div>
- 
+
                             {{-- <div class="mb-3">
                                 <label class="text-sm" for="url">Enlace (URL) del Evento</label>
                                 <span class="o-tooltip parpadea text-sm" data-toggle="tooltip" data-placement="top"
@@ -126,7 +126,7 @@
                                 endif
 
                             </div>  --}}
-                            
+
                             <div class="mb-3">
                                 <label class="text-sm" for="color_picker">Color del Evento</label>
                                 <span class="d-tooltip parpadea text-sm" data-toggle="tooltip" data-placement="top"
@@ -331,6 +331,10 @@
             //     ))
             // );
 
+            eventos.forEach(evento => {
+                evento.textColor = getContrastTextColor(evento.color);
+            });
+
             // Añadir los eventos al calendario
             calendar.addEventSource(eventos);
         };
@@ -359,7 +363,7 @@
             dayMaxEvents: true, // allow "more" link when too many events
             events: [],
             eventClick: function(info) {
-                
+
                 let groupId;
                 if (info.event.groupId != 999) {
                     groupId = "PRIVADO";
@@ -377,7 +381,7 @@
                     'Sin fecha establecida'; // Manejar si `end` es null o undefined
 
                 let owner = info.event._def.extendedProps.owner;
-                
+
                 Sweetalert2.fire({
                     title: info.event.title,
                     html: `

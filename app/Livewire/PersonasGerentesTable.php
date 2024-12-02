@@ -27,7 +27,7 @@ final class PersonasGerentesTable extends PowerGridComponent
         return [
             PowerGrid::exportable(fileName: 'nomina_jefes_area')
                 ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV)
-                ->striped('A6ACCD') 
+                ->striped('A6ACCD')
                 ->csvSeparator(separator: ',')
                 ->csvDelimiter(delimiter: "'"),
 
@@ -46,19 +46,19 @@ final class PersonasGerentesTable extends PowerGridComponent
             ->join('empleados', 'empleados.id_persona', '=', 'personas.id')
             ->join('puesto_trabajos', 'puesto_trabajos.id', '=', 'empleados.id_puesto_trabajo')
             ->join('sexos', 'sexos.id', '=', 'personas.id_sexo')
-            ->join('municipios', 'municipios.id', '=', 'personas.id_municipio')
+            ->join('contratos', 'contratos.id_empleado', '=', 'empleados.id')
+            ->join('municipios as municipio', 'municipio.id', '=', 'personas.id_municipio')
             ->whereHas('usuario.roles', function ($query) {
                 $query->where('name', 'DIRECTOR GENERAL');
             })
-            ->with('empleado', 'sexo');
+            ->with('empleado', 'sexo', 'empleado.contrato', 'municipio');
 
         // Verifica si hay un filtro de fecha aplicado
         if (!empty($this->filters['fecha_ingreso'])) {
-            $query->whereHas('empleado', function ($q) {
-                $q->whereDate('fecha_ingreso', '=', $this->filters['fecha_ingreso']);
+            $query->whereHas('empleado.contrato', function ($q) {
+                $q->whereDate('empleado.contrato.fecha_ingreso', '=', $this->filters['fecha_ingreso']);
             });
         }
-
 
         return $query;
     }
@@ -74,10 +74,10 @@ final class PersonasGerentesTable extends PowerGridComponent
             ->add('legajo', fn(Persona $model) => $model->empleado->legajo)
             ->add('nombre', fn(Persona $model) => $model->nombre . ' ' . $model->segundo_nombre . ' ' . $model->apellido)
             ->add('sexos', fn(Persona $model) => $model->sexo->nombre)
-            ->add('cuil')
+            ->add('sueldo', fn(Persona $model) => $model->empleado->contrato->sueldo)
             ->add('titulo_puesto', fn(Persona $model) => $model->empleado->puesto->titulo_puesto)
             ->add('municipio', fn(Persona $model) => $model->municipio->nombre)
-            ->add('fecha_ingreso_formatted', fn(Persona $model) => Carbon::parse($model->empleado->fecha_ingreso)->format('d/m/Y'));
+            ->add('fecha_ingreso', fn(Persona $model) => Carbon::parse($model->empleado->contrato->fecha_ingreso)->format('d/m/Y'));
     }
 
 
@@ -92,7 +92,7 @@ final class PersonasGerentesTable extends PowerGridComponent
                 ->sortable()
                 ->searchable(),
 
-            Column::make('CUIL', 'cuil')
+            Column::make('Sueldo', 'sueldo')
                 ->sortable()
                 ->searchable(),
 
@@ -103,7 +103,7 @@ final class PersonasGerentesTable extends PowerGridComponent
             Column::make('Municipio', 'municipio')
                 ->sortable(),
 
-            Column::make('Fecha de ingreso', 'fecha_ingreso_formatted')
+            Column::make('Fecha de ingreso', 'fecha_ingreso')
                 ->sortable(),
 
             Column::make('Puesto', 'titulo_puesto')
@@ -117,9 +117,9 @@ final class PersonasGerentesTable extends PowerGridComponent
     {
         return [
             Filter::inputText('legajo')->operators(),
-            Filter::inputText('cuil')->operators(),
+            Filter::inputText('sueldo')->operators(),
 
-            Filter::datepicker('fecha_ingreso_formatted', 'empleados.fecha_ingreso'),
+            Filter::datepicker('fecha_ingreso', 'empleados.contrato.fecha_ingreso'),
 
             Filter::select('sexos', 'personas.id_sexo')
                 ->dataSource(Sexo::all())
@@ -141,7 +141,7 @@ final class PersonasGerentesTable extends PowerGridComponent
 
 
     #[\Livewire\Attributes\On('ver')]
-    public function ver($rowId) 
+    public function ver($rowId)
     {
         // Navegar a la vista de ver empleado
         return redirect()->route('gestion-empleados-ver', $rowId);

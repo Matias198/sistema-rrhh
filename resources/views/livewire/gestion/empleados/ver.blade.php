@@ -1,4 +1,4 @@
-<div id="reporte_empleado_pdf">
+<div wire:ignore.self id="reporte_empleado_pdf">
     @if ($persona)
         @hasanyrole('DIRECTOR GENERAL|JEFE DE AREA|SYSADMIN')
             <div class="d-flex justify-content-end mb-3">

@@ -27,7 +27,7 @@
                                 <!-- /.card-tools -->
                             </div>
                             <!-- /.card-header -->
-                            <div class="card-body">
+                            <div wire:ignore.self class="card-body">
                                 <div class="row">
                                     <div class="col-6">
                                         <h5 class="font-bold mb-4">Actualizar Correo Electronico</h5>
